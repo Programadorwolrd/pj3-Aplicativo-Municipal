@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
-    
     "start": "expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -25,6 +24,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@biomejs/biome": "1.6.4",
     "@tamagui/babel-plugin": "^1.94.4",
     "@types/react": "~18.2.45",
     "typescript": "^5.1.3"

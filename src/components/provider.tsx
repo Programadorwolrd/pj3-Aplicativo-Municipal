@@ -1,7 +1,7 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
 import { TamaguiProvider, Theme } from "tamagui";
 import appConfig from "tamagui.config";
 import { useColorScheme } from "react-native";
+import type { PropsWithChildren } from "react";
 
 export default function Provider({ children }: PropsWithChildren) {
   const theme = useColorScheme();
