@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
+    
     "start": "expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "local:android": "expo start  --localhost --android"
+    "local:android": "NODE_ENV=development expo start  --localhost --android"
   },
   "dependencies": {
+    "@tamagui/config": "^1.94.4",
     "expo": "~50.0.14",
     "expo-constants": "~15.4.5",
     "expo-linking": "~6.2.2",
@@ -18,10 +20,12 @@
     "react": "18.2.0",
     "react-native": "0.73.6",
     "react-native-safe-area-context": "4.8.2",
-    "react-native-screens": "~3.29.0"
+    "react-native-screens": "~3.29.0",
+    "tamagui": "^1.94.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@tamagui/babel-plugin": "^1.94.4",
     "@types/react": "~18.2.45",
     "typescript": "^5.1.3"
   },
