@@ -5,9 +5,10 @@
   "scripts": {
     "start": "expo start -c",
     "android": "expo start --android",
+    "local:android": "expo start  --localhost --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "local:android": "NODE_ENV=development expo start  --localhost --android"
+    "format": "npx @biomejs/biome check --apply *"
   },
   "dependencies": {
     "@tamagui/config": "^1.94.4",

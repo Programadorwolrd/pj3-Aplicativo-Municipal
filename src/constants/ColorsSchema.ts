@@ -1,11 +1,11 @@
 type baseTheme = typeof light;
 
 const light = {
-  bgPaia: "blue",
+  bgPaia: 'blue',
 };
 
 const dark: baseTheme = {
-  bgPaia: "red",
+  bgPaia: 'red',
 };
 
 export default { light, dark };
