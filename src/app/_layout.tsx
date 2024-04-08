@@ -1,13 +1,13 @@
-import React from 'react';
-import Provider from '@/components/provider';
-import { Stack } from 'expo-router';
+import ProviderStyle from '@/components/providerStyle';
+import { router, Slot, Stack } from 'expo-router';
+import { Text } from 'tamagui';
 
 export default function AppLayout() {
+
   return (
-    <Provider>
-      <Stack>
-        <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-      </Stack>
-    </Provider>
+    <ProviderStyle>
+
+      <Slot/>
+    </ProviderStyle>
   );
 }

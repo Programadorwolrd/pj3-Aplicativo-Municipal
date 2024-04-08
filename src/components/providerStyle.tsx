@@ -3,7 +3,7 @@ import appConfig from 'tamagui.config';
 import { useColorScheme } from 'react-native';
 import type { PropsWithChildren } from 'react';
 
-export default function Provider({ children }: PropsWithChildren) {
+export default function ProviderStyle({ children }: PropsWithChildren) {
   const theme = useColorScheme();
 
   return (
