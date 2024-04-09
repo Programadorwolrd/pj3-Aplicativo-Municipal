@@ -3,7 +3,7 @@ import ProviderAuth from '@/providers/providerAuth';
 import { Slot } from 'expo-router';
 
 //O  Slot indica onde o grupo "(app)" será renderizado
-export default function AppLayout() {
+export default function RootLayout() {
   return (
     <ProviderStyle>
       <ProviderAuth>

@@ -1,7 +1,7 @@
 type baseTheme = typeof light;
 
 const light = {
-  bgPaia: 'blue',
+  bgPaia: 'green',
 };
 
 const dark: baseTheme = {
