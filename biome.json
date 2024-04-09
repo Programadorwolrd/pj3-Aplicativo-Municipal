@@ -27,7 +27,7 @@
         "noForEach": "off",
         "noBannedTypes": "warn",
         "useLiteralKeys": "off",
-        "useSimplifiedLogicExpression": "warn",
+        "useSimplifiedLogicExpression": "off",
         "useOptionalChain": "off"
       },
       "a11y": {

@@ -1,13 +1,14 @@
-import ProviderStyle from '@/components/providerStyle';
-import { router, Slot, Stack } from 'expo-router';
-import { Text } from 'tamagui';
+import ProviderStyle from '@/providers/providerStyle';
+import ProviderAuth from '@/providers/providerAuth';
+import { Slot } from 'expo-router';
 
+//O  Slot indica onde o grupo "(app)" será renderizado
 export default function AppLayout() {
-
   return (
     <ProviderStyle>
-
-      <Slot/>
+      <ProviderAuth>
+        <Slot />
+      </ProviderAuth>
     </ProviderStyle>
   );
 }
