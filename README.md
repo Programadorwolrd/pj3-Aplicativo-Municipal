@@ -10,7 +10,7 @@ Feito Na aula Do ifsp, mentorado pelo proefessor Anderson Deizeppe
 
 
 <div>
-<a href="https://github.com/programadorwolrd">
+<a href="https://github.com/">
 <img loading="lazy" height="180em" src="https://github-readme-stats.vercel.app/api?username=programadorwolrd&show_icons=true&theme=radical"/>
 <img loading="lazy" height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=programadorwolrd&layout=compact"/>
 </div>
