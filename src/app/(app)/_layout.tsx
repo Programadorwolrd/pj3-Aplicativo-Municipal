@@ -8,8 +8,15 @@ export default function HomeLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarIcon: () => <IconsTabs foto={capivaraTriste} />,
+
       }}
-    />
+    >
+
+      <Tabs.Screen name='(mapa)' options={{ tabBarIcon: () => <IconsTabs foto={capivaraTriste} />, }} />
+      <Tabs.Screen name='(home)' options={{ tabBarIcon: () => <IconsTabs foto={capivaraTriste} />, }} />
+      <Tabs.Screen name='(qrCode)' options={{ tabBarIcon: () => <IconsTabs foto={capivaraTriste} />, }} />
+      <Tabs.Screen name='(profile)' options={{  tabBarIcon: () => <IconsTabs foto={capivaraTriste} />, }} />
+      <Tabs.Screen name='(ranking)' options={{  tabBarIcon: () => <IconsTabs foto={capivaraTriste} />, }} />
+    </Tabs>
   );
 }
