@@ -1,14 +1,16 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 import Button from '../../../components/botao'
-
+import Card from '../../../components/card-mapa'
 
 
 export default function Profile() {
   return (
     <View>
-      <Text>teste</Text>
-      <Button></Button>
+       <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 25, alignSelf: 'center',margin:30 }}>Liberar Areas</Text>
+       
+     
+      <Card></Card>
     </View>
   );
 }
