@@ -1,7 +1,8 @@
-import { Stack } from 'expo-router';
+import { ArrowLeft, ArrowLeftCircle } from '@tamagui/lucide-icons';
+import { router, Stack } from 'expo-router';
 import { ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { styled } from 'tamagui';
+import { Button } from 'tamagui';
 
 export default function AuthLayout() {
   const image = require('@/assets/background-login.png');
@@ -11,11 +12,18 @@ export default function AuthLayout() {
       <ImageBackground source={image} resizeMode='cover' style={{ flex: 1 }}>
         <Stack
           screenOptions={{
-            headerShown: false,
+            header: () => (
+              <ArrowLeftCircle
+                onPress={() => router.back()}
+                m={15}
+                size={30}
+                color={'white'}
+              />
+            ),
             contentStyle: { backgroundColor: 'transparent' },
           }}
         >
-          <Stack.Screen name='index' />
+          <Stack.Screen name='index' options={{ headerShown: false }} />
         </Stack>
       </ImageBackground>
     </SafeAreaView>
