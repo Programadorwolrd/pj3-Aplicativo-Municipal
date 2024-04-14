@@ -11,11 +11,12 @@
     "format": "npx @biomejs/biome check --apply *"
   },
   "dependencies": {
+    "@expo-google-fonts/outfit": "^0.2.3",
     "@tamagui/config": "^1.94.4",
     "expo": "~50.0.14",
     "expo-camera": "~14.1.2",
     "expo-constants": "~15.4.5",
-    "expo-font": "^11.10.3",
+    "expo-font": "~11.10.3",
     "expo-linking": "~6.2.2",
     "expo-router": "~3.4.8",
     "expo-status-bar": "~1.11.1",
