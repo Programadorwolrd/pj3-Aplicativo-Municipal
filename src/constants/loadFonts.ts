@@ -1,4 +1,4 @@
-import { Outfit_100Thin, Outfit_800ExtraBold } from "@expo-google-fonts/outfit";
+import { Outfit_100Thin, Outfit_700Bold, Outfit_800ExtraBold } from "@expo-google-fonts/outfit";
 import { fonts } from "@tamagui/config/v3";
 import { useFonts } from "expo-font";
 import { createFont, type GenericFont } from "tamagui";
@@ -18,6 +18,7 @@ import { createFont, type GenericFont } from "tamagui";
 const fontsCustom = {
   paiaTriste: Outfit_100Thin,
   paiagrosso: Outfit_800ExtraBold,
+  outfitBold: Outfit_700Bold
 } as const;
 
 // funções para setar a fonte
