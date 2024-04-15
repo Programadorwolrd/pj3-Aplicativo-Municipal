@@ -1,14 +1,19 @@
 import IconsTabs from '@/components/iconsTabs';
-import { Tabs } from 'expo-router';
+import { Redirect,  Tabs } from 'expo-router';
+
 
 const capivaraTriste = require('@/assets/iconLay.jpeg');
 
 export default function HomeLayout() {
+  // simular loggin até a logica estiver completa
+  const isLogged = true;
+
+  if (!isLogged) return <Redirect href={'/(auth)/'} />;
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-
       }}
     >
 
