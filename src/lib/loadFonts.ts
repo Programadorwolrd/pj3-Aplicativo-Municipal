@@ -1,25 +1,7 @@
-import { Outfit_100Thin, Outfit_700Bold, Outfit_800ExtraBold } from "@expo-google-fonts/outfit";
+import { fontsCustom } from "@/constants/fontsCustom";
 import { fonts } from "@tamagui/config/v3";
 import { useFonts } from "expo-font";
 import { createFont, type GenericFont } from "tamagui";
-
-/**
- * @description
- *
- *Adicione as fontes baixadas do google nesse objeto.
- *
- * Dicas:
- *   - Se der erro tente reinicie o servidor
- *   - O nome da propriedade não pode ter `_`
- *  
- * - comando para baixar a fonte: `npx expo install expo-font @expo-google-fonts/nomeDaFonteEmMinusculo`
- *
- */
-const fontsCustom = {
-  paiaTriste: Outfit_100Thin,
-  paiagrosso: Outfit_800ExtraBold,
-  outfitBold: Outfit_700Bold
-} as const;
 
 // funções para setar a fonte
 export const loadFonts = () => {

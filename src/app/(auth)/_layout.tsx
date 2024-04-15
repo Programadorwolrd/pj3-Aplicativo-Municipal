@@ -1,8 +1,7 @@
-import { ArrowLeft, ArrowLeftCircle } from '@tamagui/lucide-icons';
+import { ArrowLeftCircle } from '@tamagui/lucide-icons';
 import { router, Stack } from 'expo-router';
 import { ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button } from 'tamagui';
 
 export default function AuthLayout() {
   const image = require('@/assets/background-login.png');
