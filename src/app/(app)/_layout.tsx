@@ -1,5 +1,6 @@
 import IconsTabs from '@/components/iconsTabs';
-import { Tabs } from 'expo-router';
+import { Redirect,  Tabs } from 'expo-router';
+
 
 //const capivaraTriste = require('@/assets/iconLay.jpeg');
 const homeImg = require('@/assets/botao-home(1).png');
@@ -9,11 +10,15 @@ const profileImg = require('@/assets/avatarperfil(1).png');
 const rankingImg = require('@/assets/ranking(1).png');
 
 export default function HomeLayout() {
+  // simular loggin até a logica estiver completa
+  const isLogged = true;
+
+  if (!isLogged) return <Redirect href={'/(auth)/'} />;
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-
       }}
     >
 

@@ -1,11 +1,9 @@
-type baseTheme = typeof light;
+type baseTheme = Partial<typeof light>;
 
 const light = {
-  bgPaia: 'green',
+  brancoOpaco: "#FFFFFF33",
 };
 
-const dark: baseTheme = {
-  bgPaia: 'red',
-};
+const dark: baseTheme = {};
 
-export default { light, dark };
+export default { light, dark: { ...light, ...dark } };
