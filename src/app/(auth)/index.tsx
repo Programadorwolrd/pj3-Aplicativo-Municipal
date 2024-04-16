@@ -1,5 +1,6 @@
-import ButtonAuth from '@/components/ButtonAuth';
-import TextAuth from '@/components/TextAuth';
+
+import { ButtonAuth } from '@/components/Auth/ButtonAuth';
+import { TextAuth } from '@/components/Auth/TextAuth';
 import { router } from 'expo-router';
 import { Text, View, XStack, YStack } from 'tamagui';
 
