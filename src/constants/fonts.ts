@@ -1,5 +1,8 @@
+import type { KeysFonts } from "@/lib/loadFonts";
 import {
   Outfit_100Thin,
+  Outfit_300Light,
+  Outfit_400Regular,
   Outfit_700Bold,
   Outfit_800ExtraBold,
 } from "@expo-google-fonts/outfit";
@@ -17,7 +20,10 @@ import {
  *
  */
 export const fontsCustom = {
-  paiaTriste: Outfit_100Thin,
-  paiagrosso: Outfit_800ExtraBold,
   outfitBold: Outfit_700Bold,
+  paiaFeliz: Outfit_300Light,
 } as const;
+
+
+// defina a fonte padrão aqui
+export const fontePadrao: KeysFonts = "body";

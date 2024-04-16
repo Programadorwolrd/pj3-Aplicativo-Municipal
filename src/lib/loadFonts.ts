@@ -1,4 +1,4 @@
-import { fontsCustom } from "@/constants/fontsCustom";
+import { fontsCustom } from "@/constants/fonts";
 import { fonts } from "@tamagui/config/v3";
 import { useFonts } from "expo-font";
 import { createFont, type GenericFont } from "tamagui";
@@ -32,6 +32,7 @@ export function addFontsTamagui() {
 }
 
 type KeysFontCustom = keyof typeof fontsCustom;
+export type KeysFonts = keyof typeof fontsCustom | keyof typeof fonts;
 type FontCustomTamagui = {
   [key in KeysFontCustom]?: GenericFont<string | number>;
 };
