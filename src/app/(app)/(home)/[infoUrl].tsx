@@ -1,6 +1,8 @@
 //******************** AINDA NÃO TERMINEI **************************
 import { View, Text, FlatList, StyleSheet, Dimensions, LogBox, Image } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react'
+import { Button, ScrollView } from 'tamagui';
+import {TabsDemo} from '../../../components/tabs'
 
 export default function InfoUrl() {
   const flatlistRef = useRef();
@@ -34,28 +36,34 @@ export default function InfoUrl() {
 		index: index,
 	});
 	//
+
+  const Content = 
+	{
+	name: "Tucano",
+	age: "+20 anos de idade",
+	scientificName: "balfdiuhgfuis",
+	detalhes: "Tucano é uma ave pertencente à família Ramphastidae, que engloba animais com bico longo, colorido, cortante e leve. Esses animais ocorrem apenas no Neotrópico, distribuindo-se do México à Argentina.",
+	audio: "gbngbfbvgfd",
+	map: "fghdfggdfh",
+	tabsMenu: "bghdhnfg",
+	stars: "",
+	}
+  
+
   const carouselData = [
-    {
-      id: "01",
-      image: require("../../../assets/tucano.png"),
-      name: "Tucano",
-      age: "+20 anos de idade",
-      scientificName: "balfdiuhgfuis",
-      detalhes: "Tucano é uma ave pertencente à família Ramphastidae, que engloba animais com bico longo, colorido, cortante e leve. Esses animais ocorrem apenas no Neotrópico, distribuindo-se do México à Argentina.",
-      audio: "",
-      map: "",
-	  tabsMenu: "bghdhnfg",
-	  stars: "5",
-    },
-    {
-      id: "02",
-      image: require("../../../assets/tucano.png")
-	  
-    },
-    {
-      id: "03",
-      image: require("../../../assets/tucano.png")
-    },
+		{
+		id: "01",
+		image: require("../../../assets/tucano.png"),
+		},
+		{
+		id: "02",
+		image: require("../../../assets/tucano.png")
+		
+		},
+		{
+		id: "03",
+		image: require("../../../assets/tucano.png")
+		},
   ];
 
 	//  Display Images // UI
@@ -66,36 +74,6 @@ export default function InfoUrl() {
 					source={item.image}
 					style={{ height: 430, width: screenWidth }}
 				/>
-				<View>
-					 <Text 
-					 style={{ fontSize: "18"}}>
-					{item.age}
-					</Text>
-				</View>
-				<View>
-					 <Text 
-					 style={{ fontSize: "18"}}>
-					{item.name}
-					</Text>
-				</View>
-				<View>
-					 <Text 
-					 style={{fontSize: "18"}}>
-					{item.scientificName}
-					</Text>
-				</View>
-				<View>
-					 <Text 
-					 style={{fontSize: "18"}}>
-					{item.stars}
-					</Text>
-				</View>
-				<View>
-					 <Text 
-					 style={{fontSize: "18"}}>
-					{item.tabsMenu}
-					</Text>
-				</View>
 			</View>
 		);
 	};
@@ -104,10 +82,8 @@ export default function InfoUrl() {
 const handleScroll = (event) => {
 	// Get the scroll position
 	const scrollPosition = event.nativeEvent.contentOffset.x;
-	console.log({ scrollPosition });
 	// Get the index of current active item
 	const index = Math.round(scrollPosition / screenWidth);
-	console.log({ index });
 	// Update the index
 	setActiveIndex(index); // assuming you have a state variable called activeIndex
   };
@@ -126,7 +102,7 @@ const handleScroll = (event) => {
 							width: 25,
 							borderRadius: 5,
 							marginHorizontal: 6,
-							marginVertical: -50,
+							marginVertical: -450,
 						}}
 					></View>
 				);
@@ -140,7 +116,7 @@ const handleScroll = (event) => {
 							width: 10,
 							borderRadius: 5,
 							marginHorizontal: 4,
-							marginVertical: -50,
+							marginVertical: -450,
 						}}
 					></View>
 				);
@@ -149,7 +125,7 @@ const handleScroll = (event) => {
 	};
 
 	return (
-		<View>
+		<ScrollView >
 			<FlatList
 				data={carouselData}
 				ref={flatlistRef}
@@ -159,7 +135,30 @@ const handleScroll = (event) => {
 				horizontal={true}
 				pagingEnabled={true}
 				onScroll={handleScroll}
+				showsHorizontalScrollIndicator={false}
+
 			/>
+	
+			<ScrollView style={{ backgroundColor: "black"}}>
+				<Text style={{color:"white", fontSize: 18, margin: 25}}>
+					{Content.age}
+				</Text >
+				<Text style={{color:"white", fontSize: 18, marginHorizontal: 25}}>
+					{Content.name}
+				</Text>
+				<Text style={{color:"#878787", fontSize: 18, marginHorizontal: 25, marginVertical: 10}}>
+					{Content.scientificName}
+				</Text>
+				<Text style={{color:"white", fontSize: 18, marginHorizontal: 20, marginVertical: 5}}>
+					{Content.stars}⭐⭐⭐⭐⭐
+				</Text>
+				< TabsDemo
+				catalogo={Content}
+				/>
+				<Button style={{color:"black", fontSize: 18, marginHorizontal: "auto", marginVertical: 20, width: 340}}>
+					Capturar Ser vivo 🌿
+				</Button>
+			</ScrollView>
 
 			<View
 				style={{
@@ -170,7 +169,7 @@ const handleScroll = (event) => {
 			>
 				{renderDotIndicators()}
 			</View>
-		</View>
+		</ScrollView>
 	);
 };
 
