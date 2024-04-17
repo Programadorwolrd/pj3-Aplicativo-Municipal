@@ -1,7 +1,7 @@
 import { router, type Href } from 'expo-router';
 import { Button, styled, type GetProps } from 'tamagui';
 
-export const ButtonAuth = styled(Button, {
+export const ButtonCustom = styled(Button, {
   fontFamily: '$outfitBold',
   fontSize: '$7',
   color: 'white',
@@ -27,4 +27,4 @@ export const ButtonAuth = styled(Button, {
   },
 } as const);
 
-export type ButtonAuthProps = GetProps<typeof ButtonAuth>;
+export type ButtonCustomProps = GetProps<typeof ButtonCustom>;

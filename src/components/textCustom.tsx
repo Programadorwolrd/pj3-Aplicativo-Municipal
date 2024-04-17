@@ -1,6 +1,6 @@
 import { styled, Text, type GetProps } from 'tamagui';
 
-export const TextAuth = styled(Text, {
+export const TextCustom = styled(Text, {
   color: 'green',
 
   variants: {
@@ -17,7 +17,13 @@ export const TextAuth = styled(Text, {
         fontSize: '$6',
       },
     },
+    a:{
+      true:{
+        color: '$gray8Dark', 
+        textDecorationLine: 'underline'
+      }
+    }
   },
 } as const);
 
-export type TextAuthProps = GetProps<typeof TextAuth>;
+export type TextCustomProps = GetProps<typeof TextCustom>;

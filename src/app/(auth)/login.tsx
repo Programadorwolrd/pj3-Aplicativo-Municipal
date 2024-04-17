@@ -1,50 +1,35 @@
-import { Text, YStack, XStack, Form } from 'tamagui';
+import { Text, YStack, XStack } from 'tamagui';
 import { Facebook } from '@tamagui/lucide-icons';
+import TemplateAuth from '@/components/templateAuth';
+import { FAuth } from '@/components/formAuth';
 import { Link } from 'expo-router';
-import { InputAuth } from '@/components/Auth/InputAuth';
-import { ButtonAuth } from '@/components/Auth/ButtonAuth';
-import { TextAuth } from '@/components/Auth/TextAuth';
+import { TextCustom } from '@/components/textCustom';
 
 export default function Login() {
   return (
-    <YStack fullscreen marginTop='15%' paddingVertical={'$5'} paddingHorizontal={40} backgroundColor={'$white2'}>
-      <TituloAuth />
-
-      <YStack justifyContent='center' alignItems='center'>
-        <EntrarForm />
-        <Text marginVertical={15}>OU</Text>
-        <XStack gap={30}>
-          <Facebook />
-          <Facebook />
-          <Facebook />
-        </XStack>
-      </YStack>
-    </YStack>
+    <TemplateAuth subTitulo='texto pequeno e triste' titulo='ENTRAPAIA'>
+      <FormSignIn />
+      <Text marginVertical={15}>OU</Text>
+      <XStack gap={30}>
+        <Facebook />
+        <Facebook />
+        <Facebook />
+      </XStack>
+    </TemplateAuth>
   );
 }
 
-function EntrarForm() {
+function FormSignIn() {
   return (
-    <Form onSubmit={() => {}} width={'100%'}>
-      <YStack gap={20}>
-        <InputAuth placeholder='email' />
-        <YStack alignItems='flex-end'>
-          <InputAuth placeholder='senha' textContentType='password' />
-          <Link href={'/(auth)/'}>Esqueceu a senha?</Link>
-        </YStack>
-        <Form.Trigger>
-          <ButtonAuth>ENTRARPAIA</ButtonAuth>
-        </Form.Trigger>
+    <FAuth>
+      <FAuth.I placeholder='email' />
+      <YStack alignItems='flex-end' width={'100%'}>
+        <FAuth.I placeholder='senha' mb={3} textContentType='password' />
+        <Link href={'/(auth)/'}>
+          <Text>Esqueceu a senha?</Text>
+        </Link>
       </YStack>
-    </Form>
-  );
-}
-
-function TituloAuth() {
-  return (
-    <YStack  marginBottom={'$6'}>
-      <TextAuth H1>PAIAENTRAR</TextAuth>
-      <TextAuth H4>Texto muito triste e minusculo</TextAuth>
-    </YStack>
+      <FAuth.B>ENTRARPAIA</FAuth.B>
+    </FAuth>
   );
 }
