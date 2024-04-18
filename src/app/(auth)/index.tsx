@@ -21,6 +21,10 @@ export default function Auth() {
           do nosso parque.
         </Text>
 
+        <ButtonCustom  onPress={() => router.navigate('/(auth)/cadastrar')}>
+          Paia Cadastrar
+        </ButtonCustom>
+
         <ButtonCustom bgOpaco onPress={() => router.navigate('/(auth)/login')}>
           Paia Entrar
         </ButtonCustom>
