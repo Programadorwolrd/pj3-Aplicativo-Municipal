@@ -6,8 +6,8 @@ export const ButtonCustom = styled(Button, {
   fontSize: '$7',
   color: 'white',
   width: "100%",
-  borderRadius: '$7',
-  size:'$5',
+  borderRadius: '$6',
+  size:'$4.5',
 
   backgroundColor: '$green11Light',
   pressStyle: {

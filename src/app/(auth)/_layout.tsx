@@ -11,6 +11,7 @@ export default function AuthLayout() {
             <ArrowLeftCircle
               onPress={() => router.back()}
               m={15}
+              position='absolute'
               size={30}
               color={'white'}
             />

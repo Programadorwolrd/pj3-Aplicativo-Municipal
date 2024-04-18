@@ -9,12 +9,16 @@ export default function Login() {
   return (
     <TemplateAuth subTitulo='texto pequeno e triste' titulo='ENTRAPAIA'>
       <FormSignIn />
-      <Text marginVertical={15}>OU</Text>
+      <Text>OU</Text>
       <XStack gap={30}>
         <Facebook />
         <Facebook />
         <Facebook />
       </XStack>
+      <Text textAlign='center'>
+        Não tem cadastro?
+        <TemplateAuth.LinkEnd href='/(auth)/cadastrar' textLink='Crie sua conta!' />
+      </Text>
     </TemplateAuth>
   );
 }
@@ -24,7 +28,7 @@ function FormSignIn() {
     <FAuth>
       <FAuth.I placeholder='email' />
       <YStack alignItems='flex-end' width={'100%'}>
-        <FAuth.I placeholder='senha' mb={3} textContentType='password' />
+        <FAuth.I placeholder='senha' mb={3} secureTextEntry />
         <Link href={'/(auth)/'}>
           <Text>Esqueceu a senha?</Text>
         </Link>
