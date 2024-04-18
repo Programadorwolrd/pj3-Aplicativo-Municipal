@@ -13,13 +13,13 @@ const Card = () => {
       </View>
 
       <View style={{ width: '43%', height: '44%', alignSelf: 'flex-start', marginTop: 15, borderRadius: 35, marginLeft: 20, backgroundColor: '#329f5f2b' }}>
-      <Image source={require('../assets/mapa.png')} style={{ width: '15%', height: '15%',marginLeft:20,marginTop: 20 }} />
-        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 50, alignSelf: 'left',marginLeft:20, }}>4/13</Text>
+      <Image source={require('../assets/mapa.png')} style={{ width: '15%', height: '12%',marginLeft:20,marginTop: 20 }} />
+        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 50, alignSelf: 'left',marginLeft:20, }}>1/14</Text>
         <Text style={{ color: 'black', fontWeight: 'bold', fontSize:15, alignSelf: 'left',marginLeft:20 }}>Pontos Scanead</Text>
         
         
-        <Image source={require('../assets/pin.png')} style={{ width: '15%', height: '15%',marginLeft:20,marginTop: 20 }} />
-        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 50, alignSelf: 'left',marginLeft:20, }}>4/13</Text>
+        <Image source={require('../assets/pin.png')} style={{ width: '15%', height: '12%',marginLeft:20,marginTop: 20 }} />
+        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 50, alignSelf: 'left',marginLeft:20, }}>6/43</Text>
         <Text style={{ color: 'black', fontWeight: 'bold', fontSize:15, alignSelf: 'left',marginLeft:20 }}>Pontos Scanead</Text>
         
       </View>
