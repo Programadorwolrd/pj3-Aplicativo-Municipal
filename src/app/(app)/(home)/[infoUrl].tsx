@@ -41,10 +41,10 @@ export default function InfoUrl() {
 	{
 	name: "Tucano",
 	age: "+20 anos de idade",
-	scientificName: "balfdiuhgfuis",
+	scientificName: "nome cientifico",
 	detalhes: "Tucano é uma ave pertencente à família Ramphastidae, que engloba animais com bico longo, colorido, cortante e leve. Esses animais ocorrem apenas no Neotrópico, distribuindo-se do México à Argentina.",
-	audio: "gbngbfbvgfd",
-	map: "fghdfggdfh",
+	audio: "audio teste",
+	map: "mapa teste",
 	tabsMenu: "bghdhnfg",
 	stars: "",
 	}
@@ -102,7 +102,7 @@ const handleScroll = (event) => {
 							width: 25,
 							borderRadius: 5,
 							marginHorizontal: 6,
-							marginVertical: -450,
+							marginVertical: -410,
 						}}
 					></View>
 				);
@@ -116,7 +116,7 @@ const handleScroll = (event) => {
 							width: 10,
 							borderRadius: 5,
 							marginHorizontal: 4,
-							marginVertical: -450,
+							marginVertical: -410,
 						}}
 					></View>
 				);
@@ -140,13 +140,13 @@ const handleScroll = (event) => {
 			/>
 	
 			<ScrollView style={{ backgroundColor: "black"}}>
-				<Text style={{color:"white", fontSize: 18, margin: 25}}>
+				<Text style={{color:"white", fontSize: 18, margin: 15}}>
 					{Content.age}
 				</Text >
-				<Text style={{color:"white", fontSize: 18, marginHorizontal: 25}}>
+				<Text style={{color:"white", fontSize: 18, marginHorizontal: 20 }}>
 					{Content.name}
 				</Text>
-				<Text style={{color:"#878787", fontSize: 18, marginHorizontal: 25, marginVertical: 10}}>
+				<Text style={{color:"#878787", fontSize: 18, marginHorizontal: 20, marginVertical: 5}}>
 					{Content.scientificName}
 				</Text>
 				<Text style={{color:"white", fontSize: 18, marginHorizontal: 20, marginVertical: 5}}>
@@ -155,7 +155,7 @@ const handleScroll = (event) => {
 				< TabsDemo
 				catalogo={Content}
 				/>
-				<Button style={{color:"black", fontSize: 18, marginHorizontal: "auto", marginVertical: 20, width: 340}}>
+				<Button style={{backgroundColor:"white" ,color:"black", fontSize: 18, marginHorizontal: "auto", marginVertical: 20, width: 340}}>
 					Capturar Ser vivo 🌿
 				</Button>
 			</ScrollView>

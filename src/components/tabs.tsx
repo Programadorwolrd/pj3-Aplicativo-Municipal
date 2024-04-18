@@ -1,8 +1,7 @@
-import { useState } from 'react'
-
+import { useState, useEffect, useRef } from 'react'
 import type { TabsContentProps } from 'tamagui'
+import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb, Text, View, useTabsContext } from 'tamagui'
 
-import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb, Text, View } from 'tamagui'
 const demos = ['horizontal', 'vertical'] as const
 
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -12,14 +11,13 @@ const demosTitle: Record<(typeof demos)[number], string> = {
   vertical: 'Vertical',
 
 }
+
 export function TabsDemo({catalogo}) {
 
   const [demoIndex, setDemoIndex] = useState(0)
-
   const demo = demos[demoIndex]
-  return (
 
-    // web only fix for position relative
+  return (
 
     <YStack
       paddingHorizontal="$4"
@@ -38,8 +36,6 @@ export function TabsDemo({catalogo}) {
         $xxs={{ display: 'none' }}
       >
 
-  
-
       </XStack>
 
     </YStack>
@@ -47,7 +43,20 @@ export function TabsDemo({catalogo}) {
   )
 }
 
+
 const HorizontalTabs = ({catalogo}) => {
+  const [activeTab, setActiveTab] = useState('tab1');
+  const [isOpen, setIsOpen] = useState(false)
+  const ref = useRef(null)
+
+
+  useEffect(() =>{
+    if(ref.current){
+      setShowReadMoreButton(
+        ref.current.scrollHeigth !== ref.current.clientHeight
+      )
+    }
+  }, [])
 
   return (
 
@@ -55,7 +64,7 @@ const HorizontalTabs = ({catalogo}) => {
       defaultValue="tab1"
       orientation="horizontal"
       flexDirection="column"
-      width={400}
+      width={360}
       height={150}
       backgroundColor="$background"  
     //   borderWidth="$0"
@@ -70,35 +79,39 @@ const HorizontalTabs = ({catalogo}) => {
       >
 
         <Tabs.Tab 
-         flex={1} value="tab1"
+         flex={1} 
+         value="tab1"
          backgroundColor="#000"
          color= "#fff"
          borderWidth="$0"
+         borderBottomWidth={activeTab === 'tab1' ? 3 : 0} 
+         borderBottomColor={activeTab === 'tab1' ? 'green' : 'transparent'}
         >
-
-          <SizableText fontFamily="$body">Detalhes</SizableText>
-
-        </Tabs.Tab>
-
-        <Tabs.Tab flex={1} 
-        value="tab2"
-        backgroundColor="#000"
-        color= "#fff"
-        borderWidth="$0"
-        fontSize= "$3">
-
-          <SizableText fontFamily="$body">Audio</SizableText>
-
+        <SizableText color="white" fontSize={18} >Detalhes</SizableText>
         </Tabs.Tab>
 
         <Tabs.Tab 
-        flex={1} value="tab3"
+          flex={1} 
+          value="tab2"
+          backgroundColor="#000"
+          color= "#fff"
+          borderWidth="$0"
+          borderBottomWidth={activeTab === 'tab2' ? 3 : 0} 
+          borderBottomColor={activeTab === 'tab2' ? 'green' : 'transparent'}
+        >
+        <SizableText color="white" fontSize={18} >Audio</SizableText>
+        </Tabs.Tab>
+
+        <Tabs.Tab 
+        flex={1} 
+        value="tab3"
         backgroundColor="#000"
         color= "#fff"
-        borderWidth="$0">
-
-          <SizableText fontFamily="$body">Mapa</SizableText>
-
+        borderWidth="$0"
+        borderBottomWidth={activeTab === 'tab3' ? 3 : 0} 
+        borderBottomColor={activeTab === 'tab3' ? 'green' : 'transparent'}
+        >
+        <SizableText color="white" fontSize={18} >Mapa</SizableText>
         </Tabs.Tab>
 
       </Tabs.List>
@@ -106,19 +119,35 @@ const HorizontalTabs = ({catalogo}) => {
       <Separator />
 
       <TabsContent value="tab1">
-
-      <Text>{catalogo.detalhes}</Text>
-       
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex:1 }}>
+      <Text 
+        style={{
+          color: '#939393',
+          fontSize: 16,
+        }}
+        numberOfLines={isOpen ? undefined : 2}>
+        {catalogo.detalhes}
+      </Text>
+      <Button 
+        style={{
+          backgroundColor: 'transparent',
+          borderWidth: 0,
+          color: '#2e955a',
+        }}
+        onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? 'Ler menos' : 'Ler mais'}
+      </Button>
+      </View>
       </TabsContent>
       <TabsContent value="tab2">
 
 
-        <Text>{catalogo.audio}</Text>
+        <Text color="#939393" fontSize={18}>{catalogo.audio}</Text>
 
       </TabsContent>
       <TabsContent value="tab3">
 
-        <Text>{catalogo.map}</Text>
+        <Text color="#939393" fontSize={18}>{catalogo.map}</Text>
 
       </TabsContent>
 
@@ -140,7 +169,7 @@ const TabsContent = (props: TabsContentProps) => {
       justifyContent="center"
       textAlign="justify"
       flex={2}
-      color="#878787"
+      color="white"
       borderColor="$background"
       borderRadius="$2"
       borderTopLeftRadius={0}
@@ -157,4 +186,14 @@ const TabsContent = (props: TabsContentProps) => {
 
   )
 
+}
+
+
+const paragraphStyles = {
+  webkitLineClamp: 2,
+  webkitBoxOrient: 'vertical',
+  overFlow: 'hidden',
+  display: '-webkit-box',
+  color:"#939393",
+  fontSize: 18,
 }
