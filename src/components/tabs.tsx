@@ -62,6 +62,7 @@ const HorizontalTabs = ({catalogo}) => {
 
     <Tabs
       defaultValue="tab1"
+      onValueChange={(value) => setActiveTab(value)}
       orientation="horizontal"
       flexDirection="column"
       width={360}
@@ -69,6 +70,7 @@ const HorizontalTabs = ({catalogo}) => {
       // minHeight={130}
       backgroundColor="$background"  
       overflow="hidden"
+  
     >
 
       <Tabs.List
@@ -86,7 +88,7 @@ const HorizontalTabs = ({catalogo}) => {
          borderBottomWidth={activeTab === 'tab1' ? 3 : 0} 
          borderBottomColor={activeTab === 'tab1' ? '#329F60' : 'transparent'}
         >
-        <SizableText color="white" fontSize={16} >Detalhes</SizableText>
+        <Text color="white" fontSize={16} >Detalhes</Text>
         </Tabs.Tab>
 
         <Tabs.Tab 
@@ -98,7 +100,7 @@ const HorizontalTabs = ({catalogo}) => {
           borderBottomWidth={activeTab === 'tab2' ? 3 : 0} 
           borderBottomColor={activeTab === 'tab2' ? 'green' : 'transparent'}
         >
-        <SizableText color="white" fontSize={16} >Audio</SizableText>
+        <Text color="white" fontSize={16} >Audio</Text>
         </Tabs.Tab>
 
         <Tabs.Tab 
@@ -110,7 +112,7 @@ const HorizontalTabs = ({catalogo}) => {
         borderBottomWidth={activeTab === 'tab3' ? 3 : 0} 
         borderBottomColor={activeTab === 'tab3' ? 'green' : 'transparent'}
         >
-        <SizableText color="white" fontSize={16} >Mapa</SizableText>
+        <Text color="white" fontSize={16} >Mapa</Text>
         </Tabs.Tab>
 
       </Tabs.List>
@@ -133,6 +135,7 @@ const HorizontalTabs = ({catalogo}) => {
           borderWidth: 0,
           color: '#329F60',
           margin: -17,
+          marginTop:-10
         }}
         onPress={() => setIsOpen(!isOpen)}>
         {isOpen ? 'Ler menos' : 'Ler mais'}
