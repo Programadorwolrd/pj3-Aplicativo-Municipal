@@ -65,11 +65,10 @@ const HorizontalTabs = ({catalogo}) => {
       orientation="horizontal"
       flexDirection="column"
       width={360}
-      height={150}
+      // height={130}
+      // minHeight={130}
       backgroundColor="$background"  
-    //   borderWidth="$0"
       overflow="hidden"
-    //   borderColor="$borderColor"
     >
 
       <Tabs.List
@@ -79,15 +78,15 @@ const HorizontalTabs = ({catalogo}) => {
       >
 
         <Tabs.Tab 
-         flex={1} 
+        //  flex={1} 
          value="tab1"
          backgroundColor="#000"
          color= "#fff"
          borderWidth="$0"
          borderBottomWidth={activeTab === 'tab1' ? 3 : 0} 
-         borderBottomColor={activeTab === 'tab1' ? 'green' : 'transparent'}
+         borderBottomColor={activeTab === 'tab1' ? '#329F60' : 'transparent'}
         >
-        <SizableText color="white" fontSize={18} >Detalhes</SizableText>
+        <SizableText color="white" fontSize={16} >Detalhes</SizableText>
         </Tabs.Tab>
 
         <Tabs.Tab 
@@ -99,7 +98,7 @@ const HorizontalTabs = ({catalogo}) => {
           borderBottomWidth={activeTab === 'tab2' ? 3 : 0} 
           borderBottomColor={activeTab === 'tab2' ? 'green' : 'transparent'}
         >
-        <SizableText color="white" fontSize={18} >Audio</SizableText>
+        <SizableText color="white" fontSize={16} >Audio</SizableText>
         </Tabs.Tab>
 
         <Tabs.Tab 
@@ -111,7 +110,7 @@ const HorizontalTabs = ({catalogo}) => {
         borderBottomWidth={activeTab === 'tab3' ? 3 : 0} 
         borderBottomColor={activeTab === 'tab3' ? 'green' : 'transparent'}
         >
-        <SizableText color="white" fontSize={18} >Mapa</SizableText>
+        <SizableText color="white" fontSize={16} >Mapa</SizableText>
         </Tabs.Tab>
 
       </Tabs.List>
@@ -132,9 +131,10 @@ const HorizontalTabs = ({catalogo}) => {
         style={{
           backgroundColor: 'transparent',
           borderWidth: 0,
-          color: '#2e955a',
+          color: '#329F60',
+          margin: -17,
         }}
-        onClick={() => setIsOpen(!isOpen)}>
+        onPress={() => setIsOpen(!isOpen)}>
         {isOpen ? 'Ler menos' : 'Ler mais'}
       </Button>
       </View>
@@ -176,7 +176,7 @@ const TabsContent = (props: TabsContentProps) => {
       borderTopRightRadius={0}
       borderWidth="$0"
     //   overflow='hidden'
-      height={400}
+      // minHeight={400}
       {...props}
     >
 
@@ -188,12 +188,3 @@ const TabsContent = (props: TabsContentProps) => {
 
 }
 
-
-const paragraphStyles = {
-  webkitLineClamp: 2,
-  webkitBoxOrient: 'vertical',
-  overFlow: 'hidden',
-  display: '-webkit-box',
-  color:"#939393",
-  fontSize: 18,
-}
