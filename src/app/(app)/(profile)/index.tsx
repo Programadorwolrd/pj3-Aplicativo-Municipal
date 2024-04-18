@@ -1,40 +1,68 @@
-import { FlatList } from 'react-native';
-import { Text, View, Card} from 'tamagui';
-
+import { FlatList, StyleSheet } from 'react-native';
+import { Image, Text, View} from 'tamagui';
 
 interface User {
   id: number;
   nome: string;
-  nascimento: Date;
-  email: string;
+  cargo: string
 }
 
 const usuarios: User[] = [
   {
     id: 1,
     nome: 'João Silva',
-    nascimento: new Date(),
-    email: 'joao.silva@example.com',
+    cargo: 'dev front end'
   },
   {
     id: 2,
     nome: 'Maria Oliveira',
-    nascimento: new Date(),
-    email: 'maria.oliveira@example.com',
+    cargo: 'dev front end'
+ 
   },
 ];
 
-function Itens({ item: {email,id,nascimento,nome} }: { item: User }) {
+function Itens({ item: { nome,cargo } }: { item: User }) {
   return (
-    <View >
+    <View>
 
-      <Text>{email}</Text>
-      <Text>{id}</Text>
-      <Text>{nascimento.toLocaleString()}</Text>
-      <Text>{nome}</Text>
+<View >
+<Image
+    source={{ width: 200, height: 200, uri: 'https://picsum.photos/200/300' }}
+  
+  />
+      {/* <Image
+       marginLeft ={"10%"}
+        source={{uri: 'https://picsum.photos/200/300'}} // Substitua pela URL da sua imagem
+        style={styles.roundImage}
+      /> */}
+    </View>
+      
+      <Text
+     
+      // can add theme values
+      color="$white"
+      fontFamily="$body"
+      // or just use direct values
+      fontSize={20}
+      hoverStyle={{
+        color: '$colorHover',
+      }}
+    >
+      {nome}
+    </Text>
+      <Text>{cargo}</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+ 
+  roundImage: {
+    width: 50, // Defina a largura da imagem
+    height: 50, // Defina a altura da imagem
+    borderRadius: 75, // Metade da largura (ou altura) para torná-la redonda
+  },
+});
 
 export default function Paia() {
   return (
@@ -42,4 +70,7 @@ export default function Paia() {
       <FlatList data={usuarios} renderItem={Itens} />
     </View>
   );
+
 }
+
+
