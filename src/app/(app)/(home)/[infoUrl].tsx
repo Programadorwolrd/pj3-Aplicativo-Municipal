@@ -3,8 +3,11 @@ import { View, Text, FlatList, StyleSheet, Dimensions, LogBox, Image } from 'rea
 import React, {useEffect, useRef, useState} from 'react'
 import { Button, ScrollView } from 'tamagui';
 import {TabsDemo} from '../../../components/tabs'
+import { AirbnbRating} from 'react-native-ratings';
+
 
 export default function InfoUrl() {
+
   const flatlistRef = useRef();
 	// Get Dimesnions
 	const screenWidth = Dimensions.get("window").width;
@@ -46,7 +49,7 @@ export default function InfoUrl() {
 	audio: "audio teste",
 	map: "mapa teste",
 	tabsMenu: "bghdhnfg",
-	stars: "",
+	stars: 4,
 	}
   
 
@@ -64,6 +67,10 @@ export default function InfoUrl() {
 		id: "03",
 		image: require("../../../assets/tucano.png")
 		},
+		{
+		id: "04",
+		image: require("../../../assets/tucano.png")
+		},
   ];
 
 	//  Display Images // UI
@@ -75,6 +82,7 @@ export default function InfoUrl() {
 					style={{ height: 430, width: screenWidth }}
 				/>
 			</View>
+
 		);
 	};
 
@@ -102,7 +110,7 @@ const handleScroll = (event) => {
 							width: 25,
 							borderRadius: 5,
 							marginHorizontal: 6,
-							marginVertical: -410,
+							
 						}}
 					></View>
 				);
@@ -116,7 +124,8 @@ const handleScroll = (event) => {
 							width: 10,
 							borderRadius: 5,
 							marginHorizontal: 4,
-							marginVertical: -410,
+						
+
 						}}
 					></View>
 				);
@@ -126,7 +135,9 @@ const handleScroll = (event) => {
 
 	return (
 		<ScrollView >
+			<View	style={{position:'relative'}}>
 			<FlatList
+	
 				data={carouselData}
 				ref={flatlistRef}
 				getItemLayout={getItemLayout}
@@ -136,9 +147,20 @@ const handleScroll = (event) => {
 				pagingEnabled={true}
 				onScroll={handleScroll}
 				showsHorizontalScrollIndicator={false}
-
+				
 			/>
-	
+			<View style={{
+				flexDirection:"row",
+				position:'absolute',
+				// right:'auto',
+				// left:'auto',
+				bottom: 5,
+				// paddingLeft: 155,
+				marginHorizontal: '40%'
+				}}>
+				{renderDotIndicators()}
+			</View>
+			</View>
 			<ScrollView style={{ backgroundColor: "black"}}>
 				<Text style={{color:"white", fontSize: 18, margin: 15}}>
 					{Content.age}
@@ -149,8 +171,19 @@ const handleScroll = (event) => {
 				<Text style={{color:"#878787", fontSize: 18, marginHorizontal: 20, marginVertical: 5}}>
 					{Content.scientificName}
 				</Text>
-				<Text style={{color:"white", fontSize: 18, marginHorizontal: 20, marginVertical: 5}}>
-					{Content.stars}⭐⭐⭐⭐⭐
+		
+				<Text style={{ marginHorizontal: 20, marginVertical: 5}}>
+				<AirbnbRating
+					count={5}
+					reviewSize={0}
+					defaultRating={Content.stars}
+					selectedColor="#329F60"
+					unSelectedColor="#282828"
+					showRating={false}
+					reviewColor='green'
+					size={20}
+					isDisabled={true}
+				/>
 				</Text>
 				< TabsDemo
 				catalogo={Content}
@@ -167,7 +200,7 @@ const handleScroll = (event) => {
 					marginTop: 0,
 				}}
 			>
-				{renderDotIndicators()}
+			
 			</View>
 		</ScrollView>
 	);
