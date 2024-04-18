@@ -4,6 +4,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import { Button, ScrollView } from 'tamagui';
 import {TabsDemo} from '../../../components/tabs'
 import { AirbnbRating} from 'react-native-ratings';
+import { router } from 'expo-router';
 
 
 export default function InfoUrl() {
@@ -188,7 +189,7 @@ const handleScroll = (event) => {
 				< TabsDemo
 				catalogo={Content}
 				/>
-				<Button style={{backgroundColor:"white" ,color:"black", fontSize: 18, marginHorizontal: "auto", marginVertical: 20, width: 340}}>
+				<Button onPress={()=>{router.navigate("/")}} style={{backgroundColor:"white" ,color:"black", fontSize: 18, marginHorizontal: "auto", marginVertical: 20, width: 340}}>
 					Capturar Ser vivo 🌿
 				</Button>
 			</ScrollView>
