@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Button, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable, ActivityIndicator, Platform } from "react-native";
 import { CameraView, Camera } from "expo-camera/next";
 import { router } from 'expo-router';
 import { XStack, Text } from 'tamagui';
-import { type GetProps, Input, styled } from 'tamagui';
 import { Flashlight, X } from "@tamagui/lucide-icons";
 
 export default function App() {
@@ -29,8 +28,13 @@ export default function App() {
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size={Platform.OS == 'android' ? 70 : 'large'} color="#01714B" />
+      </View>
+    )
   }
+
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
