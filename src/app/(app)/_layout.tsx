@@ -11,7 +11,7 @@ const rankingImg = require('@/assets/ranking(1).png');
 
 export default function HomeLayout() {
   // simular loggin até a logica estiver completa
-  const isLogged = true;
+  const isLogged = false;
 
   if (!isLogged) return <Redirect href={'/(auth)/'} />;
 
