@@ -51,6 +51,7 @@ export default function InfoUrl() {
 	map: "mapa teste",
 	tabsMenu: "bghdhnfg",
 	stars: 4,
+	medalha: require("../../../assets/medalha.png"),
 	}
   
 
@@ -108,9 +109,11 @@ const handleScroll = (event) => {
 						style={{
 							backgroundColor: "#329F60",
 							height: 10,
-							width: 25,
+							width: 19,
 							borderRadius: 5,
 							marginHorizontal: 6,
+							borderColor: "green",
+							borderWidth: 1
 							
 						}}
 					></View>
@@ -125,8 +128,9 @@ const handleScroll = (event) => {
 							width: 10,
 							borderRadius: 5,
 							marginHorizontal: 4,
+							borderColor: "#b5b5b5",
+							borderWidth: 1
 						
-
 						}}
 					></View>
 				);
@@ -153,23 +157,31 @@ const handleScroll = (event) => {
 			<View style={{
 				flexDirection:"row",
 				position:'absolute',
-				// right:'auto',
-				// left:'auto',
 				bottom: 5,
-				// paddingLeft: 155,
-				marginHorizontal: '40%'
+				marginHorizontal: '40%',
+				marginBottom: 40
 				}}>
 				{renderDotIndicators()}
 			</View>
 			</View>
-			<ScrollView style={{ backgroundColor: "black"}}>
-				<Text style={{color:"white", fontSize: 18, margin: 15}}>
-					{Content.age}
-				</Text >
-				<Text style={{color:"white", fontSize: 18, marginHorizontal: 20 }}>
+
+			<ScrollView style={{ backgroundColor: "black",borderTopLeftRadius: 40, overflow: 'hidden', marginTop: -36}}>
+
+			<View style={{ flexDirection: 'row', alignItems: 'center', margin: 20, justifyContent: 'space-between', marginBottom: -15}}>
+			<Text style={{ color: "white", fontSize: 18 }}>
+				{Content.age}
+			</Text>
+			<Image
+				source={Content.medalha}
+				style={{ marginLeft: 10 }} // Adicione algum espaço entre o texto e a imagem
+			/>
+			</View>
+				<Text
+					 style={{color:"white", fontSize: 18, marginHorizontal: 20}}>
 					{Content.name}
 				</Text>
-				<Text style={{color:"#878787", fontSize: 18, marginHorizontal: 20, marginVertical: 5}}>
+				<Text 
+					style={{color:"#878787", fontSize: 18, marginHorizontal: 20, marginVertical: 5}}>
 					{Content.scientificName}
 				</Text>
 		
@@ -187,9 +199,11 @@ const handleScroll = (event) => {
 				/>
 				</Text>
 				< TabsDemo
-				catalogo={Content}
+					catalogo={Content}
 				/>
-				<Button onPress={()=>{router.navigate("/")}} style={{backgroundColor:"white" ,color:"black", fontSize: 18, marginHorizontal: "auto", marginVertical: 20, width: 340}}>
+				<Button 
+					onPress={()=>{router.navigate("/")}} 
+					style={{backgroundColor:"white" ,color:"black", fontSize: 18, marginHorizontal: "auto", marginVertical: 20, width: 340}}>
 					Capturar Ser vivo 🌿
 				</Button>
 			</ScrollView>
