@@ -52,6 +52,7 @@ export default function InfoUrl() {
 	tabsMenu: "bghdhnfg",
 	stars: 4,
 	medalha: require("../../../assets/medalha.png"),
+	sound: require("../../../assets/som_tucano.mp3")
 	}
   
 
@@ -81,7 +82,7 @@ export default function InfoUrl() {
 			<View style={{ backgroundColor: "black"}}>
 				<Image
 					source={item.image}
-					style={{ height: 430, width: screenWidth }}
+					style={{ height: 460, width: screenWidth }}
 				/>
 			</View>
 
@@ -221,6 +222,6 @@ const handleScroll = (event) => {
 	);
 };
 
-export default InfoUrl;
+// export default InfoUrl;
 
 const styles = StyleSheet.create({});
