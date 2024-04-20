@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Pressable, ActivityIndicator, Platform } from "react-native";
 import { CameraView, Camera } from "expo-camera/next";
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { XStack, Text } from 'tamagui';
-import { Flashlight, X } from "@tamagui/lucide-icons";
+import { Flashlight, X, Scan } from "@tamagui/lucide-icons";
+import PermissionScreen from "@/components/PermissionScreen";
 
 export default function App() {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [torch, setTorch] = useState(false);
 
-  useEffect(() => {
+
+  useFocusEffect(() => {
     const getCameraPermissions = async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
-    };
-
+      if (hasPermission === false || hasPermission === null) {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        setHasPermission(status === "granted" ? true : false);
+      };
+    }
     getCameraPermissions();
-  }, []);
+  });
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ data }: { data: string }) => {
     setScanned(true);
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     router.navigate(data)
@@ -36,7 +39,9 @@ export default function App() {
   }
 
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <PermissionScreen />
+    );
   }
 
   return (
@@ -50,7 +55,7 @@ export default function App() {
         enableTorch={torch}
       />
 
-      <Pressable style={styles.backButton} onPress={() => { setTorch(false); router.replace('(home)') }}>
+      <Pressable style={styles.backButton} onPress={() => { setTorch(false); router.replace('/(app)/(home)') }}>
         <Text style={styles.backText}>{<X color="#fff" />}</Text>
       </Pressable>
 
@@ -61,7 +66,7 @@ export default function App() {
       </Pressable>
 
       <View style={styles.overlay}>
-        <View style={styles.focusedArea}></View>
+        <Scan color="#fff" size={340} strokeWidth={0.5} />
       </View>
     </XStack>
   );
@@ -115,4 +120,9 @@ const styles = StyleSheet.create({
   flashlightOff: {
     backgroundColor: '#081D10',
   },
+  noPermisson: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });

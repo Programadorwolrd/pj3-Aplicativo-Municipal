@@ -3,6 +3,7 @@ import { TamaguiProvider, Theme } from 'tamagui';
 import appConfig from 'tamagui.config';
 import { useColorScheme } from 'react-native';
 import { loadFonts } from '@/lib/loadFonts';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 //O  Slot indica onde o grupo "(app)" será renderizado
 export default function RootLayout() {
@@ -14,7 +15,9 @@ export default function RootLayout() {
   return (
     <TamaguiProvider config={appConfig} defaultTheme='light'>
       <Theme name={temaAtual}>
-        <Slot />
+        <SafeAreaView style={{ flex: 1 }}>
+          <Slot />
+        </SafeAreaView>
       </Theme>
     </TamaguiProvider>
   );
