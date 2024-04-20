@@ -7,18 +7,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 //O  Slot indica onde o grupo "(app)" será renderizado
 export default function RootLayout() {
-  const temaAtual = useColorScheme();
   const isLoadFont = loadFonts();
 
   if (isLoadFont) return null;
 
   return (
     <TamaguiProvider config={appConfig} defaultTheme='light'>
-      <Theme name={temaAtual}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <Slot />
-        </SafeAreaView>
-      </Theme>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Slot />
+      </SafeAreaView>
     </TamaguiProvider>
   );
 }
