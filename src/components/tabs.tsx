@@ -4,13 +4,13 @@ import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb, Text, 
 
 const demos = ['horizontal', 'vertical'] as const
 
-const demosTitle: Record<(typeof demos)[number], string> = {
+// const demosTitle: Record<(typeof demos)[number], string> = {
 
-  horizontal: 'Horizontal',
+//   horizontal: 'Horizontal',
 
-  vertical: 'Vertical',
+//   vertical: 'Vertical',
 
-}
+// }
 
 export function TabsDemo({catalogo}) {
 
@@ -66,16 +66,14 @@ const HorizontalTabs = ({catalogo}) => {
       orientation="horizontal"
       flexDirection="column"
       width={360}
-      // height={130}
-      // minHeight={130}
-      backgroundColor="$background"  
+      backgroundColor="#000"  
       overflow="hidden"
   
     >
 
       <Tabs.List
-        separator={<Separator vertical />}
-        // disablePassBorderRadius="bottom"
+        // separator={<Separator vertical />}
+        disablePassBorderRadius="bottom"
         aria-label="Manage your account"
       >
 
@@ -85,6 +83,7 @@ const HorizontalTabs = ({catalogo}) => {
          backgroundColor="#000"
          color= "#fff"
          borderWidth="$0"
+         borderRadius={0}
          borderBottomWidth={activeTab === 'tab1' ? 3 : 0} 
          borderBottomColor={activeTab === 'tab1' ? '#329F60' : 'transparent'}
         >
@@ -97,8 +96,9 @@ const HorizontalTabs = ({catalogo}) => {
           backgroundColor="#000"
           color= "#fff"
           borderWidth="$0"
+          borderRadius={0}
           borderBottomWidth={activeTab === 'tab2' ? 3 : 0} 
-          borderBottomColor={activeTab === 'tab2' ? 'green' : 'transparent'}
+          borderBottomColor={activeTab === 'tab2' ? '#329F60' : 'transparent'}
         >
         <Text color="white" fontSize={16} >Audio</Text>
         </Tabs.Tab>
@@ -109,15 +109,18 @@ const HorizontalTabs = ({catalogo}) => {
         backgroundColor="#000"
         color= "#fff"
         borderWidth="$0"
+        borderRadius={0}
         borderBottomWidth={activeTab === 'tab3' ? 3 : 0} 
-        borderBottomColor={activeTab === 'tab3' ? 'green' : 'transparent'}
+        borderBottomColor={activeTab === 'tab3' ? '#329F60' : 'transparent'}
         >
         <Text color="white" fontSize={16} >Mapa</Text>
         </Tabs.Tab>
 
       </Tabs.List>
 
-      <Separator />
+      {/* <Separator 
+      style={{ color: "#000"}}
+      /> */}
 
       <TabsContent value="tab1">
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex:1 }}>
@@ -165,7 +168,7 @@ const TabsContent = (props: TabsContentProps) => {
   return (
 
     <Tabs.Content
-      backgroundColor="$background"
+      backgroundColor="#000"
       key="tab3"
       padding="$2"
       alignItems="center"
@@ -173,13 +176,10 @@ const TabsContent = (props: TabsContentProps) => {
       textAlign="justify"
       flex={2}
       color="white"
-      borderColor="$background"
-      borderRadius="$2"
+      borderColor="#000"
       borderTopLeftRadius={0}
       borderTopRightRadius={0}
-      borderWidth="$0"
     //   overflow='hidden'
-      // minHeight={400}
       {...props}
     >
 
