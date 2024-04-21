@@ -2,15 +2,13 @@ import TabQrCode from '@/components/TabQrCode';
 import { BarChart2, CircleUserRound, Home, MapPinned } from '@tamagui/lucide-icons';
 import { Redirect, Tabs } from 'expo-router';
 
-
-
 export default function HomeLayout() {
   // simular loggin até a logica estiver completa
   const isLogged = true;
 
   if (!isLogged) return <Redirect href={'/(auth)/'} />;
 
-  const iconSize = 1.2;
+  const iconSize = 1.4;
 
   return (
     <Tabs
@@ -25,7 +23,7 @@ export default function HomeLayout() {
           height: '80%',
         },
         tabBarStyle: {
-          height: '7%',
+          height: '8%',
         },
         tabBarLabelStyle: {
           fontSize: 11,
@@ -63,7 +61,7 @@ export default function HomeLayout() {
       <Tabs.Screen
         name='(ranking)'
         options={{
-          title: 'Ranking',
+          title: 'Rank',
           tabBarIcon({ size, color, focused }) {
             // color = focused ? color : '#9ACD32';
             return <BarChart2 strokeWidth={5} color={color} size={size * iconSize} />;

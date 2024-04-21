@@ -1,5 +1,5 @@
-import { Stack } from 'expo-router';
+import StackApp from '@/components/StackApp';
 
 export default function ProfileLayout() {
-  return <Stack />;
+  return <StackApp titulo='Mapa' />;
 }
