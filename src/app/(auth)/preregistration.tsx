@@ -35,7 +35,7 @@ export default function preregistration() {
       }} */}
 
       {/* notao */}
-      <Button margin="$2" themeInverse width="$20" height="$4"  alignSelf="center" color="white" backgroundColor="#01714B" borderRadius="$9">
+      <Button themeInverse  margin="$2"  width="$20" height="$4" size="$8"   alignSelf="center" color="white" backgroundColor="#01714B" borderRadius="$9">
       Cadastrar
         </Button>
 

@@ -18,7 +18,7 @@ export default function Profile() {
           bgOpaco
           onPress={() => router.replace('/(auth)/preregistration')}
         >
-          Paia NOVO
+          Botão PreRegistro
         </ButtonCustom>
       </YStack>
     </View>
