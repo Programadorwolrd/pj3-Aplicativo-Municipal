@@ -3,6 +3,9 @@ import { View, Text, Image } from 'tamagui'; // Certifique-se de importar Image 
 
 const Card = () => {
   return (
+
+    
+
     <View style={{ display: 'flex', flexDirection: 'column' }}>
       
       <View style={{ width: '43%', height: '22%', alignSelf: 'flex-start', borderRadius:30, marginLeft: 20, backgroundColor: '#25353E' }}>
@@ -30,6 +33,9 @@ const Card = () => {
       Procure perto das arvores e de zonas de fluxo , com facil acesso remoto ou arvores.</Text>
       </View>
     </View>
+
+    
+
   );
 };
 

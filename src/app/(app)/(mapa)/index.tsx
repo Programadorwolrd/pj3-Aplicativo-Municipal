@@ -10,7 +10,14 @@ export default function Profile() {
        <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 25, alignSelf: 'center',margin:30 }}>Liberar Areas</Text>
        
      
+     {/* <View style={{ display: 'flex', flexDirection: 'column' }}>
+      <View style={{ width: '30%', height:'20%', backgroundColor: 'red', alignSelf: 'flex-end' }}>
+      </View>
+      </View> */}
+    
       <Card></Card>
+      
+  
     </View>
   );
 }
