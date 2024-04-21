@@ -19,11 +19,11 @@ export default function HomeLayout() {
 
         // styles
         tabBarItemStyle: {
-          marginTop: '1%',
-          height: '80%',
+          marginTop: 5,
+          height: 50,
         },
         tabBarStyle: {
-          height: '8%',
+          height: 65,
         },
         tabBarLabelStyle: {
           fontSize: 11,
@@ -53,7 +53,7 @@ export default function HomeLayout() {
         name='(qrCode)'
         options={{
           tabBarButton: () => (
-            <TabQrCode href='/(app)/(qrCode)' elevacao={0.54} size={22 * iconSize} />
+            <TabQrCode href='/(app)/(qrCode)' elevacao={0.54} size={21 * iconSize} />
           ),
           tabBarStyle: { display: 'none' },
         }}
