@@ -8,7 +8,8 @@
     "local:android": "expo start  --localhost --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "format": "npx @biomejs/biome check --apply *"
+    "format": "npx @biomejs/biome check --apply *",
+    "start:tunnel" : "npx expo start --tunnel"
   },
   "dependencies": {
     "@expo-google-fonts/outfit": "^0.2.3",
