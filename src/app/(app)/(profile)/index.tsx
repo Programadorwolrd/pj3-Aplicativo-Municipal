@@ -107,4 +107,7 @@ export default function Lista() {
       <CustomModal item={selectedItem} onClose={() => setSelectedItem(null)} />
     </View>
   );
+
 }
+
+
