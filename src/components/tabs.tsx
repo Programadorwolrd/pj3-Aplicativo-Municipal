@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import type { TabsContentProps } from 'tamagui'
 import { Button, H5, Separator, SizableText, Tabs, XStack, YStack, isWeb, Text, View, useTabsContext } from 'tamagui'
+import { Audio } from 'expo-av';
+import {TouchableOpacity} from 'react-native'
 
 const demos = ['horizontal', 'vertical'] as const
 
@@ -43,14 +45,27 @@ export function TabsDemo({catalogo}) {
   )
 }
 
-
 const HorizontalTabs = ({catalogo}) => {
   const [activeTab, setActiveTab] = useState('tab1');
   const [isOpen, setIsOpen] = useState(false)
   const ref = useRef(null)
+  const [sound, setSound] = useState();
 
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(catalogo.sound);
+    setSound(sound);
+    await sound.playAsync();
+  }
 
-  useEffect(() =>{
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  useEffect(() => {
     if(ref.current){
       setShowReadMoreButton(
         ref.current.scrollHeigth !== ref.current.clientHeight
@@ -148,7 +163,22 @@ const HorizontalTabs = ({catalogo}) => {
       <TabsContent value="tab2">
 
 
-        <Text color="#939393" fontSize={18}>{catalogo.audio}</Text>
+      <TouchableOpacity
+        style={{
+          backgroundColor: 'transparent',
+          height: 50,
+          width: 280,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderColor: '#329F60',
+          borderWidth: 1,
+          borderRadius: 5,
+          marginVertical:5
+        }}
+        onPress={playSound}
+      >
+        <Text style={{ color: '#329F60', fontSize: 18 }}>Escute o som</Text>
+      </TouchableOpacity>
 
       </TabsContent>
       <TabsContent value="tab3">
