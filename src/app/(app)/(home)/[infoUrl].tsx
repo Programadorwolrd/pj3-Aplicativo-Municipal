@@ -124,12 +124,12 @@ const handleScroll = (event) => {
 					<View
 						key={index}
 						style={{
-							backgroundColor: "#D9D9D9",
+							backgroundColor: "transparent",
 							height: 10,
 							width: 10,
 							borderRadius: 5,
 							marginHorizontal: 4,
-							borderColor: "#b5b5b5",
+							borderColor: "#329F60",
 							borderWidth: 1
 						
 						}}
