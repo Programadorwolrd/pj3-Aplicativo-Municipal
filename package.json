@@ -9,7 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "format": "npx @biomejs/biome check --apply *",
-    "start:tunnel" : "npx expo start --tunnel"
+    "start:tunnel": "npx expo start --tunnel"
   },
   "dependencies": {
     "@expo-google-fonts/outfit": "^0.2.3",
@@ -29,7 +29,8 @@
     "react-native-screens": "~3.29.0",
     "react-native-svg": "^14.1.0",
     "tamagui": "^1.94.4",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.2",
+    "expo-av": "~13.10.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
