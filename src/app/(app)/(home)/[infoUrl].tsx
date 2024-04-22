@@ -70,10 +70,6 @@ export default function InfoUrl() {
 		id: "03",
 		image: require("../../../assets/tucano.png")
 		},
-		{
-		id: "04",
-		image: require("../../../assets/tucano.png")
-		},
   ];
 
 	//  Display Images // UI
