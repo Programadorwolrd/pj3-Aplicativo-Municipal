@@ -99,6 +99,7 @@ const HorizontalTabs = ({catalogo}) => {
          color= "#fff"
          borderWidth="$0"
          borderRadius={0}
+         themeInverse={true}
          borderBottomWidth={activeTab === 'tab1' ? 3 : 0} 
          borderBottomColor={activeTab === 'tab1' ? '#329F60' : 'transparent'}
         >
@@ -110,6 +111,7 @@ const HorizontalTabs = ({catalogo}) => {
           value="tab2"
           backgroundColor="#000"
           color= "#fff"
+          themeInverse={true}
           borderWidth="$0"
           borderRadius={0}
           borderBottomWidth={activeTab === 'tab2' ? 3 : 0} 
@@ -122,6 +124,7 @@ const HorizontalTabs = ({catalogo}) => {
         flex={1} 
         value="tab3"
         backgroundColor="#000"
+        themeInverse={true}
         color= "#fff"
         borderWidth="$0"
         borderRadius={0}
