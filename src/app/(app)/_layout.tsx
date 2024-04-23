@@ -1,6 +1,6 @@
 import TabQrCode from '@/components/TabQrCode';
 import { BarChart2, CircleUserRound, Home, MapPinned } from '@tamagui/lucide-icons';
-import { Redirect, Tabs } from 'expo-router';
+import { Redirect, Tabs, usePathname } from 'expo-router';
 
 export default function HomeLayout() {
   // simular loggin até a logica estiver completa
@@ -12,7 +12,7 @@ export default function HomeLayout() {
 
   return (
     <Tabs
-      screenOptions={{
+      screenOptions={({ route: { name } }) => ({
         headerShown: false,
         tabBarActiveTintColor: '#00A86B',
         tabBarInactiveTintColor: 'black',
@@ -24,12 +24,13 @@ export default function HomeLayout() {
         },
         tabBarStyle: {
           height: 65,
+          display: name === '(home)/[infoUrl]' ? 'none' : 'flex',
         },
         tabBarLabelStyle: {
           fontSize: 11,
           fontFamily: 'paiaFeliz',
         },
-      }}
+      })}
     >
       <Tabs.Screen
         name='(home)'
@@ -63,7 +64,6 @@ export default function HomeLayout() {
         options={{
           title: 'Rank',
           tabBarIcon({ size, color, focused }) {
-            // color = focused ? color : '#9ACD32';
             return <BarChart2 strokeWidth={5} color={color} size={size * iconSize} />;
           },
         }}
@@ -75,6 +75,18 @@ export default function HomeLayout() {
           tabBarIcon({ size, color }) {
             return <CircleUserRound color={color} size={size * iconSize} />;
           },
+        }}
+      />
+      <Tabs.Screen
+        name='(home)/[infoUrl]'
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name='(qrCode)/[infoUrl]'
+        options={{
+          href: null,
         }}
       />
     </Tabs>
