@@ -1,25 +1,22 @@
 //******************** AINDA NÃO TERMINEI **************************
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  Dimensions,
-  LogBox,
-  Image,
-} from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, LogBox, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, ScrollView } from 'tamagui';
 import { TabsDemo } from '../../../components/tabs';
 import { AirbnbRating } from 'react-native-ratings';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+
+
 
 export default function InfoUrl() {
   const flatlistRef = useRef();
   // Get Dimesnions
   const screenWidth = Dimensions.get('window').width;
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigation = useNavigation();
 
   // Auto Scroll
 
@@ -135,10 +132,17 @@ export default function InfoUrl() {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+
+      <View style={{ position: 'absolute', top: 50, left: 10, zIndex: 1 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={40} color="white" />
+        </TouchableOpacity>
+      </View>
+      
+      <ScrollView style={{ backgroundColor: 'black' }}>
         <View style={{ position: 'relative' }}>
-          <FlatList
+        <FlatList
             data={carouselData}
             ref={flatlistRef}
             getItemLayout={getItemLayout}
@@ -149,6 +153,7 @@ export default function InfoUrl() {
             onScroll={handleScroll}
             showsHorizontalScrollIndicator={false}
           />
+
           <View
             style={{
               flexDirection: 'row',
@@ -232,9 +237,7 @@ export default function InfoUrl() {
 
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop: 0,
+            flex:1
           }}
         ></View>
       </ScrollView>
