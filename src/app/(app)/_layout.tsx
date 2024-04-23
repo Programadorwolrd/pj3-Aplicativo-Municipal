@@ -80,12 +80,14 @@ export default function HomeLayout() {
       <Tabs.Screen
         name='(home)/[infoUrl]'
         options={{
+          tabBarStyle: { display: 'none' },
           href: null,
         }}
       />
       <Tabs.Screen
         name='(qrCode)/[infoUrl]'
         options={{
+          tabBarStyle: { display: 'none' },
           href: null,
         }}
       />

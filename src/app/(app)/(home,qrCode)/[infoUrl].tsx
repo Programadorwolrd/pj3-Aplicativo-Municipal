@@ -153,7 +153,6 @@ export default function InfoUrl() {
             onScroll={handleScroll}
             showsHorizontalScrollIndicator={false}
           />
-
           <View
             style={{
               flexDirection: 'row',
