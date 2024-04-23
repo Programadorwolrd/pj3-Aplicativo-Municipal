@@ -30,7 +30,8 @@
     "react-native-svg": "^14.1.0",
     "tamagui": "^1.94.4",
     "zustand": "^4.5.2",
-    "expo-av": "~13.10.6"
+    "expo-av": "~13.10.6",
+    "@react-native-picker/picker": "2.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
