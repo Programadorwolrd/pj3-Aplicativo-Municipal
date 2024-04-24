@@ -13,9 +13,13 @@
   },
   "dependencies": {
     "@expo-google-fonts/outfit": "^0.2.3",
+    "@react-native-picker/picker": "2.6.1",
     "@tamagui/config": "^1.94.4",
     "@tamagui/lucide-icons": "^1.94.4",
+    "@tanstack/react-query": "^5.32.0",
+    "axios": "^1.6.8",
     "expo": "~50.0.14",
+    "expo-av": "~13.10.6",
     "expo-camera": "~14.1.2",
     "expo-constants": "~15.4.5",
     "expo-font": "~11.10.3",
@@ -29,9 +33,7 @@
     "react-native-screens": "~3.29.0",
     "react-native-svg": "^14.1.0",
     "tamagui": "^1.94.4",
-    "zustand": "^4.5.2",
-    "expo-av": "~13.10.6",
-    "@react-native-picker/picker": "2.6.1"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
