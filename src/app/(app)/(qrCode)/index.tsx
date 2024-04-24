@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Pressable, ActivityIndicator, Platform } from "react-native";
+import { View, StyleSheet, ActivityIndicator, Platform } from "react-native";
 import { CameraView, Camera } from "expo-camera/next";
 import { router, useFocusEffect } from 'expo-router';
-import { XStack, Text } from 'tamagui';
+import { XStack, Text, Button } from 'tamagui';
 import { Flashlight, X, Scan } from "@tamagui/lucide-icons";
 import PermissionScreen from "@/components/PermissionScreen";
 
@@ -20,14 +20,17 @@ export default function App() {
       };
     }
     getCameraPermissions();
+    setScanned(false)
   });
 
   const handleBarCodeScanned = ({ data }: { data: string }) => {
     setScanned(true);
-    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    router.navigate(data)
+    setTorch(false);
     // router.navigate('/(app)/(qrCode)/126')
-    setScanned(false)
+    if (torch === false) {
+      router.navigate(data)
+    }
+    console.log(data);
   };
 
   if (hasPermission === null) {
@@ -55,15 +58,16 @@ export default function App() {
         enableTorch={torch}
       />
 
-      <Pressable style={styles.backButton} onPress={() => { setTorch(false); router.replace('/(app)/(home)') }}>
-        <Text style={styles.backText}>{<X color="#fff" />}</Text>
-      </Pressable>
+      <Button
+        style={styles.backButton}
+        onPress={() => { setTorch(false); router.replace('/(app)/(home)') }}
+        icon={X} color="#fff" size={70} />
 
-      <Pressable style={[styles.flashlight, torch ? styles.flashlightOn : styles.flashlightOff]} onPress={() => {
-        setTorch(torch == false ? true : false)
-      }}>
-        <Text style={styles.backText}>{<Flashlight color={torch ? "#000" : "#fff"} />}</Text>
-      </Pressable>
+      <Button
+        style={[styles.flashlight, torch ? styles.flashlightOn : styles.flashlightOff]}
+        onPress={() => setTorch(torch == false ? true : false)}
+        icon={Flashlight}
+        color={torch ? "#000" : "#fff"} size={70} />
 
       <View style={styles.overlay}>
         <Scan color="#fff" size={340} strokeWidth={0.5} />
@@ -80,9 +84,9 @@ const styles = StyleSheet.create({
   backButton: {
     position: "absolute",
     left: 10,
-    top: 10,
-    width: 50,
-    height: 50,
+    bottom: 10,
+    width: 60,
+    height: 60,
     borderRadius: 50,
     backgroundColor: '#081D10',
     padding: 12,
@@ -107,12 +111,11 @@ const styles = StyleSheet.create({
   flashlight: {
     position: "absolute",
     right: 10,
-    top: 10,
-    width: 50,
-    height: 50,
+    bottom: 10,
+    width: 60,
+    height: 60,
     borderRadius: 50,
     backgroundColor: '#081D10',
-    padding: 12,
   },
   flashlightOn: {
     backgroundColor: '#fff',
