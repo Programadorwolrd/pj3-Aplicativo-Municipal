@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "scheme": "myapp",
     "icon": "src/assets/iconLay.jpeg",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "src/assets/iconLay.jpeg",
       "resizeMode": "contain",
@@ -22,7 +22,7 @@
         "backgroundColor": "#ffffff"
       }
     },
-    "plugins": ["expo-router"],
+    "plugins": ["expo-router", "expo-font"],
     "experiments": {
       "typedRoutes": true
     }
