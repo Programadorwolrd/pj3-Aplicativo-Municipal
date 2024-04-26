@@ -44,7 +44,7 @@ export default function HomeLayout() {
       <Tabs.Screen
         name='(mapa)'
         options={{
-          title: 'Mapa',
+          title: 'Developers',
           tabBarIcon({ size, color }) {
             return <MapPinned color={color} size={size * iconSize} />;
           },

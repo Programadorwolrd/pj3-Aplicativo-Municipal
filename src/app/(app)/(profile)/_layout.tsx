@@ -1,6 +1,6 @@
 import StackApp from '@/components/StackApp';
 
 export default function ProfileLayout() {
-  return <StackApp titulo='Minha Conta' />;
+  return <StackApp titulo='Desenvolvedores' />;
 }
 

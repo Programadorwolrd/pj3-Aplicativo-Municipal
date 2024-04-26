@@ -129,7 +129,7 @@ function Itens({ item, onPress }: { item: User; onPress: () => void }) {
         <View style={{ flexDirection: 'row', marginLeft: '3%', alignItems: 'center' }}>
           <Image
             source={{ uri: item.linkImagem }}
-            style={{ width: 40, height: 40, borderRadius: 30, marginRight: 10 }}
+            style={{ width: 50, height: 50, borderRadius: 30, marginRight: 10 }}
           />
           <View style={{ marginLeft: '1%' }}>
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{item.nome}</Text>
@@ -238,7 +238,7 @@ export default function Lista() {
       <View style={{ alignItems: 'center' }}>
         <Image
           source={{ uri: 'https://picsum.photos/200/300' }}
-          style={{ width: '80%', height: 100, borderRadius: 20, marginVertical: 50}}
+          style={{ width: '80%', height: 170, borderRadius: 20, marginTop: 35, marginBottom: 50}}
         />
       </View>
 
