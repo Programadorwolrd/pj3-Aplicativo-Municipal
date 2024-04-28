@@ -1,19 +1,14 @@
 import TAuth from '@/components/templateAuth';
+import { InputValues } from '@/lib/helpersForm';
 
 export default function Cadastrar() {
-  const values = {
-    apelido: '',
-    email: '',
-    senha: '',
-    change(campo: Exclude<keyof typeof this, 'change'>) {
-      return (v: string) => {
-        this[campo] = v;
-      };
-    },
-  };
+  
 
-  // Type 'string' is not assignable to type 'string & ((campo: "apelido" | "email" | "senha" | "change") => (v: string) => void)'.
-  // Type 'string' is not assignable to type '(campo: "apelido" | "email" | "senha" | "change") => (v: string) => void'.t
+  const values = new InputValues<{
+    apelido: string;
+    email: string;
+    senha: string;
+  }>();
 
   return (
     <TAuth subTitulo='Cadastra-se ' titulo='CADASTRAR'>
@@ -25,14 +20,16 @@ export default function Cadastrar() {
         }}
         textButton='CADASTRAR'
         onSubmit={() => {
-          console.log(values);
         }}
       >
-        <TAuth.InputAuth placeholder='apelido' onChangeText={values.change('apelido')} />
-        <TAuth.InputAuth placeholder='email' onChangeText={values.change('email')} />
+        <TAuth.InputAuth
+          placeholder='apelido'
+          onChangeText={values.onChange('apelido')}
+        />
+        <TAuth.InputAuth placeholder='email' onChangeText={values.onChange('email')} />
         <TAuth.InputAuth
           placeholder='senha'
-          onChangeText={values.change('senha')}
+          onChangeText={values.onChange('senha')}
           mb={3}
           secureTextEntry
         />
