@@ -1,18 +1,19 @@
 import TabQrCode from '@/components/TabQrCode';
+import { useGetToken } from '@/lib/logicAuth';
 import { BarChart2, CircleUserRound, Home, MapPinned } from '@tamagui/lucide-icons';
 import { Redirect, Tabs, usePathname } from 'expo-router';
+import { Text } from 'react-native-svg';
 
 export default function HomeLayout() {
-  // simular loggin até a logica estiver completa
-  const isLogged = true;
+  const { data, isLoading } = useGetToken();
 
-  if (!isLogged) return <Redirect href={'/(auth)/'} />;
+  if (!data) return <Redirect href={'/(auth)'} />;
 
   const iconSize = 1.4;
 
   return (
     <Tabs
-      screenOptions={({ route: { name } }) => ({
+      screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#00A86B',
         tabBarInactiveTintColor: 'black',
@@ -24,13 +25,12 @@ export default function HomeLayout() {
         },
         tabBarStyle: {
           height: 65,
-          display: name === '(home)/[infoUrl]' ? 'none' : 'flex',
         },
         tabBarLabelStyle: {
           fontSize: 11,
           fontFamily: 'paiaFeliz',
         },
-      })}
+      }}
     >
       <Tabs.Screen
         name='(home)'

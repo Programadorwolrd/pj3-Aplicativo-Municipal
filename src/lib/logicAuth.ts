@@ -1,22 +1,39 @@
-import { create } from "zustand";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { router } from "expo-router";
 
-interface AuthState {
-  token: string | null;
-  entrar: (token: string) => void;
-  sair: () => void;
+export const clientQuery = new QueryClient();
+
+export function useGetToken() {
+  return useQuery({
+    queryKey: ["authToken"],
+    staleTime: Number.POSITIVE_INFINITY,
+    async queryFn() {
+      return await AsyncStorage.getItem("authToken");
+    },
+  });
 }
 
-export const userStoreAuth = create<AuthState>((set) => ({
-  token: null,
+export function useLogout() {
+  return useMutation({
+    async mutationFn() {
+      await AsyncStorage.removeItem("authToken");
 
-  entrar: (tokenNovo: string) => {
-    set(({ token: tokenAtual }) => {
-      if (tokenAtual) throw new Error("Você já está logado");
+      clientQuery.refetchQueries({ queryKey: ["authToken"] });
+    },
+  });
+}
 
-      return { token: tokenNovo };
-    });
-  },
-  sair: () => {
-    set({ token: null });
-  },
-}));
+export function useLoggin() {
+  return useMutation({
+    async mutationFn(credentials: { email: string; senha: string }) {
+      const token = "paiosa";
+
+      await AsyncStorage.setItem("authToken", token);
+    },
+    async onSuccess() {
+      await clientQuery.refetchQueries({ queryKey: ["authToken"] });
+      router.replace("/(app)/(home)");
+    },
+  });
+}
