@@ -1,13 +1,14 @@
 import TabQrCode from '@/components/TabQrCode';
-import { useGetToken } from '@/lib/logicAuth';
+import { storeAuth } from '@/lib/logicAuth';
+
 import { BarChart2, CircleUserRound, Home, MapPinned } from '@tamagui/lucide-icons';
+import { useQuery } from '@tanstack/react-query';
 import { Redirect, Tabs, usePathname } from 'expo-router';
-import { Text } from 'react-native-svg';
 
 export default function HomeLayout() {
-  const { data, isLoading } = useGetToken();
+  const token = storeAuth((s) => s.token);
 
-  if (!data) return <Redirect href={'/(auth)'} />;
+  if (!token) return <Redirect href={'/(auth)'} />;
 
   const iconSize = 1.4;
 

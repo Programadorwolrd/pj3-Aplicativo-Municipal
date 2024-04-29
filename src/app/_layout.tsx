@@ -3,9 +3,9 @@ import { TamaguiProvider } from 'tamagui';
 import appConfig from 'tamagui.config';
 
 import { loadFonts } from '@/lib/loadFonts';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { clientQuery } from '@/lib/logicAuth';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+export const clientQuery = new QueryClient();
 
 //O  Slot indica onde o grupo "(app)" será renderizado
 export default function RootLayout() {

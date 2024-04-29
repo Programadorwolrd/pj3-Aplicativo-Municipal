@@ -1,39 +1,38 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-export const clientQuery = new QueryClient();
-
-export function useGetToken() {
-  return useQuery({
-    queryKey: ["authToken"],
-    staleTime: Number.POSITIVE_INFINITY,
-    async queryFn() {
-      return await AsyncStorage.getItem("authToken");
-    },
-  });
+export interface Credentials {
+  email: string;
+  senha: string;
 }
 
-export function useLogout() {
-  return useMutation({
-    async mutationFn() {
-      await AsyncStorage.removeItem("authToken");
+interface Auth {
+  token: null | string;
 
-      clientQuery.refetchQueries({ queryKey: ["authToken"] });
-    },
-  });
+  login: (credentials: Credentials) => void;
+  logout: () => void;
 }
+export const storeAuth = create<Auth>()(
+  persist(
+    (set, get) => ({
+      token: null,
 
-export function useLoggin() {
-  return useMutation({
-    async mutationFn(credentials: { email: string; senha: string }) {
-      const token = "paiosa";
+      login({ email, senha }: Credentials) {
+        const token = email + senha;
 
-      await AsyncStorage.setItem("authToken", token);
-    },
-    async onSuccess() {
-      await clientQuery.refetchQueries({ queryKey: ["authToken"] });
-      router.replace("/(app)/(home)");
-    },
-  });
-}
+        set(() => ({ token }));
+        router.replace("/(app)/(home)");
+      },
+
+      logout() {
+        set(() => ({ token: null }));
+      },
+    }),
+    {
+      name: "authPaia",
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);

@@ -2,12 +2,13 @@ import { Text, YStack, XStack } from 'tamagui';
 import { Link } from 'expo-router';
 import TAuth from '@/components/templateAuth';
 import { InputValues } from '@/lib/helpersForm';
-import { useLoggin } from '@/lib/logicAuth';
+import { useMutation } from '@tanstack/react-query';
+import { storeAuth, type Credentials } from '@/lib/logicAuth';
 
 export default function Login() {
   const v = new InputValues<{ email: string; senha: string }>();
 
-  const { mutate } = useLoggin();
+  const login = storeAuth((s) => s.login);
 
   return (
     <TAuth subTitulo='texto pequeno e triste' titulo='Entrar'>
@@ -19,7 +20,7 @@ export default function Login() {
         }}
         textButton='ENTRAR'
         onSubmit={() => {
-          mutate(v.getAll);
+          login(v.getAll);
         }}
       >
         <TAuth.InputAuth placeholder='email' onChangeText={v.onChange('email')} />
