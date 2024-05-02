@@ -68,7 +68,7 @@ export class FormAuth<V extends Campos, D, E> {
   }
 
   private onSubmit() {
-    this.mutationPost.mutateAsync(this.allValues);
+    this.mutationPost.mutate(this.allValues);
   }
 
   private useValidador(campoNome: string, value: string) {
@@ -150,20 +150,16 @@ export class FormAuth<V extends Campos, D, E> {
   }
 
   private MessageError() {
-    let error = this.mutationPost.error?.message;
-
-    if (axios.isAxiosError(this.mutationPost.error)) {
-      const {response, name} = this.mutationPost.error;
-
-      error = response?.data.message || response?.statusText || error;
-    }
-
-    const [message, setMessage] = useState(error);
+    const [message, setMessage] = useState('');
+    const errorFetch = this.mutationPost.error;
+    const errorAxios = axios.isAxiosError(errorFetch) && errorFetch.response?.data;
 
     useEffect(() => {
+      setMessage(errorAxios || errorFetch?.message);
+
       const id = setTimeout(() => {
         setMessage('');
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(id);
     }, []);
