@@ -1,41 +1,40 @@
 import { Text, YStack, XStack } from 'tamagui';
 import { Link } from 'expo-router';
 import TAuth from '@/components/templateAuth';
-import { InputValues } from '@/lib/helpersForm';
-import { useMutation } from '@tanstack/react-query';
-import { storeAuth, type Credentials } from '@/lib/logicAuth';
+
+import { storeAuth } from '@/lib/logicAuth';
+import { FormAuth } from '@/components/formClass';
 
 export default function Login() {
-  const v = new InputValues<{ email: string; senha: string }>();
-
   const login = storeAuth((s) => s.login);
+
+  const Auth = new FormAuth(
+    {
+      email: [[(t) => /([a-z]{2,300})/g.test(t), 'valor paiado']],
+      senha: [[(t) => /([a-z]{2,300})/g.test(t), 'valor paiado']],
+    },
+    (axios) => ({
+      async mutationFn(allValues) {
+        const { data } = await axios.post('/usuario/login', allValues);
+
+        login(data.token);
+      },
+    })
+  );
 
   return (
     <TAuth subTitulo='texto pequeno e triste' titulo='Entrar'>
-      <TAuth.Form
+      <Auth.Form
         link={{
           href: '/(auth)/cadastrar',
           text: 'Não tem cadastro?',
           textLink: 'cadastre-se aqui!',
         }}
-        textButton='ENTRAR'
-        onSubmit={() => {
-          login(v.getAll);
-        }}
+        textButton='Entrar'
       >
-        <TAuth.InputAuth placeholder='email' onChangeText={v.onChange('email')} />
-        <YStack alignItems='flex-end' width={'100%'}>
-          <TAuth.InputAuth
-            placeholder='senha'
-            mb={3}
-            secureTextEntry
-            onChangeText={v.onChange('senha')}
-          />
-          <Link href={'/(auth)/'}>
-            <Text>Esqueceu a senha?</Text>
-          </Link>
-        </YStack>
-      </TAuth.Form>
+        <Auth.Input campo='email' />
+        <Auth.Input campo='senha' secureTextEntry />
+      </Auth.Form>
     </TAuth>
   );
 }
