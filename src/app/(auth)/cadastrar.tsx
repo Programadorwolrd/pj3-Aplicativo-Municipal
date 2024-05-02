@@ -16,6 +16,7 @@ export default function Cadastrar() {
       mutationFn(allValues) {
         return axios.post('/usuario', allValues);
       },
+      notlogoutIfNotAuthorized: true,
       async onSuccess(_, allValues) {
         const { apelido, ...credentials } = allValues;
 

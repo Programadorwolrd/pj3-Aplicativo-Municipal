@@ -14,6 +14,7 @@ export default function Login() {
       senha: [[(t) => /([a-z]{2,300})/g.test(t), 'valor paiado']],
     },
     (axios) => ({
+      notlogoutIfNotAuthorized: true,
       async mutationFn(allValues) {
         const { data } = await axios.post('/usuario/login', allValues);
 

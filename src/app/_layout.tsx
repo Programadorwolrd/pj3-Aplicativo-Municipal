@@ -5,7 +5,12 @@ import appConfig from 'tamagui.config';
 import { loadFonts } from '@/lib/loadFonts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export const clientQuery = new QueryClient();
+export const clientQuery = new QueryClient({
+  defaultOptions: {
+    mutations: { retry: 0 },
+    queries: { retry: 2 },
+  },
+});
 
 //O  Slot indica onde o grupo "(app)" será renderizado
 export default function RootLayout() {
