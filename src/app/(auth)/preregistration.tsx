@@ -1,58 +1,43 @@
+import React from 'react';
+import { View, Text, Button } from 'tamagui';
+import Logo from '../../assets/logo.svg';
+import styled from 'styled-components'; // Importe o styled-components
 
-import React from 'react'//importação do react
-import { Activity, Airplay } from '@tamagui/lucide-icons'
-import {View, Text,Image, Button} from 'tamagui'
+const ImageBackground = styled.div`
+  /* Estilos para o plano de fundo da imagem */
+  background-image: url('@/assets/background-login.png');
+  background-size: cover;
+  height: 100vh; /* Defina a altura conforme necessário */
+`;
 
+const LogoContainer = styled.div`
+  margin: 10px; /* Adicione a margem ao redor do logotipo */
+`;
 
 export default function preregistration() {
   return (
-    <View >
-     <Text  marginTop="$10" fontSize="$9"alignSelf="center" color="green" fontWeight="bold" >BioDex</Text>
-      {/* /fundo de folhas */}
-      {/*  logo biodex  */}
-      {/* Titulo */}
-      <Text  fontSize="$10"  alignSelf="center">Vamos à Busca! </Text>
-      {/* sub Titulo */}
-      <Text  fontSize="$8" width="$100" height="$50"  alignSelf="center">Embarque agora na jornada para registrar todos os seres íncriveis e fascinantes do nosso parque. </Text>
-
-
-
-      {/* logo */}
-
-
-      <Image
-  marginLeft="$5"
-  alignSelf="center"
-  source={require('../../assets/logo.svg')}
-  style={{ width: 200, height: 300 }}
-/>
-{/* <Image margin="$10" alignSelf="center"
-      source={{
-        uri: 'https://picsum.photos/200/300',
-        width: 200,
-        height: 300,
-        
-      }} */}
-
-      {/* notao */}
-      <Button themeInverse  margin="$2"  width="$20" height="$4" size="$8"   alignSelf="center" color="white" backgroundColor="#01714B" borderRadius="$9">
-      Cadastrar
+    <ImageBackground>
+      <View>
+        <Text marginTop="$10" fontSize="$9" alignSelf="center" color="green" fontWeight="bold">
+          BioDex
+        </Text>
+        <Text fontSize="$10" color="white" alignSelf="center">
+          Vamos à Busca!
+        </Text>''
+        <Text marginBottom="$5" fontSize="$8" color="grey" width="$100" height="$40" alignSelf="center">
+          Embarque agora na jornada para registrar todos os seres incríveis e fascinantes do nosso parque.
+        </Text>
+        {/* Use o LogoContainer para aplicar a margem ao redor do logotipo */}
+        <LogoContainer>
+          <Logo width={220} height={220} />
+        </LogoContainer>
+        <Button marginTop="$5" themeInverse margin="$2" width="$20" height="$4" size="$8" alignSelf="center" color="white" backgroundColor="#01714B" borderRadius="$9">
+          Cadastrar
         </Button>
-
-
-
-      {/* biotao2 */}
-        <Button  width="$20" height="$4" size="$8"  alignSelf="center" color="white" backgroundColor="#BBBBBB" borderRadius="$9">
-        Entrar
+        <Button width="$20" height="$4" size="$8" alignSelf="center" color="white" backgroundColor="#BBBBBB" borderRadius="$9">
+          Entrar
         </Button>
-      
-    </View>
+      </View>
+    </ImageBackground>
   );
 }
-
-
-
-
-
-
-
