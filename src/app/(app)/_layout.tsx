@@ -28,7 +28,6 @@ export default function HomeLayout() {
         },
         tabBarLabelStyle: {
           fontSize: 11,
-          fontFamily: 'paiaFeliz',
         },
       })}
     >
