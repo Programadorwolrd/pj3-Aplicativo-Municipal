@@ -1,7 +1,8 @@
 import { Link, type Href } from 'expo-router';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type PropsWithChildren, type ReactNode } from 'react';
 import {
   Form as FormTamagui,
+  Input,
   Input as InputTamagui,
   styled,
   Text,
@@ -18,138 +19,51 @@ import type { Axios } from 'axios';
 import type { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 import axios from 'axios';
 
-interface LinkEndProps {
-  link: {
-    text: string;
-    href: Href<'pathname'>;
-    textLink: string;
-  };
-  textButton: string;
-  children: ReactNode[] | ReactNode;
-}
-
-const InputCustom = styled(InputTamagui, {
-  size: '$4.5',
-  borderWidth: 1.7,
-  borderColor: '$green9Light',
-  backgroundColor: '$green4Light',
-  focusStyle: {
-    borderColor: 'green',
-  },
-  color: 'black',
-  width: '100%',
-} as const);
-
 interface Campos {
-  [key: string]: [(t: string) => boolean | Promise<boolean>, string | null][];
+  [key: string]: [(t: string) => boolean | Promise<boolean>, string][] | null;
 }
 
-// classe
-// ELA AINDA SERÁ REFATORADA
-export class FormAuth<V extends Campos, D, E> {
-  private allValues = {} as { [key in keyof V]: string };
+// refatorei, mas acho que piorou
+export class FormAuth<C extends Campos> {
+  private useStateAllValues = useState({} as { [key in keyof C]: string });
   private mutationPost: UseMutationResult;
 
   constructor(
-    private campos: V,
+    private campos: C,
     private axiosOnSubmit: (
       axios: Axios
-    ) => UseOptions<'mutate', D, E, typeof this.allValues>
+    ) => UseOptions<'mutate', unknown, unknown, (typeof this.useStateAllValues)[0]>
   ) {
-    this.mutationPost = useApi('mutate', axiosOnSubmit);
-
-    // para não perder o contexto
-    this.onSubmit = this.onSubmit.bind(this);
-    this.useValidador = this.useValidador.bind(this);
-    this.Input = this.Input.bind(this);
-    this.MessageError = this.MessageError.bind(this);
-    this.ButtonSubmit = this.ButtonSubmit.bind(this);
-    this.Form = this.Form.bind(this);
+    this.mutationPost = useApi('mutate', this.axiosOnSubmit);
   }
 
-  private onSubmit() {
-    this.mutationPost.mutate(this.allValues);
-  }
+  private Validacao = (props: { campo: string; value: string | undefined }) => {
+    const [aviso, setAviso] = useState<string | null>(null);
 
-  private useValidador(campoNome: string, value: string) {
-    const [aviso, setAviso] = useState<null | string>(null);
+    if (props.value === undefined || this.campos[props.campo] === null)
+      return <Text opacity={0}>paia</Text>;
 
-    // ele tem 3 respostas
-    // string vazia significa que passou no teste
-    // null quer dizer que o campo está vazio
-    // com texto quer dizer que n foi valido
+    (async () => {
+      for (const [validadorDoCampo, avisoDaValidacao] of this.campos[props.campo] || []) {
+        const result = await validadorDoCampo(props.value || '');
 
-    useEffect(() => {
-      (async () => {
-        if (!value) return setAviso(null);
-
-        for (const regras of this.campos[campoNome]) {
-          const [isValid, texto] = regras;
-
-          if (!(await isValid(value))) {
-            return setAviso(texto);
-          }
+        if (!result) {
+          return setAviso(avisoDaValidacao);
         }
+      }
 
-        setAviso('');
-      })();
-    }, [value]);
+      if (aviso !== '') setAviso('');
+    })();
 
-    return aviso;
-  }
-
-  public Input({ campo, ...props }: InputProps & { campo: keyof V & string }) {
-    const [value, setValue] = useState('');
-
-    this.allValues[campo] = value;
-    const aviso = this.useValidador(campo, value);
     const color = aviso ? 'red' : 'green';
-    const textoAviso = aviso === '' ? `${campo} valido` : aviso;
-
     return (
-      <View>
-        <InputCustom
-          placeholder={campo}
-          {...props}
-          value={value}
-          onChangeText={setValue}
-        />
-        {textoAviso ? (
-          <Text marginStart={10} color={color}>
-            {textoAviso}
-          </Text>
-        ) : (
-          <Text opacity={0}>paia</Text>
-        )}
-      </View>
+      <Text marginStart={10} color={color}>
+        {aviso || `${props.campo} valido`}
+      </Text>
     );
-  }
+  };
 
-  private ButtonSubmit(props: { text: string }) {
-    // const [isValid, setValid] = useState(false);
-
-    // useEffect(() => {
-    //   (async () => {
-    //     for (const [key, validadores] of Object.entries(this.campos)) {
-    //       const value = this.allValues[key as keyof V];
-
-    //       for (const [validador] of validadores) {
-    //         if (!(await validador(value || ''))) continue;
-    //       }
-
-    //       setValid(true);
-    //     }
-    //   })();
-    // }, []);
-
-    return (
-      <FormTamagui.Trigger asChild>
-        <ButtonCustom marginTop='$5'>{props.text}</ButtonCustom>
-      </FormTamagui.Trigger>
-    );
-  }
-
-  private MessageError() {
+  private MessageError = () => {
     const [message, setMessage] = useState('');
     const errorFetch = this.mutationPost.error;
     const errorAxios = axios.isAxiosError(errorFetch) && errorFetch.response?.data;
@@ -171,18 +85,84 @@ export class FormAuth<V extends Campos, D, E> {
         </Text>
       </View>
     );
-  }
+  };
 
-  public Form({ link: { href, textLink, text }, children, textButton }: LinkEndProps) {
+  public Form = ({ children }: PropsWithChildren) => {
+    const [allValues] = this.useStateAllValues;
+
     return (
-      <FormTamagui w={'100%'} alignItems='center' onSubmit={this.onSubmit}>
+      <FormTamagui
+        w={'100%'}
+        alignItems='center'
+        onSubmit={() => this.mutationPost.mutate(allValues)}
+      >
         <this.MessageError />
 
-        <YStack width={'100%'} gap={10}>
+        <YStack width={'100%'} gap={5}>
           {children}
         </YStack>
+      </FormTamagui>
+    );
+  };
+
+  public Input = ({
+    campo,
+    persistValue = false,
+    ...props
+  }: InputProps & { campo: keyof C & string; persistValue?: boolean }) => {
+    const [{ [campo]: defaultValue }, setAllV] = this.useStateAllValues;
+    const [value, setValue] = useState(persistValue ? defaultValue : undefined);
+
+    useEffect(() => {
+      setAllV((all) => {
+        if (value) all[campo] = value;
+
+        return all;
+      });
+    }, [value]);
+
+    return (
+      <View>
+        <Input
+          size='$4.5'
+          borderWidth={1.7}
+          borderColor='$green9Light'
+          backgroundColor='$green4Light'
+          color='black'
+          width='100%'
+          focusStyle={{
+            borderColor: 'green',
+          }}
+          placeholder={campo}
+          {...props}
+          value={value}
+          onChangeText={setValue}
+        />
+        <this.Validacao campo={campo} value={value} />
+      </View>
+    );
+  };
+
+  public Submit = (props: { textButton: string }) => {
+    return (
+      <FormTamagui.Trigger asChild>
+        <ButtonCustom marginTop='$5'>{props.textButton}</ButtonCustom>
+      </FormTamagui.Trigger>
+    );
+  };
+
+  public Footer = (props: {
+    link: {
+      text: string;
+      href: Href<'pathname'>;
+      textLink: string;
+    };
+    textButton: string;
+  }) => {
+    return (
+      <>
+        <this.Submit textButton={props.textButton} />
         <YStack width={'100%'} alignItems='center'>
-          <this.ButtonSubmit text={textButton} />
           <YStack width={'100%'} alignItems='center'>
             <Text fontFamily={'$outfitBold'} fontSize={17} marginVertical={18}>
               OU
@@ -193,20 +173,43 @@ export class FormAuth<V extends Campos, D, E> {
             </XStack>
           </YStack>
         </YStack>
-        <Text fontSize={15} mt={30}>
-          {text}
-          <Link href={href}>
+        <Text fontSize={15} mt={30} textAlign='center'>
+          {props.link.text}
+          <Link href={props.link.href}>
             {' '}
             <Text
               textDecorationLine='underline'
               color={'green'}
               fontFamily={'$outfitBold'}
             >
-              {textLink}
+              {props.link.textLink}
             </Text>
           </Link>
         </Text>
-      </FormTamagui>
+      </>
     );
-  }
+  };
 }
+
+export const allvalids: Campos = {
+  email: [
+    [(t) => t.length <= 64, 'o email deve ter entre 10 a 50 caracteres'],
+    [(t) => /^[a-zA-Z0-9._%+-]+/.test(t), 'O email deve começar com caracteres válidos'],
+    [
+      (t) => /@[a-zA-Z0-9.-]+\./.test(t),
+      'O email deve conter "@" seguido de caracteres válidos e "."',
+    ],
+    [
+      (t) => /[a-zA-Z]{2,}$/.test(t),
+      'O email deve terminar com pelo menos duas letras após o "."',
+    ],
+  ],
+  apelido: [
+    [(t) => /^.{3,40}$/.test(t), 'O apelido deve ter entre 3 e 40 caracteres'],
+    [
+      (t) => /^[a-zA-Z\s\d]{3,40}$/.test(t),
+      'O apelido deve conter apenas letras, números e espaços',
+    ],
+  ],
+  senha: [[(t) => /^.{4,40}$/.test(t), 'A senha deve ter entre 4 e 40 caracteres']],
+};
