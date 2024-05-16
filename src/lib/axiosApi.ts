@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { Alert } from "react-native";
 
 const baseURL = process.env.EXPO_PUBLIC_API_URL || "http://192.168.1.108:3000";
+console.log(process.env.EXPO_PUBLIC_API_URL);
 
 interface Result {
   mutate: UseMutationResult;

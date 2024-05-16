@@ -66,7 +66,8 @@ export class FormAuth<C extends Campos> {
   private MessageError = () => {
     const [message, setMessage] = useState('');
     const errorFetch = this.mutationPost.error;
-    const errorAxios = axios.isAxiosError(errorFetch) && errorFetch.response?.data;
+    const errorAxios =
+      axios.isAxiosError(errorFetch) && errorFetch.response?.data.message;
 
     useEffect(() => {
       setMessage(errorAxios || errorFetch?.message);
@@ -146,7 +147,7 @@ export class FormAuth<C extends Campos> {
   public Submit = (props: { textButton: string }) => {
     return (
       <FormTamagui.Trigger asChild>
-        <ButtonCustom marginTop='$5'>{props.textButton}</ButtonCustom>
+        <ButtonCustom >{props.textButton}</ButtonCustom>
       </FormTamagui.Trigger>
     );
   };
