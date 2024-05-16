@@ -14,25 +14,15 @@ export default function Profile() {
   const { data, error } = useApi('query', (axios) => ({
     queryKey: ['getMyProfile'],
     queryFn() {
-      return axios.get('/usuario/123');
+      return axios.get('/usuario');
     },
   }));
 
- 
   return (
     <View>
       <Text fontSize={100}>{''}</Text>
       <YStack>
-        <ButtonCustom
-          backgroundColor='green'
-          color='black'
-          bgOpaco
-          onPress={() => router.replace('/(auth)/preregistration')}
-        >
-          Botão PreRegistro
-        </ButtonCustom>
-
-        <Text fontSize={100}>{data?.data?.usuario?.apelido}</Text>
+        <Text fontSize={60}>{data?.data?.usuario?.apelido}</Text>
         <ButtonCustom onPress={loggout}>Sair</ButtonCustom>
       </YStack>
     </View>
