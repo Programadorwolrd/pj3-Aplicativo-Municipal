@@ -23,8 +23,8 @@ export const fontsCustom = {
   outfitBold: Outfit_700Bold,
   paiaFeliz: Outfit_300Light,
   paiaNormal: Outfit_400Regular,
+  paiaFino: Outfit_100Thin,
 } as const;
-
 
 // defina a fonte padrão aqui
 export const fontePadrao: KeysFonts = "paiaNormal";

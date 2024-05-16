@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@expo-google-fonts/outfit": "^0.2.3",
+    "@react-native-async-storage/async-storage": "1.21.0",
     "@react-native-picker/picker": "2.6.1",
     "@tamagui/config": "^1.94.4",
     "@tamagui/lucide-icons": "^1.94.4",
