@@ -12,7 +12,7 @@ const ImageBackground = styled.div`
 
 const LogoContainer = styled.div`
   margin: 10px; /* Adicione a margem ao redor do logotipo */
-`;
+`;aaa
 
 export default function preregistration() {
   return (
@@ -23,7 +23,7 @@ export default function preregistration() {
         </Text>
         <Text fontSize="$10" color="white" alignSelf="center">
           Vamos à Busca!
-        </Text>''
+        </Text>' '
         <Text marginBottom="$5" fontSize="$8" color="grey" width="$100" height="$40" alignSelf="center">
           Embarque agora na jornada para registrar todos os seres incríveis e fascinantes do nosso parque.
         </Text>
