@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack, usePathname } from 'expo-router';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image, Text, View } from 'tamagui';
@@ -15,7 +15,9 @@ export default function StackApp({
 }: Props) {
   return (
     <Stack
-      screenOptions={{
+      screenOptions={({ route }) => ({
+        headerShown: !(route.params && Object.keys(route.params).length > 0),
+
         title: titulo,
         headerTitleAlign: 'center',
         headerStyle: {
@@ -29,7 +31,7 @@ export default function StackApp({
             </Text>
           );
         },
-      }}
+      })}
     >
       {children}
     </Stack>

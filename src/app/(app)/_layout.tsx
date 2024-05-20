@@ -2,7 +2,6 @@ import TabQrCode from '@/components/TabQrCode';
 import { storeAuth } from '@/lib/logicAuth';
 
 import { BarChart2, CircleUserRound, Home, MapPinned } from '@tamagui/lucide-icons';
-import { useQuery } from '@tanstack/react-query';
 import { Redirect, Tabs, usePathname } from 'expo-router';
 
 export default function HomeLayout() {
@@ -14,7 +13,7 @@ export default function HomeLayout() {
 
   return (
     <Tabs
-      screenOptions={{
+      screenOptions={() => ({
         headerShown: false,
         tabBarActiveTintColor: '#00A86B',
         tabBarInactiveTintColor: 'black',
@@ -26,11 +25,12 @@ export default function HomeLayout() {
         },
         tabBarStyle: {
           height: 65,
+          display: usePathname() !== '/' ? 'none' : undefined,
         },
         tabBarLabelStyle: {
           fontSize: 11,
         },
-      }}
+      })}
     >
       <Tabs.Screen
         name='(home)'
@@ -75,20 +75,6 @@ export default function HomeLayout() {
           tabBarIcon({ size, color }) {
             return <CircleUserRound color={color} size={size * iconSize} />;
           },
-        }}
-      />
-      <Tabs.Screen
-        name='(home)/[infoUrl]'
-        options={{
-          tabBarStyle: { display: 'none' },
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name='(qrCode)/[infoUrl]'
-        options={{
-          tabBarStyle: { display: 'none' },
-          href: null,
         }}
       />
     </Tabs>
