@@ -1,18 +1,19 @@
 import TabQrCode from '@/components/TabQrCode';
+import { storeAuth } from '@/lib/logicAuth';
+
 import { BarChart2, CircleUserRound, Home, MapPinned } from '@tamagui/lucide-icons';
 import { Redirect, Tabs, usePathname } from 'expo-router';
 
 export default function HomeLayout() {
-  // simular loggin até a logica estiver completa
-  const isLogged = true;
+  const token = storeAuth((s) => s.token);
 
-  if (!isLogged) return <Redirect href={'/(auth)/'} />;
+  if (!token) return <Redirect href={'/(auth)'} />;
 
   const iconSize = 1.4;
 
   return (
     <Tabs
-      screenOptions={({ route: { name } }) => ({
+      screenOptions={() => ({
         headerShown: false,
         tabBarActiveTintColor: '#00A86B',
         tabBarInactiveTintColor: 'black',
@@ -24,11 +25,10 @@ export default function HomeLayout() {
         },
         tabBarStyle: {
           height: 65,
-          display: name === '(home)/[infoUrl]' ? 'none' : 'flex',
+          display: usePathname() !== '/' ? 'none' : undefined,
         },
         tabBarLabelStyle: {
           fontSize: 11,
-          fontFamily: 'paiaFeliz',
         },
       })}
     >
@@ -75,20 +75,6 @@ export default function HomeLayout() {
           tabBarIcon({ size, color }) {
             return <CircleUserRound color={color} size={size * iconSize} />;
           },
-        }}
-      />
-      <Tabs.Screen
-        name='(home)/[infoUrl]'
-        options={{
-          tabBarStyle: { display: 'none' },
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name='(qrCode)/[infoUrl]'
-        options={{
-          tabBarStyle: { display: 'none' },
-          href: null,
         }}
       />
     </Tabs>

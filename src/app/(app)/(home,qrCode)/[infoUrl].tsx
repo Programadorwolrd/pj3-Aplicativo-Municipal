@@ -1,6 +1,18 @@
 //******************** AINDA NÃO TERMINEI **************************
-import { View, Text, FlatList, StyleSheet, Dimensions, LogBox, Image, TouchableOpacity } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Dimensions,
+  LogBox,
+  Image,
+  TouchableOpacity,
+  type ImageSourcePropType,
+  type NativeSyntheticEvent,
+  type NativeScrollEvent,
+} from 'react-native';
+import React, { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Button, ScrollView } from 'tamagui';
 import { TabsDemo } from '../../../components/tabs';
 import { AirbnbRating } from 'react-native-ratings';
@@ -9,10 +21,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-
-
 export default function InfoUrl() {
-  const flatlistRef = useRef();
+  const flatlistRef = useRef<FlatList>(null);
   // Get Dimesnions
   const screenWidth = Dimensions.get('window').width;
   const [activeIndex, setActiveIndex] = useState(0);
@@ -23,14 +33,14 @@ export default function InfoUrl() {
   useEffect(() => {
     let interval = setInterval(() => {
       if (activeIndex === carouselData.length - 1) {
-        flatlistRef.current.scrollToIndex({
+        flatlistRef.current?.scrollToIndex({
           index: 0,
-          animation: true,
+          animated: true,
         });
       } else {
-        flatlistRef.current.scrollToIndex({
+        flatlistRef.current?.scrollToIndex({
           index: activeIndex + 1,
-          animation: true,
+          animated: true,
         });
       }
     }, 10000);
@@ -38,7 +48,7 @@ export default function InfoUrl() {
     return () => clearInterval(interval);
   });
 
-  const getItemLayout = (data, index) => ({
+  const getItemLayout = (data: unknown, index: number) => ({
     length: screenWidth,
     offset: screenWidth * index, // for first image - 300 * 0 = 0pixels, 300 * 1 = 300, 300*2 = 600
     index: index,
@@ -59,32 +69,36 @@ export default function InfoUrl() {
     sound: require('../../../assets/som_tucano.mp3'),
   };
 
-  const carouselData = [
+  interface CarouselData {
+    id: number;
+    image: ImageSourcePropType;
+  }
+  const carouselData: CarouselData[] = [
     {
-      id: '01',
+      id: 0,
       image: require('../../../assets/tucano.png'),
     },
     {
-      id: '02',
+      id: 1,
       image: require('../../../assets/tucano.png'),
     },
     {
-      id: '03',
+      id: 2,
       image: require('../../../assets/tucano.png'),
     },
   ];
 
   //  Display Images // UI
-  const renderItem = ({ item, index }) => {
+  const renderItem = (props: { item: CarouselData; index: number }) => {
     return (
       <View style={{ backgroundColor: 'black' }}>
-        <Image source={item.image} style={{ height: 460, width: screenWidth }} />
+        <Image source={props.item.image} style={{ height: 460, width: screenWidth }} />
       </View>
     );
   };
 
   // Handle Scroll
-  const handleScroll = (event) => {
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     // Get the scroll position
     const scrollPosition = event.nativeEvent.contentOffset.x;
     // Get the index of current active item
@@ -98,56 +112,51 @@ export default function InfoUrl() {
     return carouselData.map((dot, index) => {
       // if the active index === index
 
-      if (activeIndex === index) {
-        return (
-          <View
-            style={{
-              backgroundColor: '#329F60',
-              height: 10,
-              width: 19,
-              borderRadius: 5,
-              marginHorizontal: 6,
-              borderColor: 'green',
-              borderWidth: 1,
-            }}
-          ></View>
-        );
-      } else {
-        return (
-          <View
-            key={dot.id}
-            style={{
-              backgroundColor: 'transparent',
-              height: 10,
-              width: 10,
-              borderRadius: 5,
-              marginHorizontal: 4,
-              borderColor: '#329F60',
-              borderWidth: 1,
-            }}
-          ></View>
-        );
-      }
+      return activeIndex === index ? (
+        <View
+          style={{
+            backgroundColor: '#329F60',
+            height: 10,
+            width: 19,
+            borderRadius: 5,
+            marginHorizontal: 6,
+            borderColor: 'green',
+            borderWidth: 1,
+          }}
+        />
+      ) : (
+        <View
+          key={dot.id}
+          style={{
+            backgroundColor: 'transparent',
+            height: 10,
+            width: 10,
+            borderRadius: 5,
+            marginHorizontal: 4,
+            borderColor: '#329F60',
+            borderWidth: 1,
+          }}
+        />
+      );
     });
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
-
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={{ position: 'absolute', top: 50, left: 10, zIndex: 1 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={40} color="white" />
+          <Ionicons name='arrow-back' size={40} color='white' />
         </TouchableOpacity>
       </View>
-      
+
       <ScrollView style={{ backgroundColor: 'black' }}>
         <View style={{ position: 'relative' }}>
-        <FlatList
+          <FlatList
             data={carouselData}
             ref={flatlistRef}
             getItemLayout={getItemLayout}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id.toString()}
             horizontal={true}
             pagingEnabled={true}
             onScroll={handleScroll}
@@ -233,12 +242,6 @@ export default function InfoUrl() {
             Capturar Ser vivo 🌿
           </Button>
         </ScrollView>
-
-        <View
-          style={{
-            flex:1
-          }}
-        ></View>
       </ScrollView>
     </SafeAreaView>
   );
