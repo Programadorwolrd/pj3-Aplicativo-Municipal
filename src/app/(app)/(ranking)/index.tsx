@@ -1,5 +1,5 @@
-import React from 'react';
-import { FlatList, Image, StyleSheet, View, Text } from 'react-native';
+import React, {useState} from 'react';
+import { FlatList, Image, StyleSheet, View, Text, Modal, Alert, Pressable } from 'react-native';
 // import MedalIcon from '@/assets/medal- 1.svg';
 
 interface User {
@@ -81,6 +81,7 @@ const usuarios: User[] = [
   },
 ];
 
+
 function Itens({ item, index }: { item: User; index: number }) {
   return (
     <View>
@@ -113,9 +114,40 @@ function Itens({ item, index }: { item: User; index: number }) {
 }
 
 export default function Lista() {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View>
+
+       <View >
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={{...styles.centeredView}}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Não sei oq tem aqui</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Fechar</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+        <Pressable
+          style={[styles.button, styles.buttonOpen]}
+          onPress={() => setModalVisible(true)}>
+          <Text style={styles.textStylee}>?</Text>
+        </Pressable>
+      </View>
+
        <View style={styles.header}>
+      
         <Image 
           source={ require('../../../assets/medalha-prata.png')}
         />
@@ -191,6 +223,62 @@ const styles = StyleSheet.create({
   },
   medalha:{
     marginTop: -20, 
-  }
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+  },
+  buttonOpen: {
+      borderColor: '#00a86b',
+      borderWidth: 2,
+      borderRadius: 50, 
+      alignSelf: 'flex-end',
+      width: 37, 
+      height: 37, 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      marginRight: 15,
+      marginBottom: -20,
+  },
+  buttonClose: {
+    backgroundColor: '#00a86b',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  textStylee: {
+    color: '#00a86b',
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontSize: 13,
+    fontWeight:'700'
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
 });
 
