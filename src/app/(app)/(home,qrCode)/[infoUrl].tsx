@@ -31,7 +31,7 @@ export default function InfoUrl() {
   // Auto Scroll
 
   useEffect(() => {
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
       if (activeIndex === carouselData.length - 1) {
         flatlistRef.current?.scrollToIndex({
           index: 0,

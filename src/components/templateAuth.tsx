@@ -26,7 +26,7 @@ function ComponenteTemplateAuth({ subTitulo, titulo, children }: PropsAuth) {
         zi={'$0'}
       />
       <YStack paddingVertical={'$5'} paddingHorizontal={'7%'} marginTop={'45%'}>
-        <YStack >
+        <YStack>
           <TextCustom H1>{titulo}</TextCustom>
           <TextCustom H4>{subTitulo}</TextCustom>
         </YStack>

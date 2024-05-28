@@ -5,7 +5,7 @@ export const ButtonCustom = styled(Button, {
   fontFamily: '$outfitBold',
   fontSize: '$8',
   alignItems: 'center',
-  justifyContent:'center',
+  justifyContent: 'center',
   textAlign: 'center',
 
   color: 'white',

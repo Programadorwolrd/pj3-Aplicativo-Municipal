@@ -1,13 +1,13 @@
-import { fontsCustom } from "@/constants/fonts";
-import { fonts } from "@tamagui/config/v3";
-import { useFonts } from "expo-font";
-import { createFont, type GenericFont } from "tamagui";
+import { fontsCustom } from '@/constants/fonts';
+import { fonts } from '@tamagui/config/v3';
+import { useFonts } from 'expo-font';
+import { createFont, type GenericFont } from 'tamagui';
 
 // funções para setar a fonte
 export const loadFonts = () => {
   const [fontsLoaded, fontError] = useFonts({
-    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
-    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+    Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
+    InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
     ...fontsCustom,
   });
 

@@ -1,8 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
-import { baseApi } from "./axiosApi";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { baseApi } from './axiosApi';
 
 interface Auth {
   token: null | string;
@@ -17,7 +17,7 @@ export const storeAuth = create<Auth>()(
 
       async login(token: string) {
         set(() => ({ token: token }));
-        router.replace("/(app)/(home)");
+        router.replace('/(app)/(home)');
       },
 
       logout() {
@@ -25,7 +25,7 @@ export const storeAuth = create<Auth>()(
       },
     }),
     {
-      name: "authPaia",
+      name: 'authPaia',
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

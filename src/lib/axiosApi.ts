@@ -32,7 +32,7 @@ export function useApi<T extends "mutate" | "query", D, E, V>(
     axios.create({
       baseURL,
       headers: {
-        Authorization: `Bearer ${storeAuth((s) => s.token)}`,
+        Authorization: `Bearer ${storeAuth((s) => s.token || '')}`,
       },
     })
   );

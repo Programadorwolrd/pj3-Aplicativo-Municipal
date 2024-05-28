@@ -1,11 +1,11 @@
-import type { KeysFonts } from "@/lib/loadFonts";
+import type { KeysFonts } from '@/lib/loadFonts';
 import {
   Outfit_100Thin,
   Outfit_300Light,
   Outfit_400Regular,
   Outfit_700Bold,
   Outfit_800ExtraBold,
-} from "@expo-google-fonts/outfit";
+} from '@expo-google-fonts/outfit';
 
 /**
  * @description
@@ -27,4 +27,4 @@ export const fontsCustom = {
 } as const;
 
 // defina a fonte padrão aqui
-export const fontePadrao: KeysFonts = "paiaNormal";
+export const fontePadrao: KeysFonts = 'paiaNormal';

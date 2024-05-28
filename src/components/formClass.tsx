@@ -147,7 +147,7 @@ export class FormAuth<C extends Campos> {
   public Submit = (props: { textButton: string }) => {
     return (
       <FormTamagui.Trigger asChild>
-        <ButtonCustom >{props.textButton}</ButtonCustom>
+        <ButtonCustom>{props.textButton}</ButtonCustom>
       </FormTamagui.Trigger>
     );
   };

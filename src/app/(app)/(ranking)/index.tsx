@@ -1,5 +1,14 @@
-import React, {useState} from 'react';
-import { FlatList, Image, StyleSheet, View, Text, Modal, Alert, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  View,
+  Text,
+  Modal,
+  Alert,
+  Pressable,
+} from 'react-native';
 import MedalIcon from '@/assets/medal-1.svg';
 
 interface User {
@@ -81,34 +90,28 @@ const usuarios: User[] = [
   },
 ];
 
-
 function Itens({ item, index }: { item: User; index: number }) {
   return (
     <View>
       <View style={styles.hr} />
-    <View style={styles.itemContainer}>
-      <View style={styles.userInfoContainer}>
-        <Image
-          source={{ uri: item.linkImagem }}
-          style={styles.userImage}
-        />
-        <View style={styles.textContainer}>
-          <Text style={styles.userName}>{item.nome}</Text>
-          <Text>{item.funcao}</Text>
+      <View style={styles.itemContainer}>
+        <View style={styles.userInfoContainer}>
+          <Image source={{ uri: item.linkImagem }} style={styles.userImage} />
+          <View style={styles.textContainer}>
+            <Text style={styles.userName}>{item.nome}</Text>
+            <Text>{item.funcao}</Text>
+          </View>
+        </View>
+        <View style={styles.rankContainer}>
+          {index < 3 && (
+            <View style={styles.medalContainer}>
+              <Text style={styles.rankTextAbove}>{index + 1}</Text>
+              <MedalIcon width={30} height={30} />
+            </View>
+          )}
+          {index >= 3 && <Text style={styles.rankText}>{index + 1}</Text>}
         </View>
       </View>
-      <View style={styles.rankContainer}>
-        {index < 3 && (
-          <View style={styles.medalContainer}>
-            <Text style={styles.rankTextAbove}>{index + 1}</Text>
-            <MedalIcon width={30} height={30} />
-          </View>
-        )}
-        {index >= 3 && (
-          <Text style={styles.rankText}>{index + 1}</Text>
-        )}
-      </View>
-    </View>
     </View>
   );
 }
@@ -118,22 +121,23 @@ export default function Lista() {
 
   return (
     <View>
-
-       <View >
+      <View>
         <Modal
-          animationType="slide"
+          animationType='slide'
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
             Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
-          }}>
-          <View style={{...styles.centeredView}}>
+          }}
+        >
+          <View style={{ ...styles.centeredView }}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>Não sei oq tem aqui</Text>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}>
+                onPress={() => setModalVisible(!modalVisible)}
+              >
                 <Text style={styles.textStyle}>Fechar</Text>
               </Pressable>
             </View>
@@ -141,29 +145,25 @@ export default function Lista() {
         </Modal>
         <Pressable
           style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}>
+          onPress={() => setModalVisible(true)}
+        >
           <Text style={styles.textStylee}>?</Text>
         </Pressable>
       </View>
 
-       <View style={styles.header}>
-      
-        <Image 
-          source={ require('../../../assets/medalha-prata.png')}
-        />
-        <Image 
-          source={ require('../../../assets/medalha-ouro.png')}
+      <View style={styles.header}>
+        <Image source={require('../../../assets/medalha-prata.png')} />
+        <Image
+          source={require('../../../assets/medalha-ouro.png')}
           style={styles.medalha}
         />
-        <Image 
-          source={ require('../../../assets/medalha-bronze.png')}
-        />
+        <Image source={require('../../../assets/medalha-bronze.png')} />
       </View>
-    <FlatList
-      data={usuarios}
-      renderItem={({ item, index }) => <Itens item={item} index={index} />}
-      keyExtractor={(item, index) => index.toString()}
-    />
+      <FlatList
+        data={usuarios}
+        renderItem={({ item, index }) => <Itens item={item} index={index} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 }
@@ -211,18 +211,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
-  header:{
+  header: {
     flexDirection: 'row',
     alignSelf: 'center',
   },
   hr: {
     borderBottomColor: '#D9D9D9',
     borderBottomWidth: 1,
-    width:310,
-    alignSelf: 'center'
+    width: 310,
+    alignSelf: 'center',
   },
-  medalha:{
-    marginTop: -20, 
+  medalha: {
+    marginTop: -20,
   },
   centeredView: {
     flex: 1,
@@ -250,17 +250,17 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonOpen: {
-      borderColor: '#00a86b',
-      borderWidth: 2,
-      borderRadius: 50, 
-      alignSelf: 'flex-end',
-      width: 40, 
-      height: 40, 
-      alignItems: 'center', 
-      justifyContent: 'center',
-      marginRight: 15,
-      marginBottom: -20,
-      backgroundColor: 'transparent'
+    borderColor: '#00a86b',
+    borderWidth: 2,
+    borderRadius: 50,
+    alignSelf: 'flex-end',
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 15,
+    marginBottom: -20,
+    backgroundColor: 'transparent',
   },
   buttonClose: {
     backgroundColor: '#00a86b',
@@ -274,12 +274,11 @@ const styles = StyleSheet.create({
     color: '#00a86b',
     textAlign: 'center',
     alignSelf: 'center',
-    fontSize: 14, 
-    fontWeight:'900'
+    fontSize: 14,
+    fontWeight: '900',
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
   },
 });
-

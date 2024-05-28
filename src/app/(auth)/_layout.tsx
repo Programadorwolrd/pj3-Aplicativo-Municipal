@@ -20,8 +20,8 @@ export default function AuthLayout() {
         }}
       >
         <Stack.Screen name='index' options={{ headerShown: false }} />
-        <Stack.Screen name='login'  />
-        <Stack.Screen name='cadastrar'  />
+        <Stack.Screen name='login' />
+        <Stack.Screen name='cadastrar' />
       </Stack>
     </SafeAreaView>
   );
