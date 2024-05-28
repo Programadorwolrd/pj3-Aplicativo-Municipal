@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { FlatList, Image, StyleSheet, View, Text, Modal, Alert, Pressable } from 'react-native';
-// import MedalIcon from '@/assets/medal- 1.svg';
+import MedalIcon from '@/assets/medal-1.svg';
 
 interface User {
   nome: string;
@@ -101,7 +101,7 @@ function Itens({ item, index }: { item: User; index: number }) {
         {index < 3 && (
           <View style={styles.medalContainer}>
             <Text style={styles.rankTextAbove}>{index + 1}</Text>
-            {/* <MedalIcon width={30} height={30} /> */}
+            <MedalIcon width={30} height={30} />
           </View>
         )}
         {index >= 3 && (
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
   rankTextAbove: {
     position: 'absolute',
-    top: -15,
+    top: -17,
     fontWeight: 'bold',
     fontSize: 16,
     color: '#000',
@@ -254,12 +254,13 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       borderRadius: 50, 
       alignSelf: 'flex-end',
-      width: 37, 
-      height: 37, 
+      width: 40, 
+      height: 40, 
       alignItems: 'center', 
       justifyContent: 'center',
       marginRight: 15,
       marginBottom: -20,
+      backgroundColor: 'transparent'
   },
   buttonClose: {
     backgroundColor: '#00a86b',
@@ -273,8 +274,8 @@ const styles = StyleSheet.create({
     color: '#00a86b',
     textAlign: 'center',
     alignSelf: 'center',
-    fontSize: 13,
-    fontWeight:'700'
+    fontSize: 14, 
+    fontWeight:'900'
   },
   modalText: {
     marginBottom: 15,
