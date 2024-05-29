@@ -28,7 +28,7 @@ export const TextCustom = styled(Text, {
         fontSize: '$8',
         color: 'white',
         fontFamily: '$paiaFino',
-        textAlign: 'center',
+        textalign: 'center',
       },
       h3: {
         fontFamily: '$outfitBold',

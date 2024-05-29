@@ -1,4 +1,3 @@
-import { router, type Href } from 'expo-router';
 import { Button, styled, type GetProps } from 'tamagui';
 
 export const ButtonCustom = styled(Button, {
@@ -6,7 +5,7 @@ export const ButtonCustom = styled(Button, {
   fontSize: '$8',
   alignItems: 'center',
   justifyContent: 'center',
-  textAlign: 'center',
+  // textalign: "center",
 
   color: 'white',
   width: '100%',

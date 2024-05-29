@@ -1,11 +1,7 @@
 import { Form, Input, styled, type GetProps } from 'tamagui';
 import { Image, Text, withStaticProperties, XStack, YStack } from 'tamagui';
 import { TextCustom } from './textCustom';
-import { Link, type Href } from 'expo-router';
 import type { ReactNode } from 'react';
-import { Facebook } from '@tamagui/lucide-icons';
-import { ButtonCustom } from './buttonCustom';
-import { Svg, SvgUri } from 'react-native-svg';
 
 interface PropsAuth {
   titulo: string;
@@ -20,12 +16,11 @@ function ComponenteTemplateAuth({ subTitulo, titulo, children }: PropsAuth) {
       <Image
         source={headerBackImg}
         width={'100%'}
-        height={280}
         resizeMode='stretch'
         position='absolute'
         zi={'$0'}
       />
-      <YStack paddingVertical={'$5'} paddingHorizontal={'7%'} marginTop={'45%'}>
+      <YStack paddingVertical={'$5'} paddingHorizontal={'7%'} marginTop={230}>
         <YStack>
           <TextCustom H1>{titulo}</TextCustom>
           <TextCustom H4>{subTitulo}</TextCustom>

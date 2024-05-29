@@ -22,7 +22,7 @@ export default function Profile() {
     <View>
       <Text fontSize={100}>{''}</Text>
       <YStack>
-        <Text fontSize={60}>{data?.data?.usuario?.apelido}</Text>
+        <Text fontSize={60}>{data?.data?.usuario?.apelido || '...'}</Text>
         <ButtonCustom onPress={loggout}>Sair</ButtonCustom>
       </YStack>
     </View>

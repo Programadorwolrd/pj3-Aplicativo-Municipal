@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 export const clientQuery = new QueryClient({
   defaultOptions: {
     mutations: { retry: 0 },
-    queries: { retry: 2 },
+    queries: { retry: 1 },
   },
 });
 
