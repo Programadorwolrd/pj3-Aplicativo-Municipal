@@ -34,7 +34,11 @@ export class FormAuth<C extends Campos> {
       axios: Axios
     ) => UseOptions<'mutate', unknown, unknown, (typeof this.useStateAllValues)[0]>
   ) {
-    this.mutationPost = useApi('mutate', this.axiosOnSubmit);
+    this.mutationPost = useApi('mutate', (a) => ({
+      onError: undefined,
+      throwOnError: undefined,
+      ...this.axiosOnSubmit(a),
+    }));
   }
 
   private Validacao = (props: { campo: string; value: string | undefined }) => {

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
-import axios, { AxiosError, isAxiosError, type Axios } from 'axios';
+import axios, { Axios, AxiosError, type AxiosInstance, isAxiosError } from 'axios';
 import {
   useMutation,
   useQuery,
@@ -14,16 +14,7 @@ import { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { storeAuth } from './logicAuth';
 
-const baseURL = process.env.EXPO_PUBLIC_API_URL || "http://192.168.1.108:3000";
-
-interface Result<D> {
-  mutate: UseMutationResult<D>;
-  query: UseQueryResult<D>;
-}
-
-export type UseOptions<T, D, E, V> = (T extends "mutate"
-  ? UseMutationOptions<D, E, V>
-  : UseQueryOptions<D, E, V>) & { notlogoutIfNotAuthorized?: boolean };
+const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.108:3000';
 
 /**
  * Hook personalizado para realizar chamadas à API.
@@ -32,54 +23,52 @@ export type UseOptions<T, D, E, V> = (T extends "mutate"
  * @param cbConfig Uma função que recebe uma instância do Axios e retorna as configurações do React Query.
  * @returns O retorno do React Query.
  */
-export function useApi<
-  D,
-  T extends 'mutate' | 'query' = 'query',
-  E = unknown,
-  V = unknown,
->(type: T, cbConfig: (axios: Axios) => UseOptions<T, D, E, V>) {
-  const loggout = storeAuth((s) => s.logout);
-  const config = {
-    onError,
-    ...cbConfig(
-      axios.create({
-        baseURL,
-        headers: {
-          Authorization: `Bearer ${storeAuth((s) => s.token)}`,
-        },
-      })
-    ),
+export function useApi<T, D = unknown>(type: T & ReqType, cb: CbConfig<T, D>) {
+  const { logout, token } = storeAuth();
+
+  const axiosInstance = axios.create({
+    baseURL,
+    headers: {
+      Authorization: `Bearer ${token || ''}`,
+    },
+  });
+
+  const configReactQuery = {
+    onError: alertErrorAxios,
+    throwOnError: alertErrorAxios,
+    ...cb(axiosInstance),
   };
 
-  const result = (
-    type === 'mutate'
-      ? useMutation(config as UseOptions<'mutate', D, E, V>)
-      : useQuery(config as UseOptions<'query', D, E, V>)
-  ) as Result<D>[T];
+  const result =
+    type === 'query'
+      ? useQuery(configReactQuery as Options<'query', D>)
+      : useMutation(configReactQuery as Options<'mutate', D>);
 
-  const isUnauthorized =
-    isAxiosError(result.error) && result.error.response?.status === 401;
+  const isNotAuthorized =
+    isAxiosError(result?.error) && result.error.response?.status === 401;
 
-  useEffect(() => {
-    if (!config.notlogoutIfNotAuthorized && isUnauthorized) {
+  if (isNotAuthorized && !configReactQuery.notlogoutIfNotAuthorized)
+    useEffect(() => {
       function sair() {
-        loggout();
+        logout();
 
         router.replace('/(auth)');
+        console.log('a');
       }
 
       Alert.alert('Sessão expirada', 'Faça login novamente', [{ onPress: sair }], {
         cancelable: true,
         onDismiss: sair,
       });
-    }
-  }, [isUnauthorized]);
+    }, []);
 
-  return result;
+  return result as Result<T, D>;
 }
 
-function onError(error: unknown) {
+export function alertErrorAxios(error: unknown) {
   if (!(error instanceof AxiosError)) throw error;
+
+  if (error.response?.status === 401) return; // useAPI já vai tratar esse
 
   const data =
     (error.response?.data as {
@@ -92,4 +81,9 @@ function onError(error: unknown) {
   Alert.alert(data.error || error.message, data.message || 'Erro desconhecido');
 }
 
-export const baseApi = axios.create({ baseURL });
+type ReqType = 'query' | 'mutate';
+type CbConfig<T, D> = (axios: AxiosInstance) => Options<T, D>;
+type Result<T, D> = T extends 'query' ? UseQueryResult<D> : UseMutationResult<D>;
+type Options<T, D> = (T extends 'query' ? UseQueryOptions<D> : UseMutationOptions<D>) & {
+  notlogoutIfNotAuthorized?: boolean;
+};
