@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { baseApi } from './axiosApi';
 
 interface Auth {
   token: null | string;

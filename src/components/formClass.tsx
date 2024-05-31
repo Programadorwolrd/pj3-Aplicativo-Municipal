@@ -1,9 +1,16 @@
-import { Link, type Href } from 'expo-router';
-import { useEffect, useState, type PropsWithChildren, type ReactNode } from 'react';
 import {
+  useEffect,
+  useRef,
+  useState,
+  type PropsWithChildren,
+  type ReactNode,
+} from 'react';
+import {
+  type FormProps,
   Form as FormTamagui,
   Input,
   Input as InputTamagui,
+  Label,
   styled,
   Text,
   View,
@@ -14,152 +21,97 @@ import {
 import { ButtonCustom } from './buttonCustom';
 import IconGoogle from '@/assets/iconGoogle.svg';
 import IconFacebook from '@/assets/iconFacebook.svg';
-import { useApi, type UseOptions } from '@/lib/axiosApi';
-import type { Axios } from 'axios';
+import { useApi } from '@/lib/axiosApi';
+import type { Axios, AxiosInstance } from 'axios';
 import type { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
-import axios from 'axios';
+import { Link } from 'expo-router';
+import { TextCustom } from './textCustom';
 
-interface Campos {
-  [key: string]: [(t: string) => boolean | Promise<boolean>, string][] | null;
-}
+export class FormAuth<C extends ValidacaoOptions> {
+  private AllValuesRef = useRef({} as Record<keyof C, string>).current;
+  private isFormValid = useRef({} as Record<string, boolean>).current;
 
-// refatorei, mas acho que piorou
-export class FormAuth<C extends Campos> {
-  private useStateAllValues = useState({} as { [key in keyof C]: string });
-  private mutationPost: UseMutationResult;
+  constructor(private options: FormOptions<C>) {}
 
-  constructor(
-    private campos: C,
-    private axiosOnSubmit: (
-      axios: Axios
-    ) => UseOptions<'mutate', unknown, unknown, (typeof this.useStateAllValues)[0]>
-  ) {
-    this.mutationPost = useApi('mutate', (a) => ({
-      onError: undefined,
-      throwOnError: undefined,
-      ...this.axiosOnSubmit(a),
-    }));
-  }
+  private AvisoEValidador = (props: { campo: string; value: string }) => {
+    const [aviso, setAviso] = useState('');
 
-  private Validacao = (props: { campo: string; value: string | undefined }) => {
-    const [aviso, setAviso] = useState<string | null>(null);
+    const arrayDeValidacao = this.options.campos[props.campo];
 
-    if (props.value === undefined || this.campos[props.campo] === null)
-      return <Text opacity={0}>paia</Text>;
+    useEffect(() => {
+      if (arrayDeValidacao == null) return;
 
-    (async () => {
-      for (const [validadorDoCampo, avisoDaValidacao] of this.campos[props.campo] || []) {
-        const result = await validadorDoCampo(props.value || '');
+      const ValidarCampo = async () => {
+        try {
+          for await (const [condi, avisoDaCondi] of arrayDeValidacao) {
+            if (await condi(props.value)) throw avisoDaCondi; //se atender a condição do erro ele lança uma execao com o texto do aviso
 
-        if (!result) {
-          return setAviso(avisoDaValidacao);
+            this.isFormValid[props.campo] = true;
+            setAviso('');
+          }
+        } catch (error) {
+          if (typeof error == 'string') {
+            this.isFormValid[props.campo] = false;
+            setAviso(error);
+          }
         }
-      }
+      };
 
-      if (aviso !== '') setAviso('');
-    })();
+      ValidarCampo();
+    }, [props.value]);
 
     const color = aviso ? 'red' : 'green';
     return (
-      <Text marginStart={10} color={color}>
+      <Text fontSize={'$4'} fontFamily={'$paiaNormal'} color={color}>
         {aviso || `${props.campo} valido`}
       </Text>
     );
   };
 
-  private MessageError = () => {
-    const [message, setMessage] = useState('');
-    const errorFetch = this.mutationPost.error;
-    const errorAxios =
-      axios.isAxiosError(errorFetch) && errorFetch.response?.data.message;
+  private onSubmit = () => {};
 
-    useEffect(() => {
-      setMessage(errorAxios || errorFetch?.message);
-
-      const id = setTimeout(() => {
-        setMessage('');
-      }, 3000);
-
-      return () => clearTimeout(id);
-    }, []);
+  public Input = ({ campo, ...props }: InputProps & { campo: keyof C & string }) => {
+    const [value, setValue] = useState(this.AllValuesRef[campo] || '');
+    this.AllValuesRef[campo] = value;
 
     return (
-      <View height={40} alignSelf='baseline' justifyContent='center'>
-        <Text fontSize={'$6'} color={'red'}>
-          {message}
+      <YStack w='100%'>
+        <Text fontSize={'$2'} color='green' mb='$1.5' fontFamily={'$outfitBold'}>
+          {campo.toUpperCase()}:
         </Text>
-      </View>
+        <Input value={value} onChangeText={setValue} {...props} placeholder={campo} />
+        <this.AvisoEValidador campo={campo} value={value} />
+      </YStack>
     );
   };
 
-  public Form = ({ children }: PropsWithChildren) => {
-    const [allValues] = this.useStateAllValues;
-
+  public Form = ({ children, ...props }: Omit<FormProps, 'onSubmit'>) => {
     return (
-      <FormTamagui
-        w={'100%'}
-        alignItems='center'
-        onSubmit={() => this.mutationPost.mutate(allValues)}
-      >
-        <this.MessageError />
-
-        <YStack width={'100%'} gap={5}>
+      <FormTamagui w={'100%'} alignItems='center' {...props} onSubmit={this.onSubmit}>
+        <YStack width={'100%'} gap={'$4'}>
           {children}
         </YStack>
       </FormTamagui>
     );
   };
 
-  public Input = ({
-    campo,
-    persistValue = false,
-    ...props
-  }: InputProps & { campo: keyof C & string; persistValue?: boolean }) => {
-    const [{ [campo]: defaultValue }, setAllV] = this.useStateAllValues;
-    const [value, setValue] = useState(persistValue ? defaultValue : undefined);
-
-    useEffect(() => {
-      setAllV((all) => {
-        if (value) all[campo] = value;
-
-        return all;
-      });
-    }, [value]);
-
-    return (
-      <View>
-        <Input
-          size='$4.5'
-          borderWidth={1.7}
-          borderColor='$green9Light'
-          backgroundColor='$green4Light'
-          color='black'
-          width='100%'
-          focusStyle={{
-            borderColor: 'green',
-          }}
-          placeholder={campo}
-          {...props}
-          value={value}
-          onChangeText={setValue}
-        />
-        <this.Validacao campo={campo} value={value} />
-      </View>
-    );
-  };
-
   public Submit = (props: { textButton: string }) => {
     return (
-      <FormTamagui.Trigger asChild>
-        <ButtonCustom>{props.textButton}</ButtonCustom>
-      </FormTamagui.Trigger>
+      <View pb='$4' w='100%'>
+        <FormTamagui.Trigger asChild>
+          <ButtonCustom>{props.textButton}</ButtonCustom>
+        </FormTamagui.Trigger>
+        {/* <TextCustom H1 textAlign="center" color="red">
+          ENTRAR
+        </TextCustom> */}
+      </View>
     );
   };
 
   public Footer = (props: {
     link: {
       text: string;
-      href: Href<'pathname'>;
+      href: string;
       textLink: string;
     };
     textButton: string;
@@ -181,7 +133,6 @@ export class FormAuth<C extends Campos> {
         <Text fontSize={15} mt={30} textAlign='center'>
           {props.link.text}
           <Link href={props.link.href}>
-            {' '}
             <Text
               textDecorationLine='underline'
               color={'green'}
@@ -196,25 +147,33 @@ export class FormAuth<C extends Campos> {
   };
 }
 
-export const allvalids: Campos = {
-  email: [
-    [(t) => t.length <= 64, 'o email deve ter entre 10 a 50 caracteres'],
-    [(t) => /^[a-zA-Z0-9._%+-]+/.test(t), 'O email deve começar com caracteres válidos'],
-    [
-      (t) => /@[a-zA-Z0-9.-]+\./.test(t),
-      'O email deve conter "@" seguido de caracteres válidos e "."',
-    ],
-    [
-      (t) => /[a-zA-Z]{2,}$/.test(t),
-      'O email deve terminar com pelo menos duas letras após o "."',
-    ],
-  ],
-  apelido: [
-    [(t) => /^.{3,40}$/.test(t), 'O apelido deve ter entre 3 e 40 caracteres'],
-    [
-      (t) => /^[a-zA-Z\s\d]{3,40}$/.test(t),
-      'O apelido deve conter apenas letras, números e espaços',
-    ],
-  ],
-  senha: [[(t) => /^.{4,40}$/.test(t), 'A senha deve ter entre 4 e 40 caracteres']],
+const InputStyled = styled(Input, {
+  size: '$4.5',
+  borderWidth: 1.7,
+  borderColor: '$green9Light',
+  backgroundColor: '$green4Light',
+  color: 'black',
+  marginLeft: '-2%',
+  width: '104%',
+  focusStyle: {
+    borderColor: 'green',
+  },
+  hoverStyle: {
+    borderColor: 'green',
+  },
+});
+
+type ValidacoesCampo = [(t: string) => boolean | Promise<boolean>, string][] | null;
+
+type FormOptions<C> = {
+  campos: C;
+  onSubmit: (axios: AxiosInstance) => UseMutationOptions<
+    unknown,
+    unknown,
+    {
+      [key in keyof C]: string;
+    }
+  > & { notlogoutIfNotAuthorized: boolean };
 };
+
+export type ValidacaoOptions = { [key: string]: ValidacoesCampo };

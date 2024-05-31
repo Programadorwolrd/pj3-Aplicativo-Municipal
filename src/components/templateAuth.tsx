@@ -8,7 +8,8 @@ interface PropsAuth {
   subTitulo: string;
   children: ReactNode[] | ReactNode;
 }
-function ComponenteTemplateAuth({ subTitulo, titulo, children }: PropsAuth) {
+
+export default function Tauth({ subTitulo, titulo, children }: PropsAuth) {
   const headerBackImg = require('@/assets/headerAuth.png');
 
   return (
@@ -25,25 +26,10 @@ function ComponenteTemplateAuth({ subTitulo, titulo, children }: PropsAuth) {
           <TextCustom H1>{titulo}</TextCustom>
           <TextCustom H4>{subTitulo}</TextCustom>
         </YStack>
-        <YStack width={'100%'} alignItems='center'>
+        <YStack width={'100%'} alignItems='center' mt='$5'>
           {children}
         </YStack>
       </YStack>
     </YStack>
   );
 }
-
-const TAuth = withStaticProperties(ComponenteTemplateAuth, {
-  InputAuth: styled(Input, {
-    size: '$5r',
-    borderWidth: 1.5,
-    borderColor: '$green9Light',
-    backgroundColor: '$green4Light',
-    focusStyle: {
-      borderColor: 'green',
-    },
-    color: 'black',
-    width: '100%',
-  } as const),
-});
-export default TAuth;

@@ -84,6 +84,8 @@ export function alertErrorAxios(error: unknown) {
 type ReqType = 'query' | 'mutate';
 type CbConfig<T, D> = (axios: AxiosInstance) => Options<T, D>;
 type Result<T, D> = T extends 'query' ? UseQueryResult<D> : UseMutationResult<D>;
-type Options<T, D> = (T extends 'query' ? UseQueryOptions<D> : UseMutationOptions<D>) & {
+type Options<T, D> = (T extends 'query'
+  ? UseQueryOptions<D>
+  : UseMutationOptions<unknown, unknown, D>) & {
   notlogoutIfNotAuthorized?: boolean;
 };
