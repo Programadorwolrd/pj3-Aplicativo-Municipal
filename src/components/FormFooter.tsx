@@ -25,7 +25,7 @@ export default function FormFooter(props: {
         </YStack>
       </YStack>
       <Text fontSize={15} mt={30} textAlign='center'>
-        {props.link.text}
+        {props.link.text}{' '}
         <Link href={props.link.href}>
           <Text textDecorationLine='underline' color={'green'} fontFamily={'$outfitBold'}>
             {props.link.textLink}

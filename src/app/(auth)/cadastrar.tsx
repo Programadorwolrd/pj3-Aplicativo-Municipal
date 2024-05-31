@@ -1,40 +1,43 @@
-import { allvalids, FormAuth } from '@/components/formClass';
+import { FormAuth } from '@/components/formClass';
+import FormFooter from '@/components/FormFooter';
 import TAuth from '@/components/templateAuth';
+import { allvalids } from '@/lib/allValids';
 import { storeAuth } from '@/lib/logicAuth';
 import { router } from 'expo-router';
 
 export default function Cadastrar() {
   const login = storeAuth((s) => s.login);
 
-  const SignUp = new FormAuth(allvalids, (axios) => ({
-    mutationFn(allValues) {
-      return axios.post('/usuario', allValues);
-    },
-    notlogoutIfNotAuthorized: true,
-    async onSuccess(_, allValues) {
-      const { apelido, ...credentials } = allValues;
+  const SignUp = new FormAuth({
+    campos: allvalids,
+    onSubmit: (axios) => ({
+      mutationFn: (allValues) => axios.post('/usuario', allValues),
+      notlogoutIfNotAuthorized: true,
+      async onSuccess(_, allValues) {
+        const { apelido, ...credentials } = allValues;
 
-      const { data } = await axios.post('/usuario/login', credentials);
+        const { data } = await axios.post('/usuario/login', credentials);
 
-      login(data.token);
+        login(data.token);
 
-      router.replace('/(app)/(home)');
-    },
-  }));
+        router.replace('/(app)/(home)');
+      },
+    }),
+  });
 
   return (
     <TAuth subTitulo='Cadastra-se ' titulo='CADASTRAR'>
       <SignUp.Form>
-        <SignUp.Input campo='apelido' persistValue />
-        <SignUp.Input campo='email' persistValue />
+        <SignUp.Input campo='apelido' />
+        <SignUp.Input campo='email' />
         <SignUp.Input campo='senha' secureTextEntry />
-        <SignUp.Footer
+        <SignUp.Submit textButton='CADASTRAR' />
+        <FormFooter
           link={{
             href: '/(auth)/login',
             text: 'Já está cadastrado?',
             textLink: 'Entre aqui!',
           }}
-          textButton='CADASTRAR'
         />
       </SignUp.Form>
     </TAuth>
