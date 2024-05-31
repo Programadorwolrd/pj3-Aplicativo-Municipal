@@ -27,13 +27,13 @@ export default function Login() {
       <Auth.Form>
         <Auth.Input campo='email' />
         <Auth.Input campo='senha' secureTextEntry />
+        <Auth.Submit textButton='Entrar' />
         <FormFooter
           link={{
             href: '/(auth)/cadastrar',
             text: 'Não tem cadastro?',
             textLink: 'cadastre-se aqui!',
           }}
-          textButton='Entrar'
         />
       </Auth.Form>
     </TAuth>

@@ -10,13 +10,9 @@ export default function FormFooter(props: {
     href: string;
     textLink: string;
   };
-  textButton: string;
 }) {
   return (
     <>
-      <Form.Trigger asChild>
-        <ButtonCustom>{props.textButton}</ButtonCustom>
-      </Form.Trigger>
       <YStack width={'100%'} alignItems='center'>
         <YStack width={'100%'} alignItems='center'>
           <Text fontFamily={'$outfitBold'} fontSize={17} marginVertical={18}>

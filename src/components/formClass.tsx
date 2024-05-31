@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import {
   type FormProps,
   Form as FormTamagui,
@@ -7,18 +7,23 @@ import {
   Text,
   YStack,
   type InputProps,
+  Spinner,
 } from 'tamagui';
 import { ButtonCustom } from './buttonCustom';
 
 import { useApi } from '@/lib/axiosApi';
 import type { AxiosInstance } from 'axios';
-import type { UseMutationOptions } from '@tanstack/react-query';
+import type { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
+import { Alert, Platform } from 'react-native';
 
 export class FormAuth<C extends ValidacaoOptions> {
   private AllValuesRef = useRef({} as Record<keyof C, string>).current;
   private isFormValid = useRef({} as Record<string, boolean>).current;
+  private useApiForm!: UseMutationResult<unknown>;
 
-  constructor(private options: FormOptions<C>) {}
+  constructor(private options: FormOptions<C>) {
+    this.useApiForm = useApi('mutate', options.onSubmit);
+  }
 
   private AvisoEValidador = (props: { campo: string; value: string }) => {
     const [aviso, setAviso] = useState('');
@@ -55,7 +60,32 @@ export class FormAuth<C extends ValidacaoOptions> {
     );
   };
 
-  private onSubmit = () => {};
+  private onSubmit = () => {
+    const isNotValid = Object.values(this.isFormValid).includes(false);
+
+    if (isNotValid) {
+      Platform.OS === 'web'
+        ? alert('formulario invalido')
+        : Alert.alert('formulario invalido', 'finalize o formulario');
+
+      return;
+    }
+
+    this.useApiForm.mutate(this.AllValuesRef);
+  };
+
+  public Submit = (props: { textButton: string }) => {
+    const { isPending } = this.useApiForm;
+
+    return (
+      <FormTamagui.Trigger asChild disabled={isPending}>
+        <ButtonCustom disabled={isPending}>
+          {isPending ? 'aguarde' : props.textButton}
+          {isPending && <Spinner size='large' color={'$blue10Dark'} />}
+        </ButtonCustom>
+      </FormTamagui.Trigger>
+    );
+  };
 
   public Input = ({ campo, ...props }: InputProps & { campo: keyof C & string }) => {
     const [value, setValue] = useState(this.AllValuesRef[campo] || '');
@@ -66,29 +96,24 @@ export class FormAuth<C extends ValidacaoOptions> {
         <Text fontSize={'$2'} color='green' mb='$1.5' fontFamily={'$outfitBold'}>
           {campo.toUpperCase()}:
         </Text>
-        <Input value={value} onChangeText={setValue} {...props} placeholder={campo} />
+        <InputStyled
+          value={value}
+          onChangeText={setValue}
+          {...props}
+          placeholder={campo}
+        />
         <this.AvisoEValidador campo={campo} value={value} />
       </YStack>
     );
   };
 
-  public Form = ({ children, ...props }: Omit<FormProps, 'onSubmit'>) => {
-    return (
-      <FormTamagui w={'100%'} alignItems='center' {...props} onSubmit={this.onSubmit}>
-        <YStack width={'100%'} gap={'$4'}>
-          {children}
-        </YStack>
-      </FormTamagui>
-    );
-  };
-
-  public Submit = (props: { textButton: string }) => {
-    return (
-      <FormTamagui.Trigger asChild>
-        <ButtonCustom>{props.textButton}</ButtonCustom>
-      </FormTamagui.Trigger>
-    );
-  };
+  public Form = ({ children, ...props }: Omit<FormProps, 'onSubmit'>) => (
+    <FormTamagui w={'100%'} alignItems='center' {...props} onSubmit={this.onSubmit}>
+      <YStack width={'100%'} gap={'$4'}>
+        {children}
+      </YStack>
+    </FormTamagui>
+  );
 }
 
 const InputStyled = styled(Input, {
