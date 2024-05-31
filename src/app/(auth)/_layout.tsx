@@ -1,5 +1,6 @@
 import { ArrowLeftCircle } from '@tamagui/lucide-icons';
 import { router, Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, View } from 'tamagui';
 
@@ -9,12 +10,15 @@ export default function AuthLayout() {
     borderColor: '$colorTransparent',
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <>
+      <StatusBar style='light' translucent />
+
       <Stack
         screenOptions={{
           header: () => (
             <Button
               m={15}
+              marginTop={40}
               position='absolute'
               color={'white'}
               padding={0}
@@ -33,6 +37,6 @@ export default function AuthLayout() {
         <Stack.Screen name='login' />
         <Stack.Screen name='cadastrar' />
       </Stack>
-    </SafeAreaView>
+    </>
   );
 }
