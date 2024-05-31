@@ -14,7 +14,9 @@ import { useEffect } from 'react';
 import { Alert, Platform } from 'react-native';
 import { storeAuth } from './logicAuth';
 
-const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.108:3000';
+const baseURL = process.env.EXPO_PUBLIC_API_URL;
+
+if (!baseURL) throw new Error('forneça o ip do backend no env');
 
 /**
  * Hook personalizado para realizar chamadas à API.
@@ -31,6 +33,8 @@ export function useApi<T, D = unknown>(type: T & ReqType, cb: CbConfig<T, D>) {
     headers: {
       Authorization: `Bearer ${token || ''}`,
     },
+    timeout: 5000,
+    timeoutErrorMessage: 'tempo limite excedido',
   });
 
   const configReactQuery = {
