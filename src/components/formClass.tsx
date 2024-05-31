@@ -1,31 +1,18 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  type PropsWithChildren,
-  type ReactNode,
-} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   type FormProps,
   Form as FormTamagui,
   Input,
-  Input as InputTamagui,
-  Label,
   styled,
   Text,
-  View,
-  XStack,
   YStack,
   type InputProps,
 } from 'tamagui';
 import { ButtonCustom } from './buttonCustom';
-import IconGoogle from '@/assets/iconGoogle.svg';
-import IconFacebook from '@/assets/iconFacebook.svg';
+
 import { useApi } from '@/lib/axiosApi';
-import type { Axios, AxiosInstance } from 'axios';
-import type { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
-import { Link } from 'expo-router';
-import { TextCustom } from './textCustom';
+import type { AxiosInstance } from 'axios';
+import type { UseMutationOptions } from '@tanstack/react-query';
 
 export class FormAuth<C extends ValidacaoOptions> {
   private AllValuesRef = useRef({} as Record<keyof C, string>).current;
@@ -97,52 +84,9 @@ export class FormAuth<C extends ValidacaoOptions> {
 
   public Submit = (props: { textButton: string }) => {
     return (
-      <View pb='$4' w='100%'>
-        <FormTamagui.Trigger asChild>
-          <ButtonCustom>{props.textButton}</ButtonCustom>
-        </FormTamagui.Trigger>
-        {/* <TextCustom H1 textAlign="center" color="red">
-          ENTRAR
-        </TextCustom> */}
-      </View>
-    );
-  };
-
-  public Footer = (props: {
-    link: {
-      text: string;
-      href: string;
-      textLink: string;
-    };
-    textButton: string;
-  }) => {
-    return (
-      <>
-        <this.Submit textButton={props.textButton} />
-        <YStack width={'100%'} alignItems='center'>
-          <YStack width={'100%'} alignItems='center'>
-            <Text fontFamily={'$outfitBold'} fontSize={17} marginVertical={18}>
-              OU
-            </Text>
-            <XStack gap={30}>
-              <IconGoogle width={40} height={40} />
-              <IconFacebook width={40} height={40} />
-            </XStack>
-          </YStack>
-        </YStack>
-        <Text fontSize={15} mt={30} textAlign='center'>
-          {props.link.text}
-          <Link href={props.link.href}>
-            <Text
-              textDecorationLine='underline'
-              color={'green'}
-              fontFamily={'$outfitBold'}
-            >
-              {props.link.textLink}
-            </Text>
-          </Link>
-        </Text>
-      </>
+      <FormTamagui.Trigger asChild>
+        <ButtonCustom>{props.textButton}</ButtonCustom>
+      </FormTamagui.Trigger>
     );
   };
 }

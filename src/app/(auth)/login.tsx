@@ -5,6 +5,7 @@ import { storeAuth } from '@/lib/logicAuth';
 import { FormAuth } from '@/components/formClass';
 import TAuth from '@/components/templateAuth';
 import { allvalids } from '@/lib/allValids';
+import FormFooter from '@/components/FormFooter';
 
 export default function Login() {
   const login = storeAuth((s) => s.login);
@@ -26,7 +27,7 @@ export default function Login() {
       <Auth.Form>
         <Auth.Input campo='email' />
         <Auth.Input campo='senha' secureTextEntry />
-        <Auth.Footer
+        <FormFooter
           link={{
             href: '/(auth)/cadastrar',
             text: 'Não tem cadastro?',
