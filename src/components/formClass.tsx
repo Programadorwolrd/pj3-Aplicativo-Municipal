@@ -79,7 +79,7 @@ export class FormAuth<C extends ValidacaoOptions> {
 
     return (
       <FormTamagui.Trigger asChild disabled={isPending}>
-        <ButtonCustom disabled={isPending}>
+        <ButtonCustom disabled={isPending} marginLeft='-2%' width='104%'>
           {isPending ? 'aguarde' : props.textButton}
           {isPending && <Spinner size='large' color={'$blue10Dark'} />}
         </ButtonCustom>

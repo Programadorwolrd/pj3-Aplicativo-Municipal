@@ -11,7 +11,7 @@ import {
 } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { storeAuth } from './logicAuth';
 
 const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.108:3000';
@@ -35,7 +35,6 @@ export function useApi<T, D = unknown>(type: T & ReqType, cb: CbConfig<T, D>) {
 
   const configReactQuery = {
     onError: alertErrorAxios,
-    throwOnError: alertErrorAxios,
     ...cb(axiosInstance),
   };
 
@@ -68,8 +67,6 @@ export function useApi<T, D = unknown>(type: T & ReqType, cb: CbConfig<T, D>) {
 export function alertErrorAxios(error: unknown) {
   if (!(error instanceof AxiosError)) throw error;
 
-  if (error.response?.status === 401) return; // useAPI já vai tratar esse
-
   const data =
     (error.response?.data as {
       error: string;
@@ -78,7 +75,9 @@ export function alertErrorAxios(error: unknown) {
 
   if (Array.isArray(data.message)) data.message = data.message.join(';\n \n');
 
-  Alert.alert(data.error || error.message, data.message || 'Erro desconhecido');
+  Platform.OS === 'web'
+    ? alert(data.error || error.message || data.message || 'Erro desconhecido')
+    : Alert.alert(data.error || error.message, data.message || 'Erro desconhecido');
 }
 
 type ReqType = 'query' | 'mutate';
