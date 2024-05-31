@@ -17,6 +17,14 @@ export const ButtonCustom = styled(Button, {
     borderColor: '$black2',
     backgroundColor: '$green9Light',
   },
+  hoverStyle: {
+    borderColor: '$black2',
+    backgroundColor: '$green9Light',
+  },
+
+  disabledStyle: {
+    backgroundColor: '$green5Light',
+  },
 
   variants: {
     bgOpaco: {
