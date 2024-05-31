@@ -29,8 +29,8 @@ export default function Cadastrar() {
     <TAuth subTitulo='Cadastra-se ' titulo='CADASTRAR'>
       <SignUp.Form>
         <SignUp.Input campo='apelido' />
-        <SignUp.Input campo='email' />
-        <SignUp.Input campo='senha' secureTextEntry />
+        <SignUp.Input campo='email' textContentType='emailAddress' />
+        <SignUp.Input campo='senha' secureTextEntry textContentType='password' />
         <SignUp.Submit textButton='CADASTRAR' />
         <FormFooter
           link={{

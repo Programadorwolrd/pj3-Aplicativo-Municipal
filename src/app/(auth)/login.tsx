@@ -39,8 +39,8 @@ export default function Login() {
   return (
     <TAuth subTitulo='texto pequeno e triste' titulo='Entrar'>
       <Auth.Form>
-        <Auth.Input campo='email' />
-        <Auth.Input campo='senha' secureTextEntry />
+        <Auth.Input campo='email' textContentType='emailAddress' />
+        <Auth.Input campo='senha' secureTextEntry textContentType='password' />
         <Auth.Submit textButton='Entrar' />
         <FormFooter
           link={{
