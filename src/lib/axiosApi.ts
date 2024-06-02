@@ -26,7 +26,7 @@ if (!baseURL) throw new Error('forneça o ip do backend no env');
  * @returns O retorno do React Query.
  */
 export function useApi<T, D = unknown>(type: T & ReqType, cb: CbConfig<T, D>) {
-  const { logout, token } = storeAuth();
+  const { logout, token, login } = storeAuth();
 
   const axiosInstance = axios.create({
     baseURL,
@@ -35,6 +35,25 @@ export function useApi<T, D = unknown>(type: T & ReqType, cb: CbConfig<T, D>) {
     },
     timeout: 5000,
     timeoutErrorMessage: 'tempo limite excedido',
+  });
+
+  axiosInstance.interceptors.response.use((res) => {
+    const urlDeRefreshToken = res.request?.responseURL === `${baseURL}/token/refresh`;
+
+    if (urlDeRefreshToken && res.status !== 401) {
+      const tokenNovo = res.data.token;
+
+      // atualiza o token sem disparar a renderização
+      storeAuth.setState({ token: tokenNovo });
+
+      // refaz a chamada com o novo token
+      return axiosInstance({
+        ...res.config,
+        headers: { Authorization: `Bearer ${tokenNovo}` },
+      });
+    }
+
+    return res;
   });
 
   const configReactQuery = {
@@ -56,7 +75,6 @@ export function useApi<T, D = unknown>(type: T & ReqType, cb: CbConfig<T, D>) {
         logout();
 
         router.replace('/(auth)');
-        console.log('a');
       }
 
       Alert.alert('Sessão expirada', 'Faça login novamente', [{ onPress: sair }], {
