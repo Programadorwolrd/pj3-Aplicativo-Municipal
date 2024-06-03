@@ -8,19 +8,21 @@
     "icon": "src/assets/iconLay.jpeg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "src/assets/iconLay.jpeg",
+      "image": "src/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.myapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "src/assets/iconLay.jpeg",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.myapp"
     },
     "plugins": ["expo-router", "expo-font"],
     "experiments": {
