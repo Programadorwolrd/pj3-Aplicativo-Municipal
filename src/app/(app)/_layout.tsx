@@ -1,7 +1,7 @@
 import TabQrCode from '@/components/TabQrCode';
 import { storeAuth } from '@/lib/logicAuth';
 
-import { BarChart2, CircleUserRound, Home, MapPinned } from '@tamagui/lucide-icons';
+import { BarChart2, CircleUserRound, Home, Code2 } from '@tamagui/lucide-icons';
 import { Redirect, Tabs, usePathname } from 'expo-router';
 
 export default function HomeLayout() {
@@ -41,15 +41,16 @@ export default function HomeLayout() {
           },
         }}
       />
-      <Tabs.Screen
-        name='(mapa)'
+       <Tabs.Screen
+        name='(ranking)'
         options={{
-          title: 'Mapa',
-          tabBarIcon({ size, color }) {
-            return <MapPinned color={color} size={size * iconSize} />;
+          title: 'Rank',
+          tabBarIcon({ size, color, focused }) {
+            return <BarChart2 strokeWidth={5} color={color} size={size * iconSize} />;
           },
         }}
       />
+   
       <Tabs.Screen
         name='(qrCode)'
         options={{
@@ -59,15 +60,16 @@ export default function HomeLayout() {
           tabBarStyle: { display: 'none' },
         }}
       />
-      <Tabs.Screen
-        name='(ranking)'
-        options={{
-          title: 'Rank',
-          tabBarIcon({ size, color, focused }) {
-            return <BarChart2 strokeWidth={5} color={color} size={size * iconSize} />;
-          },
-        }}
-      />
+     <Tabs.Screen
+       name='(devs)'
+       options={{
+         title: 'Devs',
+         tabBarIcon({ size, color }) {
+           return <Code2 color={color} size={size * iconSize} />;
+         },
+       }}
+     />
+     
       <Tabs.Screen
         name='(profile)'
         options={{

@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '../../../components/botao';
 import Card from '../../../components/card-mapa';
 
-export default function Profile() {
+export default function mapaPage() {
   return (
     <View>
       <Text
