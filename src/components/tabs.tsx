@@ -2,19 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import type { TabsContentProps } from 'tamagui';
 import {
   Button,
-  H5,
-  Separator,
-  SizableText,
   Tabs,
   XStack,
   YStack,
   isWeb,
   Text,
   View,
-  useTabsContext,
 } from 'tamagui';
 import { Audio } from 'expo-av';
-import { TouchableOpacity } from 'react-native';
+import { Pressable } from 'react-native';
 
 const demos = ['horizontal', 'vertical'] as const;
 
@@ -170,7 +166,7 @@ const HorizontalTabs = ({ catalogo }) => {
         </View>
       </TabsContent>
       <TabsContent value='tab2'>
-        <TouchableOpacity
+        <Pressable
           style={{
             backgroundColor: 'transparent',
             height: 50,
@@ -185,7 +181,7 @@ const HorizontalTabs = ({ catalogo }) => {
           onPress={playSound}
         >
           <Text style={{ color: '#329F60', fontSize: 18 }}>Escute o som</Text>
-        </TouchableOpacity>
+        </Pressable>
       </TabsContent>
       <TabsContent value='tab3'>
         <Text color='#939393' fontSize={18}>
@@ -204,13 +200,10 @@ const TabsContent = (props: TabsContentProps) => {
       padding='$2'
       alignItems='center'
       justifyContent='center'
-      textAlign='justify'
       flex={2}
-      color='white'
       borderColor='#000'
       borderTopLeftRadius={0}
       borderTopRightRadius={0}
-      //   overflow='hidden'
       {...props}
     >
       {props.children}

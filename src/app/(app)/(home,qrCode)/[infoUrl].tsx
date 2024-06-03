@@ -1,16 +1,14 @@
-//******************** AINDA NÃO TERMINEI **************************
 import {
   View,
   Text,
   FlatList,
   StyleSheet,
   Dimensions,
-  LogBox,
   Image,
-  TouchableOpacity,
   type ImageSourcePropType,
   type NativeSyntheticEvent,
   type NativeScrollEvent,
+  Pressable,
 } from 'react-native';
 import React, { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Button, ScrollView } from 'tamagui';
@@ -114,6 +112,7 @@ export default function InfoUrl() {
 
       return activeIndex === index ? (
         <View
+          key={dot.id}
           style={{
             backgroundColor: '#329F60',
             height: 10,
@@ -144,9 +143,9 @@ export default function InfoUrl() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ position: 'absolute', top: 50, left: 10, zIndex: 1 }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Pressable onPress={() => navigation.goBack()}>
           <Ionicons name='arrow-back' size={40} color='white' />
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       <ScrollView style={{ backgroundColor: 'black' }}>
