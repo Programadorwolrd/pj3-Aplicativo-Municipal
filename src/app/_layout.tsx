@@ -1,8 +1,16 @@
 import { Slot } from 'expo-router';
-import { TamaguiProvider, Theme } from 'tamagui';
+import { TamaguiProvider } from 'tamagui';
 import appConfig from 'tamagui.config';
 
 import { loadFonts } from '@/lib/loadFonts';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+export const clientQuery = new QueryClient({
+  defaultOptions: {
+    mutations: { retry: 0 },
+    queries: { retry: 1 },
+  },
+});
 
 //O  Slot indica onde o grupo "(app)" será renderizado
 export default function RootLayout() {
@@ -12,7 +20,9 @@ export default function RootLayout() {
 
   return (
     <TamaguiProvider config={appConfig} defaultTheme='light'>
+      <QueryClientProvider client={clientQuery}>
         <Slot />
+      </QueryClientProvider>
     </TamaguiProvider>
   );
 }

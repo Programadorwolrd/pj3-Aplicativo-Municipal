@@ -17,12 +17,29 @@ export const TextCustom = styled(Text, {
         fontSize: '$6',
       },
     },
-    a:{
-      true:{
-        color: '$gray8Dark', 
-        textDecorationLine: 'underline'
-      }
-    }
+    a: {
+      true: {
+        color: '$gray8Dark',
+        textDecorationLine: 'underline',
+      },
+    },
+    preRegs: {
+      p: {
+        fontSize: '$8',
+        color: 'white',
+        fontFamily: '$paiaFino',
+        textalign: 'center',
+      },
+      h3: {
+        fontFamily: '$outfitBold',
+        fontSize: '$10',
+        color: 'white',
+      },
+      h1: {
+        fontFamily: '$outfitBold',
+        fontSize: '$9',
+      },
+    },
   },
 } as const);
 

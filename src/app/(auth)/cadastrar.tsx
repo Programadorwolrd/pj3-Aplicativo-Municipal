@@ -1,42 +1,45 @@
+import { FormAuth } from '@/components/formClass';
+import FormFooter from '@/components/FormFooter';
 import TAuth from '@/components/templateAuth';
+import { allvalids } from '@/lib/allValids';
+import { storeAuth } from '@/lib/logicAuth';
+import { router } from 'expo-router';
 
 export default function Cadastrar() {
-  const values = {
-    apelido: '',
-    email: '',
-    senha: '',
-    change(campo: Exclude<keyof typeof this, 'change'>) {
-      return (v: string) => {
-        this[campo] = v;
-      };
-    },
-  };
+  const login = storeAuth((s) => s.login);
 
-  // Type 'string' is not assignable to type 'string & ((campo: "apelido" | "email" | "senha" | "change") => (v: string) => void)'.
-  // Type 'string' is not assignable to type '(campo: "apelido" | "email" | "senha" | "change") => (v: string) => void'.t
+  const SignUp = new FormAuth({
+    campos: allvalids,
+    onSubmit: (axios) => ({
+      mutationFn: (allValues) => axios.post('/usuario', allValues),
+      notlogoutIfNotAuthorized: true,
+      async onSuccess(_, allValues) {
+        const { apelido, ...credentials } = allValues;
+
+        const { data } = await axios.post('/usuario/login', credentials);
+
+        login(data.token);
+
+        router.replace('/(app)/(home)');
+      },
+    }),
+  });
 
   return (
     <TAuth subTitulo='Cadastra-se ' titulo='CADASTRAR'>
-      <TAuth.Form
-        link={{
-          href: '/(auth)/login',
-          text: 'Já está cadastrado?',
-          textLink: 'Entre aqui!',
-        }}
-        textButton='CADASTRAR'
-        onSubmit={() => {
-          console.log(values);
-        }}
-      >
-        <TAuth.InputAuth placeholder='apelido' onChangeText={values.change('apelido')} />
-        <TAuth.InputAuth placeholder='email' onChangeText={values.change('email')} />
-        <TAuth.InputAuth
-          placeholder='senha'
-          onChangeText={values.change('senha')}
-          mb={3}
-          secureTextEntry
+      <SignUp.Form>
+        <SignUp.Input campo='apelido' />
+        <SignUp.Input campo='email' textContentType='emailAddress' />
+        <SignUp.Input campo='senha' secureTextEntry textContentType='password' />
+        <SignUp.Submit textButton='CADASTRAR' />
+        <FormFooter
+          link={{
+            href: '/(auth)/login',
+            text: 'Já está cadastrado?',
+            textLink: 'Entre aqui!',
+          }}
         />
-      </TAuth.Form>
+      </SignUp.Form>
     </TAuth>
   );
 }

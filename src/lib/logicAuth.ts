@@ -1,22 +1,31 @@
-import { create } from "zustand";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
-interface AuthState {
-  token: string | null;
-  entrar: (token: string) => void;
-  sair: () => void;
+interface Auth {
+  token: null | string;
+
+  login: (token: string) => void;
+  logout: () => void;
 }
+export const storeAuth = create<Auth>()(
+  persist(
+    (set, get) => ({
+      token: null,
 
-export const userStoreAuth = create<AuthState>((set) => ({
-  token: null,
+      async login(token: string) {
+        set(() => ({ token: token }));
+        router.replace('/(app)/(home)');
+      },
 
-  entrar: (tokenNovo: string) => {
-    set(({ token: tokenAtual }) => {
-      if (tokenAtual) throw new Error("Você já está logado");
-
-      return { token: tokenNovo };
-    });
-  },
-  sair: () => {
-    set({ token: null });
-  },
-}));
+      logout() {
+        set(() => ({ token: null }));
+      },
+    }),
+    {
+      name: 'authPaia',
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);

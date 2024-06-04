@@ -1,18 +1,19 @@
 import TabQrCode from '@/components/TabQrCode';
-import { BarChart2, CircleUserRound, Home, MapPinned } from '@tamagui/lucide-icons';
+import { storeAuth } from '@/lib/logicAuth';
+
+import { BarChart2, CircleUserRound, Home, Code2 } from '@tamagui/lucide-icons';
 import { Redirect, Tabs, usePathname } from 'expo-router';
 
 export default function HomeLayout() {
-  // simular loggin até a logica estiver completa
-  const isLogged = true;
+  const token = storeAuth((s) => s.token);
 
-  if (!isLogged) return <Redirect href={'/(auth)/'} />;
+  if (!token) return <Redirect href={'/(auth)'} />;
 
   const iconSize = 1.4;
 
   return (
     <Tabs
-      screenOptions={({ route: { name } }) => ({
+      screenOptions={() => ({
         headerShown: false,
         tabBarActiveTintColor: '#00A86B',
         tabBarInactiveTintColor: 'black',
@@ -24,7 +25,7 @@ export default function HomeLayout() {
         },
         tabBarStyle: {
           height: 65,
-          display: name === '(home)/[infoUrl]' ? 'none' : 'flex',
+          display: usePathname() !== '/' ? 'none' : undefined,
         },
         tabBarLabelStyle: {
           fontSize: 11,
@@ -40,15 +41,16 @@ export default function HomeLayout() {
           },
         }}
       />
-      <Tabs.Screen
-        name='(mapa)'
+       <Tabs.Screen
+        name='(ranking)'
         options={{
-          title: 'Mapa',
-          tabBarIcon({ size, color }) {
-            return <MapPinned color={color} size={size * iconSize} />;
+          title: 'Rank',
+          tabBarIcon({ size, color, focused }) {
+            return <BarChart2 strokeWidth={5} color={color} size={size * iconSize} />;
           },
         }}
       />
+   
       <Tabs.Screen
         name='(qrCode)'
         options={{
@@ -58,15 +60,16 @@ export default function HomeLayout() {
           tabBarStyle: { display: 'none' },
         }}
       />
-      <Tabs.Screen
-        name='(ranking)'
-        options={{
-          title: 'Rank',
-          tabBarIcon({ size, color, focused }) {
-            return <BarChart2 strokeWidth={5} color={color} size={size * iconSize} />;
-          },
-        }}
-      />
+     <Tabs.Screen
+       name='(devs)'
+       options={{
+         title: 'Devs',
+         tabBarIcon({ size, color }) {
+           return <Code2 color={color} size={size * iconSize} />;
+         },
+       }}
+     />
+     
       <Tabs.Screen
         name='(profile)'
         options={{
@@ -74,20 +77,6 @@ export default function HomeLayout() {
           tabBarIcon({ size, color }) {
             return <CircleUserRound color={color} size={size * iconSize} />;
           },
-        }}
-      />
-      <Tabs.Screen
-        name='(home)/[infoUrl]'
-        options={{
-          tabBarStyle: { display: 'none' },
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name='(qrCode)/[infoUrl]'
-        options={{
-          tabBarStyle: { display: 'none' },
-          href: null,
         }}
       />
     </Tabs>

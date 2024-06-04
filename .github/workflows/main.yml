@@ -1,0 +1,35 @@
+name: codigo feio não passaras
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  format: 
+    name: format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: configura repo
+        uses: actions/checkout@v3
+    
+      - name: setup node
+        uses: actions/setup-node@v3
+        with: 
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Commit changes if significant
+        run: |
+          git add .
+          changes=$(git diff --stat | tail -n 1 | awk '{print $1}')
+          if [ "$changes" -gt 20 ]; then
+            git commit -m 'style: Format code'
+            git push
+          else
+            echo "Changes are within the tolerance limit, no commit made."
+          fi
+  
+  

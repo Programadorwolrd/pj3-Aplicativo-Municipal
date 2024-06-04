@@ -6,7 +6,7 @@ interface avatarPerfil {
 }
 
 export default function AvatarProfile({ img }: avatarPerfil) {
-    //teste
+  //teste
   const avatar: avatarPerfil = {
     img
   };

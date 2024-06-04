@@ -6,5 +6,5 @@ export const unstable_settings = {
 };
 
 export default function HomeLayout() {
-  return <StackApp titulo='Inicio' />;
+  return <StackApp titulo='src/assets/BioDex.png' />;
 }

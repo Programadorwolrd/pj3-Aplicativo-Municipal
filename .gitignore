@@ -6,10 +6,13 @@ node_modules/
 #tamagui
 .tamagui
 
+
 # Expo
 .expo/
 dist/
 web-build/
+android/
+ios/
 
 # Native
 *.orig.*
@@ -33,6 +36,7 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
 
 # typescript
 *.tsbuildinfo

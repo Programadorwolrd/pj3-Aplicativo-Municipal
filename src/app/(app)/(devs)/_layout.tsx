@@ -1,5 +1,5 @@
 import StackApp from '@/components/StackApp';
 
 export default function ProfileLayout() {
-  return <StackApp titulo='Mapa' />;
+  return <StackApp titulo='Desenvolvedores' />;
 }
