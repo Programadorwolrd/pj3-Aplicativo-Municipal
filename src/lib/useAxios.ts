@@ -2,12 +2,12 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { storeAuth } from "./logicAuth";
 import { Alert } from "react-native";
 
-const baseURL = process.env.EXPO_PUBLIC_API_URL;
+export const baseURL = process.env.EXPO_PUBLIC_API_URL;
 
 if (!baseURL) throw new Error("forneça o URL do backend no env");
 
 export default function useAxios() {
-  const { token, login, logout } = storeAuth();
+  const { token, logout } = storeAuth();
 
   const axiosInstance = axios.create({
     baseURL,
@@ -28,7 +28,7 @@ export default function useAxios() {
     if (redirectParaAttToken) {
       const tokenNovo = res.data.token;
 
-      login(tokenNovo);
+      storeAuth.setState({ token: tokenNovo });
 
       return axios({
         ...res.config,

@@ -23,7 +23,7 @@ export default function useApi<T, D = unknown, E = Error, V = void>(
   cbConfig: T extends "mutate"
     ? CallbackAxios<UseMutationOptions<D, E, V>>
     : CallbackAxios<UseQueryOptions<D, E, V>>
-): T extends "mutate" ? UseMutationResult<D, E> : UseQueryResult<D, E>;
+): T extends "mutate" ? UseMutationResult<D, E, V> : UseQueryResult<D, E>;
 
 // função real
 export default function useApi(type: QueryType, cbConfig: QueryOptions) {

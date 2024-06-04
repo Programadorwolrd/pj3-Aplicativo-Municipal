@@ -25,7 +25,7 @@ export class FormAuth<C extends ValidacaoOptions> {
   private useApiForm!: UseMutationResult;
 
   constructor(private options: FormOptions<C>) {
-    this.useApiForm = useApi("mutate", options.onSubmit);
+    this.useApiForm = useApi("mutate", options.onSubmit) as UseMutationResult;
   }
 
   private AvisoEValidador = (props: { campo: string; value: string }) => {
