@@ -2,9 +2,14 @@ import { View, Text } from 'react-native';
 import React from 'react';
 import Button from '../../../components/botao';
 import Card from '../../../components/card-mapa';
+import { Image } from 'react-native';
+import myImage from '../../../assets/mapaoficial.png'; // substitua 'suaImagem.png' pelo nome correto da sua imagem
+
 
 export default function mapaPage() {
   return (
+
+    
     <View>
       <Text
         style={{
@@ -24,7 +29,11 @@ export default function mapaPage() {
       </View> */}
 
       <Card></Card>
-    </View>
+      </View>
+   
+
+
+
   );
 }
 

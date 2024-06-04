@@ -1,8 +1,13 @@
 import React from 'react';
 import { View, Text, Image } from 'tamagui'; // Certifique-se de importar Image do pacote tamagui
+import myImage from '../assets/mapaoficial.png'; // substitua 'suaImagem.png' pelo nome correto da sua imagem
 
 const Card = () => {
   return (
+
+
+
+    
     <View style={{ display: 'flex', flexDirection: 'column' }}>
       <View
         style={{
@@ -130,11 +135,15 @@ const Card = () => {
         >
           Dica!
         </Text>
+
         <Text style={{ color: 'black', fontSize: 15, alignSelf: 'left', marginLeft: 20 }}>
           Procure perto das arvores e de zonas de fluxo , com facil acesso remoto ou
           arvores.
         </Text>
       </View>
+
+
+      <Image source={myImage} style={{ width: 100, height: 600, marginLeft: 510,marginTop: -210, }} />
     </View>
   );
 };
