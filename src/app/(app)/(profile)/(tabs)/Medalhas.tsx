@@ -11,11 +11,11 @@ import React, { useRef, useEffect } from "react";
 
 const medalha = require("../../../../assets/medalha.png");
 const data: { name: string; url: string; titulo: string }[] = [
-  { name: "Master", url: medalha, titulo: "Mestre" },
-  { name: "Dectetive", url: medalha, titulo: "Detetive" },
-  { name: "Caçador", url: medalha, titulo: "Caçador de Recompensas" },
-  { name: "Jogador", url: medalha, titulo: "Jogador Profissional" },
-  { name: "Top 1", url: medalha, titulo: "Top 1 do Ranking" },
+  { name: "Master", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Mestre" },
+  { name: "Dectetive", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Detetive" },
+  { name: "Caçador", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Caçador de Recompensas" },
+  { name: "Jogador", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Jogador Profissional" },
+  { name: "Top 1", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Top 1 do Ranking" },
   { name: "Incrivel", url: medalha, titulo: "Incrível Jogador" },
   { name: "Biologo", url: "https://picsum.photos/100/100", titulo: "Biólogo" },
   { name: "Escolhido", url: "https://picsum.photos/100/100", titulo: "O Escolhido" },

@@ -4,24 +4,26 @@ import bichoIcon from "../../../../assets/macaco.png";
 import { useNavigation } from '@react-navigation/native'
 
 import React, { useRef, useEffect } from "react";
+import useApi from "@/lib/useApi";
+import axios from "axios";
 
 const data: { nome: string; url: string; id: number }[] = [
-  { nome: "Capybara", url: bichoIcon, id: 1 },
-  { nome: "Sairá-7-Cores", url: bichoIcon, id: 2 },
-  { nome: "Esquilo", url: bichoIcon, id: 3 },
+  { nome: "Capybara", url: 'https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png', id: 1 },
+  { nome: "Sairá-7-Cores", url: 'https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png', id: 2 },
+  { nome: "Esquilo", url: 'https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png', id: 3 },
   { nome: "Tucano", url: bichoIcon, id: 4 },
-  { nome: "Calango", url: bichoIcon, id: 5 },
+  { nome: "Calango", url: 'https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png', id: 5 },
   { nome: "Juqueriquerê", url: bichoIcon, id: 6 },
-  { nome: "Caraguatá", url: bichoIcon, id: 7 },
+  { nome: "Caraguatá", url: 'https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png', id: 7 },
   { nome: "Quaresmeira", url: bichoIcon, id: 8 },
-  { nome: "Aranha", url: bichoIcon, id: 9 },
+  { nome: "Aranha", url: 'https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png', id: 9 },
   { nome: "Tatu", url: bichoIcon, id: 10 },
-  { nome: "Bicho 11", url: bichoIcon, id: 11 },
+  { nome: "Bicho 11", url: 'https://picsum.photos/100/100', id: 11 },
   { nome: "Borboleta", url: bichoIcon, id: 12 },
-  { nome: "Borboleta", url: bichoIcon, id: 12 },
-  { nome: "Borboleta", url: bichoIcon, id: 12 },
-  { nome: "Borboleta", url: bichoIcon, id: 12 },
-  { nome: "Borboleta", url: bichoIcon, id: 12 },
+  { nome: "Borboleta", url: bichoIcon, id: 13 },
+  { nome: "Borboleta", url: bichoIcon, id: 14 },
+  { nome: "Borboleta", url: bichoIcon, id: 15 },
+  { nome: "Borboleta", url: bichoIcon, id: 16 },
 ];
 const formatData = (data: any, numColumns: number) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -35,6 +37,17 @@ const formatData = (data: any, numColumns: number) => {
 }
 const numColumns: number = 3;
 export default function SeresVivos() {
+
+  const datsfdsda = useApi("query", (axios) => {
+    return {
+      queryKey: ['xabulha'],
+      queryFn: () => {
+        return axios.get('/usuario')
+
+      }
+    }
+  })
+  console.log(datsfdsda.data);
   const navigation = useNavigation()
 
   return (
@@ -70,24 +83,24 @@ export default function SeresVivos() {
                   w={"100%"}
                   h={"80%"}
                 />
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  borderBottomColor={"#329F60"}
+                <XStack w={"100%"} pb={"$1.5"}
+                  flex={2.5} borderBottomColor={"#329F60"}
                   borderBottomStartRadius={"$3"}
                   borderBottomEndRadius={"$3"}
-                  borderBottomWidth={"$1"}
-                  w={"100%"}
-                  jc={"center"}
-                  ai={"center"}
-                  pb={"$1.5"}
-                  flex={2.5}
-                // scrollEnabled={false}
-                >
-                  <Text fontSize={"$6"} color={"#000"}>
-                    {item.nome}
-                  </Text>
-                </ScrollView>
+                  borderBottomWidth={"$1"}>
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    w={"100%"}
+                    jc={"center"}
+                    ai={"center"}
+                  // scrollEnabled={false}
+                  >
+                    <Text fontSize={"$6"} color={"#000"}>
+                      {item.nome}
+                    </Text>
+                  </ScrollView>
+                </XStack>
               </YStack>
             </Pressable>
           );

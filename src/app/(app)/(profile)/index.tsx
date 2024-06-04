@@ -13,20 +13,20 @@ import Tabs from "./(tabs)";
 const backProfile = require("../../../assets/background-perfil.png");
 
 export default function Profile() {
-  const loggout = storeAuth((s) => s.logout);
+  // const loggout = storeAuth((s) => s.logout);
 
-  const { data, refetch } = useApi("query", (axios) => ({
-    queryKey: ["getMyProfile"],
-    queryFn() {
-      return axios.get("/usuario");
-    },
-  }));
+  // const { data, refetch } = useApi("query", (axios) => ({
+  //   queryKey: ["getMyProfile"],
+  //   queryFn() {
+  //     return axios.get("/usuario");
+  //   },
+  // }));
 
-  const { mutate } = useApi("mutate", (axios) => ({
-    mutationFn() {
-      return axios.delete("/usuario");
-    },
-  }));
+  // const { mutate } = useApi("mutate", (axios) => ({
+  //   mutationFn() {
+  //     return axios.delete("/usuario");
+  //   },
+  // }));
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -55,7 +55,7 @@ export default function Profile() {
           <AvatarProfile img={require("../../../assets/avatar-icon.jpeg")} />
         </YStack>
         <Tabs />
-      <View>
+        {/* <View>
         <Text fontSize={100}>{""}</Text>
         <YStack gap={10}>
           <Text fontSize={60}>{data?.data?.usuario?.apelido || "..."}</Text>
@@ -67,7 +67,7 @@ export default function Profile() {
             delete
           </ButtonCustom>
         </YStack>
-      </View>
+      </View> */}
       </YStack>
     </SafeAreaView>
 

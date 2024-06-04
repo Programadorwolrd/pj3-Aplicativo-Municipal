@@ -16,7 +16,7 @@ export default function ProfileData({ nome, ranking }: PropsProfile) {
       <Text fontSize={"$7"} color={"$white2"}>
         {user.nome}
       </Text>
-      <Text fontSize={"$6"} color={"$white2"} mt={"$3"}>
+      <Text fontSize={"$6"} color={"$white2"} mt={"$3"} fontWeight={"bold"}>
         Ranking #{user.ranking}
       </Text>
     </YStack>
