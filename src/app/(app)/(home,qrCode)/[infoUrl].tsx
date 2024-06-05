@@ -21,12 +21,10 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function InfoUrl() {
   const flatlistRef = useRef<FlatList>(null);
-  // Get Dimesnions
   const screenWidth = Dimensions.get('window').width;
   const [activeIndex, setActiveIndex] = useState(0);
   const navigation = useNavigation();
 
-  // Auto Scroll
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,10 +46,9 @@ export default function InfoUrl() {
 
   const getItemLayout = (data: unknown, index: number) => ({
     length: screenWidth,
-    offset: screenWidth * index, // for first image - 300 * 0 = 0pixels, 300 * 1 = 300, 300*2 = 600
+    offset: screenWidth * index, 
     index: index,
   });
-  //
 
   const Content = {
     name: 'Tucano',
@@ -78,7 +75,7 @@ export default function InfoUrl() {
     },
     {
       id: 1,
-      image: require('../../../assets/tucano.png'),
+      image: require('../../../assets/saira 1.jpg'),
     },
     {
       id: 2,
@@ -86,29 +83,22 @@ export default function InfoUrl() {
     },
   ];
 
-  //  Display Images // UI
   const renderItem = (props: { item: CarouselData; index: number }) => {
     return (
       <View style={{ backgroundColor: 'black' }}>
-        <Image source={props.item.image} style={{ height: 460, width: screenWidth }} />
+        <Image source={props.item.image} style={{ height: 460, width: screenWidth }} resizeMode="cover" />
       </View>
     );
   };
 
-  // Handle Scroll
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    // Get the scroll position
     const scrollPosition = event.nativeEvent.contentOffset.x;
-    // Get the index of current active item
     const index = Math.round(scrollPosition / screenWidth);
-    // Update the index
-    setActiveIndex(index); // assuming you have a state variable called activeIndex
+    setActiveIndex(index); 
   };
 
-  // Render Dot Indicators
   const renderDotIndicators = () => {
     return carouselData.map((dot, index) => {
-      // if the active index === index
 
       return activeIndex === index ? (
         <View
@@ -191,10 +181,16 @@ export default function InfoUrl() {
               marginBottom: -15,
             }}
           >
-            <Text style={{ color: 'white', fontSize: 18 }}>{Content.age}</Text>
+            <Text 
+            style={{
+               color: 'white',
+                fontSize: 18,
+                marginVertical: 15, 
+               }}
+               >{Content.age}</Text>
             <Image
               source={Content.medalha}
-              style={{ marginLeft: 10 }} // Adicione algum espaço entre o texto e a imagem
+              style={{ marginLeft: 10 }} 
             />
           </View>
           <Text style={{ color: 'white', fontSize: 18, marginHorizontal: 20 }}>
@@ -245,7 +241,5 @@ export default function InfoUrl() {
     </SafeAreaView>
   );
 }
-
-// export default InfoUrl;
 
 const styles = StyleSheet.create({});
