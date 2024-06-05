@@ -4,11 +4,9 @@ import myImage from '../assets/mapaoficial.png'; // substitua 'suaImagem.png' pe
 
 const Card = () => {
   return (
-
-
-
-    
-    <View style={{ display: 'flex', flexDirection: 'column' }}>
+    <View
+      style={{ display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}
+    >
       <View
         style={{
           width: '43%',
@@ -141,9 +139,6 @@ const Card = () => {
           arvores.
         </Text>
       </View>
-
-
-      <Image source={myImage} style={{ width: 100, height: 600, marginLeft: 510,marginTop: -210, }} />
     </View>
   );
 };
