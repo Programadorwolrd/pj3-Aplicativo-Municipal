@@ -25,6 +25,7 @@ interface PropsUser {
   ranking: number;
 }
 
+
 export default function Profile() {
   // botão de logout e delete de conta
 
@@ -42,7 +43,6 @@ export default function Profile() {
   //     return axios.delete("/usuario");
   //   },
   // }));
-
   const user = useApi("query", (axios) => {
     return {
       queryKey: ['xabulha'],
@@ -65,7 +65,8 @@ export default function Profile() {
     },
     ranking: 3
   }
-console.log(dataUser, 'data user')
+  console.log(dataUser, 'data user')
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <YStack backgroundColor={"#F6FFF7"} fullscreen>
@@ -89,12 +90,12 @@ console.log(dataUser, 'data user')
             </Text>
 
           </XStack>
-          <ProfileData nome={dataUser.apelido} ranking={5} />
+          <ProfileData nome={dataUser.apelido} ranking={dataUser.ranking} />
           <AvatarProfile img={dataUser.foto} />
         </YStack>
         <Tabs />
 
-{/* componente do botão de logout e delete de conta */}
+        {/* componente do botão de logout e delete de conta */}
 
         {/* <View>
         <Text fontSize={100}>{""}</Text>
