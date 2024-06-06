@@ -58,10 +58,10 @@ export default function Profile() {
     apelido: user.data?.data.usuario.apelido,
     foto: user.data?.data.usuario.foto,
     lidopelouser: {
-      // catalogo: {
-      //   uuid: user.data?.data.usuario.catalogo.uuid,
-      //   nomePopular: user.data?.data.usuariocatalogo.nomePopular
-      // }
+      catalogo: {
+        uuid: user.data?.data.usuario.catalogo.uuid,
+        nomePopular: user.data?.data.usuariocatalogo.nomePopular
+      }
     },
     ranking: 3
   }
