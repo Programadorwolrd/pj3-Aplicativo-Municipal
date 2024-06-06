@@ -9,10 +9,25 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AvatarProfile from "./Avatar";
 import ProfileData from "./ProfileData";
 import Tabs from "./(tabs)";
+import axios from "axios";
 
 const backProfile = require("../../../assets/background-perfil.png");
 
+interface PropsUser {
+  apelido: string;
+  foto: string,
+  lidopelouser: {
+    catalogo: {
+      uuid: string,
+      nomePopular: string
+    }
+  },
+  ranking: number;
+}
+
 export default function Profile() {
+  // botão de logout e delete de conta
+
   // const loggout = storeAuth((s) => s.logout);
 
   // const { data, refetch } = useApi("query", (axios) => ({
@@ -28,6 +43,29 @@ export default function Profile() {
   //   },
   // }));
 
+  const user = useApi("query", (axios) => {
+    return {
+      queryKey: ['xabulha'],
+      queryFn: () => {
+        return axios.get('/usuario')
+
+      }
+    }
+  })
+  console.log(user.data?.data.usuario, 'user');
+
+  const dataUser: PropsUser = {
+    apelido: user.data?.data.usuario.apelido,
+    foto: user.data?.data.usuario.foto,
+    lidopelouser: {
+      // catalogo: {
+      //   uuid: user.data?.data.usuario.catalogo.uuid,
+      //   nomePopular: user.data?.data.usuariocatalogo.nomePopular
+      // }
+    },
+    ranking: 3
+  }
+console.log(dataUser, 'data user')
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <YStack backgroundColor={"#F6FFF7"} fullscreen>
@@ -51,10 +89,13 @@ export default function Profile() {
             </Text>
 
           </XStack>
-          <ProfileData nome="Xabullinha Rei do Atraso" ranking={5} />
-          <AvatarProfile img={require("../../../assets/avatar-icon.jpeg")} />
+          <ProfileData nome={dataUser.apelido} ranking={5} />
+          <AvatarProfile img={dataUser.foto} />
         </YStack>
         <Tabs />
+
+{/* componente do botão de logout e delete de conta */}
+
         {/* <View>
         <Text fontSize={100}>{""}</Text>
         <YStack gap={10}>
