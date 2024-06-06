@@ -59,8 +59,8 @@ export default function Profile() {
     foto: user.data?.data.usuario.foto,
     lidopelouser: {
       catalogo: {
-        uuid: user.data?.data.usuario.catalogo.uuid,
-        nomePopular: user.data?.data.usuariocatalogo.nomePopular
+        uuid: user.data?.data?.usuario?.catalogo?.uuid,
+        nomePopular: user.data?.data?.usuariocatalogo?.nomePopular
       }
     },
     ranking: 3
