@@ -92,8 +92,7 @@ export default function SeresVivos() {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     w={"100%"}
-                    jc={"center"}
-                    ai={"center"}
+                    
                   // scrollEnabled={false}
                   >
                     <Text fontSize={"$6"} color={"#000"}>

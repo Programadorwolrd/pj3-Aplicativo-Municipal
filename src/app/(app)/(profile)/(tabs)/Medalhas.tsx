@@ -69,7 +69,7 @@ export default function Medalhas() {
             <Pressable style={styles.item}>
               <YStack w={"100%"} h={"100%"} jc={"center"} ai={"center"}>
                 <ScrollView horizontal
-                  showsHorizontalScrollIndicator={false} w={"100%"} flex={3} jc={"center"} ai={"center"}>
+                  showsHorizontalScrollIndicator={false} w={"100%"} flex={3} >
                   <Text fontSize={"$8"} color={"#000"}>
                     {item.name}
                   </Text>
@@ -92,8 +92,7 @@ export default function Medalhas() {
                   borderBottomEndRadius={"$3"}
                   borderBottomWidth={"$1"}
                   w={"100%"}
-                  jc={"center"}
-                  ai={"center"}
+                  
                   pb={"$1.5"}
                   flex={2.5}
                 // scrollEnabled={false}
