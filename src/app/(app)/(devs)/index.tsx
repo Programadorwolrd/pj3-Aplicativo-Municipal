@@ -39,7 +39,7 @@ const usuarios: User[] = [
       'https://th.bing.com/th/id/R.3ed87c38e1fa44b5e11b525944c1ba1c?rik=jww3viNoAixuYQ&pid=ImgRaw&r=0',
     linkGithub: '',
     linkLinkedin: '',
-    descricao: 'Maria é uma ',
+    descricao: 'Maria  ',
   },
   {
     nome: 'Maria Oliveira',
@@ -48,7 +48,7 @@ const usuarios: User[] = [
       'https://th.bing.com/th/id/R.3ed87c38e1fa44b5e11b525944c1ba1c?rik=jww3viNoAixuYQ&pid=ImgRaw&r=0',
     linkGithub: '',
     linkLinkedin: '',
-    descricao: 'Maria é uma ',
+    descricao: 'Maria  ',
   },
   {
     nome: 'Maria Oliveira',
@@ -57,7 +57,7 @@ const usuarios: User[] = [
       'https://th.bing.com/th/id/R.3ed87c38e1fa44b5e11b525944c1ba1c?rik=jww3viNoAixuYQ&pid=ImgRaw&r=0',
     linkGithub: '',
     linkLinkedin: '',
-    descricao: 'Maria é uma ',
+    descricao: 'Maria  ',
   },
   {
     nome: 'Maria Oliveira',
@@ -66,7 +66,7 @@ const usuarios: User[] = [
       'https://th.bing.com/th/id/R.3ed87c38e1fa44b5e11b525944c1ba1c?rik=jww3viNoAixuYQ&pid=ImgRaw&r=0',
     linkGithub: '',
     linkLinkedin: '',
-    descricao: 'Maria é uma ',
+    descricao: 'Maria  ',
   },
   {
     nome: 'Maria Oliveira',
@@ -75,7 +75,7 @@ const usuarios: User[] = [
       'https://th.bing.com/th/id/R.3ed87c38e1fa44b5e11b525944c1ba1c?rik=jww3viNoAixuYQ&pid=ImgRaw&r=0',
     linkGithub: '',
     linkLinkedin: '',
-    descricao: 'Maria é uma ',
+    descricao: 'Maria ',
   },
   {
     nome: 'Maria Oliveira',
@@ -84,7 +84,7 @@ const usuarios: User[] = [
       'https://th.bing.com/th/id/R.3ed87c38e1fa44b5e11b525944c1ba1c?rik=jww3viNoAixuYQ&pid=ImgRaw&r=0',
     linkGithub: '',
     linkLinkedin: '',
-    descricao: 'Maria é uma ',
+    descricao: 'Maria  ',
   },
   {
     nome: 'Maria Oliveira',
@@ -93,7 +93,7 @@ const usuarios: User[] = [
       'https://th.bing.com/th/id/R.3ed87c38e1fa44b5e11b525944c1ba1c?rik=jww3viNoAixuYQ&pid=ImgRaw&r=0',
     linkGithub: '',
     linkLinkedin: '',
-    descricao: 'Maria é uma ',
+    descricao: 'Maria  ',
   },
   {
     nome: 'Maria Oliveira',
@@ -102,7 +102,7 @@ const usuarios: User[] = [
       'https://th.bing.com/th/id/R.3ed87c38e1fa44b5e11b525944c1ba1c?rik=jww3viNoAixuYQ&pid=ImgRaw&r=0',
     linkGithub: '',
     linkLinkedin: '',
-    descricao: 'Maria é uma ',
+    descricao: 'Maria  ',
   },
   {
     nome: 'Maria Oliveira',
@@ -111,7 +111,7 @@ const usuarios: User[] = [
       'https://th.bing.com/th/id/R.3ed87c38e1fa44b5e11b525944c1ba1c?rik=jww3viNoAixuYQ&pid=ImgRaw&r=0',
     linkGithub: '',
     linkLinkedin: '',
-    descricao: 'Maria é uma ',
+    descricao: 'Maria  ',
   },
 ];
 
