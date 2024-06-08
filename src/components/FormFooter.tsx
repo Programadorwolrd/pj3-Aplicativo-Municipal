@@ -1,6 +1,7 @@
 import { Text, YStack } from "tamagui";
 import { Link } from "expo-router";
 import ButtonsOauth from "./ButtonsOauth";
+import { XStack } from "tamagui";
 
 export default function FormFooter(props: {
   link: {
@@ -16,10 +17,12 @@ export default function FormFooter(props: {
           <Text fontFamily={"$outfitBold"} fontSize={17} marginVertical={18}>
             OU
           </Text>
-          <ButtonsOauth gap={20} size={50} />
+          <XStack gap={30} alignSelf="center" alignItems="center">
+            <ButtonsOauth />
+          </XStack>
         </YStack>
       </YStack>
-      <Text fontSize={15} mt={30} textAlign="center">
+      <Text fontSize={15} textAlign="center">
         {props.link.text}{" "}
         <Link href={props.link.href}>
           <Text

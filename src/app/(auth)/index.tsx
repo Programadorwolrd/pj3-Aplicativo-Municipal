@@ -33,13 +33,15 @@ export default function Auth() {
         <Logo width={"40%"} height={"40%"} />
 
         <YStack w={"80%"} gap={10} alignItems="center">
-          <ButtonsOauth
-            gap={20}
-            size={45}
-            mb={20}
-            backgroundColor={"$accentBackground"}
-            circular
-          />
+          <XStack gap={30}>
+            <ButtonsOauth
+              padding={7}
+              mb={5}
+              size={55}
+              backgroundColor={"$accentBackground"}
+              circular
+            />
+          </XStack>
 
           <ButtonCustom onPress={() => router.navigate("/(auth)/cadastrar")}>
             CADASTRAR
