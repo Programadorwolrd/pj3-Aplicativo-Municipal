@@ -2,7 +2,7 @@ import { View } from "react-native";
 import React from "react";
 import { Text } from "tamagui"; //importa tamagui
 
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { XStack, YStack } from "tamagui";
 import { ButtonCustom } from "@/components/buttonCustom";
 import { storeAuth } from "@/lib/logicAuth";
@@ -35,6 +35,12 @@ export default function Profile() {
         </ButtonCustom>
         <ButtonCustom backgroundColor={"$red10"} onPress={mutate}>
           delete
+        </ButtonCustom>
+        <ButtonCustom
+          backgroundColor={"$gray10"}
+          onPress={() => router.push("(app)/(home)/123")}
+        >
+          infoUrl
         </ButtonCustom>
       </YStack>
     </View>
