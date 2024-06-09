@@ -5,26 +5,31 @@ import {
   StyleSheet,
   Dimensions,
   Image,
+  Alert,
   type ImageSourcePropType,
   type NativeSyntheticEvent,
   type NativeScrollEvent,
   Pressable,
-} from 'react-native';
-import React, { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Button, ScrollView } from 'tamagui';
-import { TabsDemo } from '../../../components/tabs';
-import { AirbnbRating } from 'react-native-ratings';
-import { router } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
+} from "react-native";
+import React, { useEffect, useRef, useState, type ReactNode } from "react";
+import { Button, ScrollView } from "tamagui";
+import { TabsDemo } from "../../../components/tabs";
+import { AirbnbRating } from "react-native-ratings";
+import { router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
+import useAxios from "@/lib/useAxios";
+import baseUrl from '@/lib/useAxios'
 
 export default function InfoUrl() {
+  const axios = useAxios();
   const flatlistRef = useRef<FlatList>(null);
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = Dimensions.get("window").width;
   const [activeIndex, setActiveIndex] = useState(0);
   const navigation = useNavigation();
-
+  const { uuid } = useLocalSearchParams();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,47 +51,76 @@ export default function InfoUrl() {
 
   const getItemLayout = (data: unknown, index: number) => ({
     length: screenWidth,
-    offset: screenWidth * index, 
+    offset: screenWidth * index,
     index: index,
   });
-
-  const Content = {
-    name: 'Tucano',
-    age: '+20 anos de idade',
-    scientificName: 'nome cientifico',
-    detalhes:
-      'Tucano é uma ave pertencente à família Ramphastidae, que engloba animais com bico longo, colorido, cortante e leve. Esses animais ocorrem apenas no Neotrópico, distribuindo-se do México à Argentina.',
-    audio: 'audio teste',
-    map: 'mapa teste',
-    tabsMenu: 'bghdhnfg',
-    stars: 4,
-    medalha: require('../../../assets/medalha.png'),
-    sound: require('../../../assets/som_tucano.mp3'),
-  };
 
   interface CarouselData {
     id: number;
     image: ImageSourcePropType;
+    catalogoGaleria: Array<{
+      id: number;
+      catalogo_uuid: string;
+      url: string;
+      deleted_at: string | null;
+    }>;
   }
-  const carouselData: CarouselData[] = [
-    {
-      id: 0,
-      image: require('../../../assets/tucano.png'),
-    },
-    {
-      id: 1,
-      image: require('../../../assets/saira 1.jpg'),
-    },
-    {
-      id: 2,
-      image: require('../../../assets/tucano.png'),
-    },
-  ];
 
-  const renderItem = (props: { item: CarouselData; index: number }) => {
+  interface ContentData {
+    nomePopular: string;
+    nomeCientifico: string;
+    som: string;
+    tabsMenu: string;
+    estrela: number;
+    medalha: ImageSourcePropType;
+    catalogoGaleria: Array<{
+      id: number;
+      catalogo_uuid: string;
+      url: string;
+      deleted_at: string | null;
+    }>;
+  }
+
+  const [carouselData, setCarouselData] = useState<CarouselData[]>([]);
+  const [content, setContent] = useState<ContentData | null>(null);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(`/usuario/lerqrcode/${6}`);
+        console.log(data);
+        console.log(data.catalogo);
+
+        setCarouselData(data.catalogo.catalogoGaleria);
+        setContent(data.catalogo);
+      } catch (error) {
+        if (isAxiosError(error)) console.log(error?.response?.data);
+      }
+    };
+
+    fetchData();
+  }, [uuid]);
+
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: ContentData;
+    index: number;
+  }) => {
     return (
-      <View style={{ backgroundColor: 'black' }}>
-        <Image source={props.item.image} style={{ height: 460, width: screenWidth }} resizeMode="cover" />
+      <View
+        style={{ backgroundColor: "black", maxHeight: 460, aspectRatio: 1 }}
+      >
+        {item.catalogoGaleria.map((galeriaItem) => (
+          <Image
+            key={galeriaItem.id}
+            source={{ uri: galeriaItem.url }}
+            style={{ width: "100%", height: "100%" }}
+            resizeMode="contain"
+          />
+        ))}
       </View>
     );
   };
@@ -94,22 +128,25 @@ export default function InfoUrl() {
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollPosition = event.nativeEvent.contentOffset.x;
     const index = Math.round(scrollPosition / screenWidth);
-    setActiveIndex(index); 
+    setActiveIndex(index);
   };
 
   const renderDotIndicators = () => {
-    return carouselData.map((dot, index) => {
+    if (!carouselData) {
+      return null;
+    }
 
+    return carouselData.map((dot, index) => {
       return activeIndex === index ? (
         <View
           key={dot.id}
           style={{
-            backgroundColor: '#329F60',
+            backgroundColor: "#329F60",
             height: 10,
             width: 19,
             borderRadius: 5,
             marginHorizontal: 6,
-            borderColor: 'green',
+            borderColor: "green",
             borderWidth: 1,
           }}
         />
@@ -117,12 +154,12 @@ export default function InfoUrl() {
         <View
           key={dot.id}
           style={{
-            backgroundColor: 'transparent',
+            backgroundColor: "transparent",
             height: 10,
             width: 10,
             borderRadius: 5,
             marginHorizontal: 4,
-            borderColor: '#329F60',
+            borderColor: "#329F60",
             borderWidth: 1,
           }}
         />
@@ -132,19 +169,31 @@ export default function InfoUrl() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ position: 'absolute', top: 50, left: 10, zIndex: 1 }}>
+      <View style={{ position: "absolute", top: 50, left: 10, zIndex: 1 }}>
+        {(() => {
+          console.log(content);
+          return null;
+        })()}
+
         <Pressable onPress={() => navigation.goBack()}>
-          <Ionicons name='arrow-back' size={40} color='white' />
+          <Ionicons name="arrow-back" size={40} color="white" />
         </Pressable>
       </View>
 
-      <ScrollView style={{ backgroundColor: 'black' }}>
-        <View style={{ position: 'relative' }}>
+      <ScrollView style={{ backgroundColor: "black" }}>
+        <View style={{ position: "relative" }}>
           <FlatList
             data={carouselData}
             ref={flatlistRef}
             getItemLayout={getItemLayout}
-            renderItem={renderItem}
+            renderItem={({ item }) => (
+              <View>
+                <Image
+                  source={{ uri: item.url }}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </View>
+            )}
             keyExtractor={(item) => item.id.toString()}
             horizontal={true}
             pagingEnabled={true}
@@ -153,10 +202,10 @@ export default function InfoUrl() {
           />
           <View
             style={{
-              flexDirection: 'row',
-              position: 'absolute',
+              flexDirection: "row",
+              position: "absolute",
               bottom: 5,
-              marginHorizontal: '40%',
+              marginHorizontal: "40%",
               marginBottom: 40,
             }}
           >
@@ -166,70 +215,68 @@ export default function InfoUrl() {
 
         <ScrollView
           style={{
-            backgroundColor: 'black',
+            backgroundColor: "black",
             borderTopLeftRadius: 40,
-            overflow: 'hidden',
+            overflow: "hidden",
             marginTop: -36,
           }}
         >
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
+              flexDirection: "row",
+              alignItems: "center",
               margin: 20,
-              justifyContent: 'space-between',
+              justifyContent: "space-between",
               marginBottom: -15,
             }}
           >
-            <Text 
+            {/* <Text 
             style={{
                color: 'white',
                 fontSize: 18,
                 marginVertical: 15, 
                }}
-               >{Content.age}</Text>
-            <Image
-              source={Content.medalha}
-              style={{ marginLeft: 10 }} 
-            />
+               >{Content.age}
+              </Text> */}
+            {/* <Image
+              source={{ uri: content?.medalha }}
+              style={{ marginLeft: 10 }}
+            /> */}
           </View>
-          <Text style={{ color: 'white', fontSize: 18, marginHorizontal: 20 }}>
-            {Content.name}
+          <Text style={{ color: "white", fontSize: 18, marginHorizontal: 20 }}>
+            {content?.nomePopular}
           </Text>
           <Text
             style={{
-              color: '#878787',
+              color: "#878787",
               fontSize: 18,
               marginHorizontal: 20,
               marginVertical: 5,
             }}
           >
-            {Content.scientificName}
+            {content?.nomeCientifico}
           </Text>
 
           <Text style={{ marginHorizontal: 20, marginVertical: 5 }}>
-            <AirbnbRating
-              count={5}
-              reviewSize={0}
-              defaultRating={Content.stars}
-              selectedColor='#329F60'
-              unSelectedColor='#282828'
-              showRating={false}
-              reviewColor='green'
-              size={20}
-              isDisabled={true}
-            />
+          <AirbnbRating
+            count={5}
+            reviewSize={0}
+            defaultRating={content?.estrela}
+            selectedColor="#329F60"
+            showRating={false}
+            reviewColor="green"
+            size={20}
+            isDisabled={true}
+          />
           </Text>
-          <TabsDemo catalogo={Content} />
+          <TabsDemo catalogo={content} />
           <Button
-            onPress={() => {
-              router.navigate('/');
-            }}
+           onPress={() => Alert.alert('Sucesso', 'Você capturou o Ser vivo com sucesso!')}
             style={{
-              backgroundColor: 'white',
-              color: 'black',
+              backgroundColor: "white",
+              color: "black",
               fontSize: 18,
-              marginHorizontal: 'auto',
+              marginHorizontal: "auto",
               marginVertical: 20,
               width: 340,
             }}
