@@ -38,7 +38,7 @@ export default function Profile() {
         </ButtonCustom>
         <ButtonCustom
           backgroundColor={"$gray10"}
-          onPress={() => router.push("(app)/(home)/123")}
+          onPress={() => router.push("(app)/(home)/6")}
         >
           infoUrl
         </ButtonCustom>

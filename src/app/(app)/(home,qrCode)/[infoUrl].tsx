@@ -1,10 +1,7 @@
 import {
-  View,
-  Text,
   FlatList,
   StyleSheet,
   Dimensions,
-  Image,
   Alert,
   type ImageSourcePropType,
   type NativeSyntheticEvent,
@@ -12,7 +9,7 @@ import {
   Pressable,
 } from "react-native";
 import React, { useEffect, useRef, useState, type ReactNode } from "react";
-import { Button, ScrollView } from "tamagui";
+import { Button, Image, ScrollView, Text, View } from "tamagui";
 import { TabsDemo } from "../../../components/tabs";
 import { AirbnbRating } from "react-native-ratings";
 import { router } from "expo-router";
@@ -20,8 +17,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
-import useAxios from "@/lib/useAxios";
-import baseUrl from '@/lib/useAxios'
+import useAxios, { getFiles } from "@/lib/useAxios";
+import { isAxiosError } from "axios";
 
 export default function InfoUrl() {
   const axios = useAxios();
@@ -116,7 +113,7 @@ export default function InfoUrl() {
         {item.catalogoGaleria.map((galeriaItem) => (
           <Image
             key={galeriaItem.id}
-            source={{ uri: galeriaItem.url }}
+            source={{ uri: getFiles(galeriaItem.url) }}
             style={{ width: "100%", height: "100%" }}
             resizeMode="contain"
           />
@@ -187,12 +184,11 @@ export default function InfoUrl() {
             ref={flatlistRef}
             getItemLayout={getItemLayout}
             renderItem={({ item }) => (
-              <View>
-                <Image
-                  source={{ uri: item.url }}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </View>
+              <Image
+                source={{ uri: getFiles(item.url) }}
+                w={screenWidth}
+                aspectRatio={"12/13"}
+              />
             )}
             keyExtractor={(item) => item.id.toString()}
             horizontal={true}
@@ -258,20 +254,22 @@ export default function InfoUrl() {
           </Text>
 
           <Text style={{ marginHorizontal: 20, marginVertical: 5 }}>
-          <AirbnbRating
-            count={5}
-            reviewSize={0}
-            defaultRating={content?.estrela}
-            selectedColor="#329F60"
-            showRating={false}
-            reviewColor="green"
-            size={20}
-            isDisabled={true}
-          />
+            <AirbnbRating
+              count={5}
+              reviewSize={0}
+              defaultRating={content?.estrela}
+              selectedColor="#329F60"
+              showRating={false}
+              reviewColor="green"
+              size={20}
+              isDisabled={true}
+            />
           </Text>
           <TabsDemo catalogo={content} />
           <Button
-           onPress={() => Alert.alert('Sucesso', 'Você capturou o Ser vivo com sucesso!')}
+            onPress={() =>
+              Alert.alert("Sucesso", "Você capturou o Ser vivo com sucesso!")
+            }
             style={{
               backgroundColor: "white",
               color: "black",

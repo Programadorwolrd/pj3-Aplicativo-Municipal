@@ -6,6 +6,8 @@ export const baseURL = process.env.EXPO_PUBLIC_API_URL;
 
 if (!baseURL) throw new Error("forneça o URL do backend no env");
 
+export const getFiles = (uuidFile: string) => `${baseURL}/files/${uuidFile}`;
+
 export default function useAxios() {
   const { token, logout } = storeAuth();
 
