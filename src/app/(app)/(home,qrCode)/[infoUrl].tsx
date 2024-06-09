@@ -66,10 +66,11 @@ export default function InfoUrl() {
   interface ContentData {
     nomePopular: string;
     nomeCientifico: string;
+    nascimento: string;
     som: string;
     tabsMenu: string;
     estrela: number;
-    medalha: ImageSourcePropType;
+    medalha: string;
     catalogoGaleria: Array<{
       id: number;
       catalogo_uuid: string;
@@ -85,9 +86,9 @@ export default function InfoUrl() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/usuario/lerqrcode/${6}`);
-        console.log(data);
-        console.log(data.catalogo);
+        const { data } = await axios.get(`/usuario/lerqrcode/${7}`);
+        // console.log(data);
+        // console.log(data.catalogo);
 
         setCarouselData(data.catalogo.catalogoGaleria);
         setContent(data.catalogo);
@@ -99,6 +100,8 @@ export default function InfoUrl() {
     fetchData();
   }, [uuid]);
 
+  if (!content) return null;
+
   const renderItem = ({
     item,
     index,
@@ -108,7 +111,7 @@ export default function InfoUrl() {
   }) => {
     return (
       <View
-        style={{ backgroundColor: "black", maxHeight: 460, aspectRatio: 1 }}
+        style={{ backgroundColor: "black", maxHeight: 550, aspectRatio: 1 }}
       >
         {item.catalogoGaleria.map((galeriaItem) => (
           <Image
@@ -163,15 +166,11 @@ export default function InfoUrl() {
       );
     });
   };
-
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ position: "absolute", top: 50, left: 10, zIndex: 1 }}>
-        {(() => {
-          console.log(content);
-          return null;
-        })()}
-
+        
         <Pressable onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={40} color="white" />
         </Pressable>
@@ -226,18 +225,19 @@ export default function InfoUrl() {
               marginBottom: -15,
             }}
           >
-            {/* <Text 
-            style={{
-               color: 'white',
+            <Text
+              style={{
+                color: "white",
                 fontSize: 18,
-                marginVertical: 15, 
-               }}
-               >{Content.age}
-              </Text> */}
-            {/* <Image
-              source={{ uri: content?.medalha }}
-              style={{ marginLeft: 10 }}
-            /> */}
+                marginVertical: 15,
+              }}
+            >
+              {content?.nascimento}
+            </Text>
+            <Image
+              source={{ uri: getFiles(content.medalha) }}
+              style={{ marginLeft: 10, height: 50, width: 50 }}
+            />
           </View>
           <Text style={{ color: "white", fontSize: 18, marginHorizontal: 20 }}>
             {content?.nomePopular}

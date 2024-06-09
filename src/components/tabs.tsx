@@ -3,16 +3,9 @@ import type { TabsContentProps } from "tamagui";
 import { Button, Tabs, XStack, YStack, isWeb, Text, View } from "tamagui";
 import { Audio } from "expo-av";
 import { Pressable } from "react-native";
+import { getFiles } from "@/lib/useAxios";
 
 const demos = ["horizontal", "vertical"] as const;
-
-// const demosTitle: Record<(typeof demos)[number], string> = {
-
-//   horizontal: 'Horizontal',
-
-//   vertical: 'Vertical',
-
-// }
 
 export function TabsDemo({ catalogo }) {
   const [demoIndex, setDemoIndex] = useState(0);
@@ -42,22 +35,34 @@ const HorizontalTabs = ({ catalogo }) => {
   const [activeTab, setActiveTab] = useState("tab1");
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
-  const [sound, setSound] = useState();
+  const [sound, setSound] = useState<Audio.Sound | undefined>();
+  const [content, setContent] = useState<ContentData | null>(null);
+  const [shouldPlay, setShouldPlay] = useState(false);
 
-  async function playSound() {
-    const { sound } = await Audio.Sound.createAsync(catalogo.sound);
-    setSound(sound);
-    await sound.playAsync();
-  }
 
-  useEffect(() => {
-    return sound
-      ? () => {
-          sound.unloadAsync();
+  
+  async function playSound(soundUrl: string) {
+    const sound = new Audio.Sound();
+    try {
+      console.log(soundUrl); 
+      console.log(content?.som);
+  
+      await sound.loadAsync({ uri: soundUrl });
+      setSound(sound);
+      await sound.playAsync();
+      setShouldPlay(false); 
+    } catch (error) {
+      console.log(error);
+      }
+      }
+      
+      useEffect(() => {
+        if (shouldPlay) {
+          const soundUrl = getFiles(content?.som);
+          playSound(soundUrl);
         }
-      : undefined;
-  }, [sound]);
-
+      }, [shouldPlay]);
+      
   useEffect(() => {
     if (ref.current) {
       setShowReadMoreButton(
@@ -151,7 +156,7 @@ const HorizontalTabs = ({ catalogo }) => {
             borderRadius: 5,
             marginVertical: 5,
           }}
-          onPress={playSound}
+          onPress={() => setShouldPlay(true)}
         >
           <Text style={{ color: "#329F60", fontSize: 18 }}>Escute o som</Text>
         </Pressable>
