@@ -26,7 +26,7 @@ export default function InfoUrl() {
   const screenWidth = Dimensions.get("window").width;
   const [activeIndex, setActiveIndex] = useState(0);
   const navigation = useNavigation();
-  const { uuid } = useLocalSearchParams();
+  const { infoUrl } = useLocalSearchParams();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -86,7 +86,7 @@ export default function InfoUrl() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/usuario/lerqrcode/${4}`);
+        const { data } = await axios.get(`/usuario/lerqrcode/${infoUrl}`);
 
         setCarouselData(data.catalogo.catalogoGaleria);
         setContent(data.catalogo);
@@ -96,7 +96,7 @@ export default function InfoUrl() {
     };
 
     fetchData();
-  }, [uuid]);
+  }, [infoUrl]);
 
   if (!content) return null;
 
@@ -115,7 +115,7 @@ export default function InfoUrl() {
           <Image
             key={galeriaItem.id}
             source={{ uri: getFiles(galeriaItem.url) }}
-            style={{ width: "100%", height: "100%",  }}
+            style={{ width: "100%", height: "100%" }}
             resizeMode="cover"
           />
         ))}
@@ -172,7 +172,6 @@ export default function InfoUrl() {
           <Ionicons name="arrow-back" size={40} color="white" />
         </Pressable>
       </View>
-
       <ScrollView style={{ backgroundColor: "black" }}>
         <View style={{ position: "relative" }}>
           <FlatList
@@ -222,16 +221,8 @@ export default function InfoUrl() {
               marginBottom: -15,
             }}
           >
-            <Text
-              style={{
-                color: "white",
-                fontSize: 18,
-                marginVertical: 15,
-              }}
-            >Nascimento: {" "}
-               {
-                content?.nascimento && new Date(content.nascimento).toLocaleDateString('pt-BR')
-              }
+            <Text style={{ color: "white", fontSize: 18, marginVertical: 15 }}>
+              {content?.nomePopular}
             </Text>
             <Image
               source={{ uri: getFiles(content.medalha) }}
@@ -243,16 +234,14 @@ export default function InfoUrl() {
               }}
             />
           </View>
-          <Text style={{ color: "white", fontSize: 18, marginHorizontal: 20, marginTop:10}}>
-            {content?.nomePopular}
-          </Text>
+
           <Text
             style={{
               color: "#878787",
               fontSize: 18,
               marginHorizontal: 20,
-              marginTop:10,
-              marginBottom: 5
+              marginTop: 10,
+              marginBottom: 5,
             }}
           >
             {content?.nomeCientifico}
