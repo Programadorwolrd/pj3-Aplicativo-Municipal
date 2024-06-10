@@ -39,30 +39,29 @@ const HorizontalTabs = ({ catalogo }) => {
   const [content, setContent] = useState<ContentData | null>(null);
   const [shouldPlay, setShouldPlay] = useState(false);
 
-
-  
   async function playSound(soundUrl: string) {
-    const sound = new Audio.Sound();
-    try {
-      console.log(soundUrl); 
-      console.log(content?.som);
+    if (sound) {
+      await sound.stopAsync();
+      await sound.unloadAsync();
+    }
   
-      await sound.loadAsync({ uri: soundUrl });
-      setSound(sound);
-      await sound.playAsync();
-      setShouldPlay(false); 
+    const newSound = new Audio.Sound();
+    try {
+      await newSound.loadAsync({ uri: soundUrl });
+      setSound(newSound);
+      await newSound.playAsync();
     } catch (error) {
       console.log(error);
-      }
-      }
-      
-      useEffect(() => {
-        if (shouldPlay) {
-          const soundUrl = getFiles(content?.som);
-          playSound(soundUrl);
-        }
-      }, [shouldPlay]);
-      
+    }
+  }
+
+  useEffect(() => {
+    if (shouldPlay) {
+      const soundUrl = getFiles(catalogo?.som);
+      playSound(soundUrl);
+    }
+  }, [shouldPlay]);
+
   useEffect(() => {
     if (ref.current) {
       setShowReadMoreButton(

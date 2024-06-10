@@ -86,9 +86,7 @@ export default function InfoUrl() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/usuario/lerqrcode/${7}`);
-        // console.log(data);
-        // console.log(data.catalogo);
+        const { data } = await axios.get(`/usuario/lerqrcode/${4}`);
 
         setCarouselData(data.catalogo.catalogoGaleria);
         setContent(data.catalogo);
@@ -166,11 +164,10 @@ export default function InfoUrl() {
       );
     });
   };
-  
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ position: "absolute", top: 50, left: 10, zIndex: 1 }}>
-        
         <Pressable onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={40} color="white" />
         </Pressable>
@@ -236,7 +233,12 @@ export default function InfoUrl() {
             </Text>
             <Image
               source={{ uri: getFiles(content.medalha) }}
-              style={{ marginLeft: 10, height: 50, width: 50 }}
+              style={{
+                marginLeft: 10,
+                height: 50,
+                width: 50,
+                borderRadius: 50,
+              }}
             />
           </View>
           <Text style={{ color: "white", fontSize: 18, marginHorizontal: 20 }}>
