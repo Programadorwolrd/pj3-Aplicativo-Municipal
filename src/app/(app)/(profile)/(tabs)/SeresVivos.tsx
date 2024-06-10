@@ -1,11 +1,17 @@
-import { View, Text, Image, YStack, XStack, ScrollView } from "tamagui";
+import { View, Text, Image, YStack, XStack, ScrollView, Card } from "tamagui";
 import { FlatList, StyleSheet, Pressable, Dimensions, } from "react-native";
 import bichoIcon from "../../../../assets/macaco.png";
 import { useNavigation } from '@react-navigation/native'
 
+import type { CardProps } from "tamagui";
+
+
+
+
 import React, { useRef, useEffect } from "react";
 import useApi from "@/lib/useApi";
 import axios from "axios";
+import { CardDemo } from "../Test";
 
 const data: { nome: string; url: string; id: number }[] = [
   { nome: "Capybara", url: 'https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png', id: 1 },
@@ -55,8 +61,8 @@ export default function SeresVivos() {
       <FlatList
         data={formatData(data, numColumns)}
         numColumns={numColumns}
-        columnWrapperStyle={{ gap: 30, paddingHorizontal: 30 }}
-        contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
+        columnWrapperStyle={{ gap: 15, paddingHorizontal: 15 }}
+        contentContainerStyle={{ gap: 5, paddingBottom: 10 }}
         keyExtractor={(item, index) => item.nome + index}
         showsVerticalScrollIndicator={false}
         scrollEnabled={true}
@@ -65,49 +71,115 @@ export default function SeresVivos() {
             return <View style={[styles.item, styles.itemInvisible]} />;
           }
           return (
-            // trocar depois para a coisa certa
-            <Pressable style={styles.item} onPress={() => navigation.navigate('aaa', { data })}>
-              <YStack w={"100%"} h={"100%"} jc={"center"} ai={"center"} >
-                <XStack w={"100%"} flex={2.5} jc={"center"} ai={"center"}>
-                  <Text fontSize={"$8"} color={"#000"}>
-                    # {item.id}
-                  </Text>
-                </XStack>
-                <Image
-                  flex={10}
-                  source={{
-                    width: 100,
-                    height: 100,
-                    uri: item.url,
-                  }}
-                  w={"100%"}
-                  h={"80%"}
-                />
-                <XStack w={"100%"} pb={"$1.5"}
-                  flex={2.5} borderBottomColor={"#329F60"}
-                  borderBottomStartRadius={"$3"}
-                  borderBottomEndRadius={"$3"}
-                  borderBottomWidth={"$1"}>
-                  <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    w={"100%"}
-                    
-                  // scrollEnabled={false}
-                  >
-                    <Text fontSize={"$6"} color={"#000"}>
-                      {item.nome}
-                    </Text>
-                  </ScrollView>
-                </XStack>
-              </YStack>
+            <Pressable  onPress={() => navigation.navigate('', { data })}>
+              <DemoCard
+                style={{
+                  height: Dimensions.get("window").height / 4 - 12,
+                  width: Dimensions.get("window").width / 3 - 8,
+                }}
+                animation="bouncy"
+                size="$4"
+                scale={0.9}
+                hoverStyle={{ scale: 0.925 }}
+                pressStyle={{ scale: 0.875 }}
+                
+              />
             </Pressable>
+            // trocar depois para a coisa certa
+            // <Pressable style={styles.item} onPress={() => navigation.navigate('aaa', { data })}>
+            //   <YStack w={"100%"} h={"100%"} jc={"center"} ai={"center"} >
+            //     <XStack w={"100%"} flex={2.5} jc={"center"} ai={"center"}>
+            //       <Text fontSize={"$8"} color={"#000"}>
+            //         # {item.id}
+            //       </Text>
+            //     </XStack>
+            //     <Image
+            //       flex={10}
+            //       source={{
+            //         width: 100,
+            //         height: 100,
+            //         uri: item.url,
+            //       }}
+            //       w={"100%"}
+            //       h={"80%"}
+            //     />
+            //     <XStack w={"100%"} 
+            //       flex={2.5} borderBottomColor={"#329F60"}
+            //       borderBottomStartRadius={"$3"}
+            //       borderBottomEndRadius={"$3"}
+            //       borderBottomWidth={"$1"} ai={"center"} justifyContent={"center"}>
+            //       <ScrollView
+            //         horizontal
+            //         showsHorizontalScrollIndicator={false}
+            //         w={"100%"}
+
+            //       // scrollEnabled={false}
+            //       >
+            //         <Text fontSize={"$6"} color={"#000"} textAlign={"center"}>
+            //           {item.nome}
+            //         </Text>
+            //       </ScrollView>
+            //     </XStack>
+            //   </YStack>
+            // </Pressable>
+
           );
         }}
       />
     </View>
   );
 }
+function DemoCard(props: CardProps) {
+  const item = { nome: "Capybara", url: 'https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png', id: 1 }
+  return (
+    <Card
+
+      bordered
+      borderBottomColor={"#329F60"}
+      borderBottomStartRadius={"$3"}
+      borderBottomEndRadius={"$3"}
+      borderBottomWidth={"$1"}
+      {...props}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
+      <Card.Header
+        padded
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Text fontSize={"$8"} color={"#000"}>
+          # {item.id}
+        </Text>
+      </Card.Header>
+      <View>
+        <Image
+          resizeMode="contain"
+          alignSelf="center"
+          source={{
+            width: 100,
+            height: 100,
+            // uri: item.url,
+            uri: item.url,
+          }}
+        />
+      </View>
+      <Card.Footer padded justifyContent={"center"}
+        alignItems={"center"} >
+        <XStack justifyContent={"center"}
+          alignItems={"center"} />
+        <Text fontSize={"$6"} color={"#000"} textAlign={"center"}>
+          {item.nome}
+        </Text>
+      </Card.Footer>
+
+      <Card.Background>
+
+      </Card.Background>
+    </Card>
+  );
+}
+
 
 const styles = StyleSheet.create({
   item: {

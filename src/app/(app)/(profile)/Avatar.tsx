@@ -1,4 +1,5 @@
 import { Avatar, YStack, Text } from "tamagui";
+import { CardDemo } from "./Test";
 // const avatarPerfil = require("../../../assets/avatar-icon.jpeg");
 
 interface avatarPerfil {
@@ -16,6 +17,7 @@ export default function AvatarProfile({ img }: avatarPerfil) {
         <Avatar.Image accessibilityLabel="avatar" src={avatar.img} />
         <Avatar.Fallback backgroundColor="$blue10" />
       </Avatar>
+      {/* <CardDemo /> */}
       {/* <Text mt={"$3"}>alterar incone</Text> */}
     </YStack>
   );

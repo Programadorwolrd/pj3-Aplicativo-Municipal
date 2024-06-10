@@ -9,6 +9,7 @@ import {
 
 import React, { useRef, useEffect } from "react";
 
+
 const medalha = require("../../../../assets/medalha.png");
 const data: { name: string; url: string; titulo: string }[] = [
   { name: "Master", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Mestre" },
@@ -38,20 +39,21 @@ const formatData = (data: any, numColumns: number) => {
 const numColumns: number = 3;
 export default function Medalhas() {
 
-  const scrollViewRef = useRef<ScrollView>(null);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (scrollViewRef.current) {
-        scrollViewRef.current.scrollTo({ x: 100, animated: true });
-      }
-    }, 1000);
+  // const scrollViewRef = useRef<ScrollView>(null);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (scrollViewRef.current) {
+  //       scrollViewRef.current.scrollTo({ x: 100, animated: true });
+  //     }
+  //   }, 1000);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
   return (
     <View style={{ flex: 1, marginTop: 20 }}>
+
       <FlatList
         data={formatData(data, numColumns)}
         numColumns={numColumns}
@@ -66,23 +68,27 @@ export default function Medalhas() {
             return <View style={[styles.item, styles.itemInvisible]} />;
           }
           return (
-            <Pressable style={styles.item}>
-              <YStack w={"100%"} h={"100%"} jc={"center"} ai={"center"}>
+            <Pressable style={styles.item} >
+              <YStack w={"100%"} h={"100%"} jc={"center"} ai={"center"} alignContent={"center"}>
                 <ScrollView horizontal
-                  showsHorizontalScrollIndicator={false} w={"100%"} flex={3} >
+                  showsHorizontalScrollIndicator={false}
+                  w={"100%"}
+                  flex={2}
+                  margin={"$1.5"} >
                   <Text fontSize={"$8"} color={"#000"}>
                     {item.name}
                   </Text>
                 </ScrollView>
                 <Image
-                  flex={10}
+                  flex={5}
                   source={{
                     width: 100,
                     height: 100,
                     uri: item.url,
                   }}
                   w={"100%"}
-                  h={"80%"}
+                  h={"70%"}
+
                 />
                 <ScrollView
                   horizontal
@@ -92,9 +98,8 @@ export default function Medalhas() {
                   borderBottomEndRadius={"$3"}
                   borderBottomWidth={"$1"}
                   w={"100%"}
-                  
-                  pb={"$1.5"}
-                  flex={2.5}
+                  m={"$1.5"}
+                  flex={2}
                 // scrollEnabled={false}
                 >
                   <Text fontSize={"$6"} color={"#000"}>
@@ -123,6 +128,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height / 5 - 12,
     width: Dimensions.get("window").width / 3 - 4,
     flex: 1,
+    margin: 2,
   },
   itemInvisible: {
     backgroundColor: "transparent",
