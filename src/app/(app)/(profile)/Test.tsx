@@ -34,53 +34,45 @@ const data: { nome: string; url: string; id: number }[] = [
   { nome: "Borboleta", url: bichoIcon, id: 15 },
   { nome: "Borboleta", url: bichoIcon, id: 16 },
 ];
-export function CardDemo() {
-  const user = useApi("query", (axios) => {
-    return {
-      queryKey: ['xabulha'],
-      queryFn: () => {
-        return axios.get('/usuario')
+export function CardDemo(props: CardProps) {
+  // const user = useApi("query", (axios) => {
+  //   return {
+  //     queryKey: ['xabulha'],
+  //     queryFn: () => {
+  //       return axios.get('/usuario')
 
-      }
-    }
-  })
-  console.log(user.data?.data.usuario, 'user');
+  //     }
+  //   }
+  // })
+  // console.log(user.data?.data.usuario, 'user');
 
-  const dataUser: PropsUser = {
-    apelido: user.data?.data.usuario.apelido,
-    foto: user.data?.data.usuario.foto,
-    lidopelouser: {
-      catalogo: {
-        uuid: user.data?.data?.usuario?.catalogo?.uuid,
-        nomePopular: user.data?.data?.usuariocatalogo?.nomePopular
-      }
-    },
-    ranking: 3
-  }
-  console.log(dataUser, 'data user')
+  // const dataUser: PropsUser = {
+  //   apelido: user.data?.data.usuario.apelido,
+  //   foto: user.data?.data.usuario.foto,
+  //   lidopelouser: {
+  //     catalogo: {
+  //       uuid: user.data?.data?.usuario?.catalogo?.uuid,
+  //       nomePopular: user.data?.data?.usuariocatalogo?.nomePopular
+  //     }
+  //   },
+  //   ranking: 3
+  // }
+  // console.log(dataUser, 'data user')
 
   const navigation = useNavigation()
   return (
     <XStack $sm={{ flexDirection: "column" }} paddingHorizontal="$4" space>
       <Pressable onPress={() => navigation.navigate('', { data })}>
-        <DemoCard
-          style={{
+        <View style={{
             height: Dimensions.get("window").height / 4 - 12,
             width: Dimensions.get("window").width / 3 - 4,
           }}
           animation="bouncy"
-          size="$4"
+          
           scale={0.9}
           hoverStyle={{ scale: 0.925 }}
-          pressStyle={{ scale: 0.875 }}
-
-        />
-      </Pressable>
-    </XStack>
-  );
-}
-export function DemoCard(props: CardProps) {
-  return (
+          pressStyle={{ scale: 0.875 }}>
+        
     <Card
       size="$4"
       bordered
@@ -126,6 +118,13 @@ export function DemoCard(props: CardProps) {
 
       </Card.Background>
     </Card>
+        </View>
+      </Pressable>
+    </XStack>
+  );
+}
+export function DemoCard() {
+  return (
   );
 }
 
