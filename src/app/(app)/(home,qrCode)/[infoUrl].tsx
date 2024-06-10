@@ -115,8 +115,8 @@ export default function InfoUrl() {
           <Image
             key={galeriaItem.id}
             source={{ uri: getFiles(galeriaItem.url) }}
-            style={{ width: "100%", height: "100%" }}
-            resizeMode="contain"
+            style={{ width: "100%", height: "100%",  }}
+            resizeMode="cover"
           />
         ))}
       </View>
@@ -183,7 +183,7 @@ export default function InfoUrl() {
               <Image
                 source={{ uri: getFiles(item.url) }}
                 w={screenWidth}
-                aspectRatio={"12/13"}
+                aspectRatio={"12/15"}
               />
             )}
             keyExtractor={(item) => item.id.toString()}
@@ -228,8 +228,10 @@ export default function InfoUrl() {
                 fontSize: 18,
                 marginVertical: 15,
               }}
-            >
-              {content?.nascimento}
+            >Nascimento: {" "}
+               {
+                content?.nascimento && new Date(content.nascimento).toLocaleDateString('pt-BR')
+              }
             </Text>
             <Image
               source={{ uri: getFiles(content.medalha) }}
@@ -241,7 +243,7 @@ export default function InfoUrl() {
               }}
             />
           </View>
-          <Text style={{ color: "white", fontSize: 18, marginHorizontal: 20 }}>
+          <Text style={{ color: "white", fontSize: 18, marginHorizontal: 20, marginTop:10}}>
             {content?.nomePopular}
           </Text>
           <Text
@@ -249,7 +251,8 @@ export default function InfoUrl() {
               color: "#878787",
               fontSize: 18,
               marginHorizontal: 20,
-              marginVertical: 5,
+              marginTop:10,
+              marginBottom: 5
             }}
           >
             {content?.nomeCientifico}
