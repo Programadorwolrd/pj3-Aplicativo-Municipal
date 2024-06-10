@@ -180,7 +180,7 @@ export default function SeresVivos() {
         }}
       />
     </View>
-  );
+  )
 }
 function DemoCard(props: CardProps) {
   const item = {
@@ -219,7 +219,7 @@ function DemoCard(props: CardProps) {
           }}
         />
       </View>
-      <Card.Footer padded>
+      <Card.Footer p={"$2.5"}>
         <XStack justifyContent={"center"} alignItems={"center"} />
         <Text fontSize={"$6"} color={"#000"} textAlign={"center"}>
           {item.nome}
