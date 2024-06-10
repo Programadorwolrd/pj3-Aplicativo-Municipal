@@ -1,4 +1,4 @@
-import { FormAuth } from '@/components/formClass';
+import { FormAuth } from '@/components/FormClass';
 import FormFooter from '@/components/FormFooter';
 import TAuth from '@/components/templateAuth';
 import { allvalids } from '@/lib/allValids';

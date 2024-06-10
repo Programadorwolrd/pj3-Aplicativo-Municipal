@@ -1,4 +1,4 @@
-import type { ValidacaoOptions } from '@/components/formClass';
+import type { ValidacaoOptions } from '@/components/FormClass';
 
 export const allvalids = {
   email: [
