@@ -2,7 +2,7 @@ import { View, Text, Image, YStack, XStack, ScrollView, Card } from "tamagui";
 import { FlatList, StyleSheet, Pressable, Dimensions } from "react-native";
 import bichoIcon from "../../../../assets/macaco.png";
 import { useNavigation } from "@react-navigation/native";
-
+import { Link, router } from "expo-router";
 import type { CardProps } from "tamagui";
 
 import React, { useRef, useEffect } from "react";
@@ -12,45 +12,45 @@ import { CardDemo } from "../Test";
 
 const data: { nome: string; url: string; id: number }[] = [
   {
-    nome: "Capybara",
-    url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
+    nome: "Calango",
+    url: "https://www.coisasdaroca.com/wp-content/uploads/2021/05/Tropidurus-torquatus.jpg",
     id: 1,
   },
-  {
-    nome: "Sairá-7-Cores",
-    url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-    id: 2,
-  },
-  {
-    nome: "Esquilo",
-    url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-    id: 3,
-  },
-  { nome: "Tucano", url: bichoIcon, id: 4 },
-  {
-    nome: "Calango",
-    url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-    id: 5,
-  },
-  { nome: "Juqueriquerê", url: bichoIcon, id: 6 },
-  {
-    nome: "Caraguatá",
-    url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-    id: 7,
-  },
-  { nome: "Quaresmeira", url: bichoIcon, id: 8 },
-  {
-    nome: "Aranha",
-    url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-    id: 9,
-  },
-  { nome: "Tatu", url: bichoIcon, id: 10 },
-  { nome: "Bicho 11", url: "https://picsum.photos/100/100", id: 11 },
-  { nome: "Borboleta", url: bichoIcon, id: 12 },
-  { nome: "Borboleta", url: bichoIcon, id: 13 },
-  { nome: "Borboleta", url: bichoIcon, id: 14 },
-  { nome: "Borboleta", url: bichoIcon, id: 15 },
-  { nome: "Borboleta", url: bichoIcon, id: 16 },
+  // {
+  //   nome: "Sairá-7-Cores",
+  //   url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
+  //   id: 2,
+  // },
+  // {
+  //   nome: "Esquilo",
+  //   url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
+  //   id: 3,
+  // },
+  // { nome: "Tucano", url: bichoIcon, id: 4 },
+  // {
+  //   nome: "Calango",
+  //   url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
+  //   id: 5,
+  // },
+  // { nome: "Juqueriquerê", url: bichoIcon, id: 6 },
+  // {
+  //   nome: "Caraguatá",
+  //   url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
+  //   id: 7,
+  // },
+  // { nome: "Quaresmeira", url: bichoIcon, id: 8 },
+  // {
+  //   nome: "Aranha",
+  //   url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
+  //   id: 9,
+  // },
+  // { nome: "Tatu", url: bichoIcon, id: 10 },
+  // { nome: "Bicho 11", url: "https://picsum.photos/100/100", id: 11 },
+  // { nome: "Borboleta", url: bichoIcon, id: 12 },
+  // { nome: "Borboleta", url: bichoIcon, id: 13 },
+  // { nome: "Borboleta", url: bichoIcon, id: 14 },
+  // { nome: "Borboleta", url: bichoIcon, id: 15 },
+  // { nome: "Borboleta", url: bichoIcon, id: 16 },
 ];
 
 interface PropsUser {
@@ -84,6 +84,7 @@ const formatData = (data: any, numColumns: number) => {
 };
 const numColumns: number = 3;
 export default function SeresVivos() {
+  const navigation = useNavigation();
   const user = useApi("query", (axios) => {
     return {
       queryKey: ['xabulha'],
@@ -113,8 +114,8 @@ export default function SeresVivos() {
       <FlatList
         data={formatData(data, numColumns)}
         numColumns={numColumns}
-        columnWrapperStyle={{ gap: 15, paddingHorizontal: 15 }}
-        contentContainerStyle={{ gap: 5, paddingBottom: 10 }}
+        columnWrapperStyle={{ gap: 30, paddingHorizontal: 30 }}
+        contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
         keyExtractor={(item, index) => item.nome + index}
         showsVerticalScrollIndicator={false}
         scrollEnabled={true}
@@ -125,14 +126,10 @@ export default function SeresVivos() {
           return (
             <Pressable
               style={styles.item}
-              onPress={() => navigation.navigate("", { data })}
+              onPress={() => router.push("(app)/(home)/1")}
+            // onPress={() => navigation.navigate("(app)/(home)/1", { data })}
             >
               <DemoCard
-
-                // style={{
-                //   height: Dimensions.get("window").height / 4 - 12,
-                //   width: Dimensions.get("window").width / 3 - 12,
-                // }}
                 animation="bouncy"
                 mb={"$3"}
                 hoverStyle={{ scale: 0.925 }}
@@ -183,11 +180,7 @@ export default function SeresVivos() {
   )
 }
 function DemoCard(props: CardProps) {
-  const item = {
-    nome: "Capybara",
-    url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-    id: 1,
-  };
+  const item = data.find((item) => item.id === 1);
   return (
     <Card
       // bordered
@@ -212,7 +205,7 @@ function DemoCard(props: CardProps) {
           alignSelf="center"
           source={{
             width: 100,
-            height: 100,
+            height: 200,
             // uri: item.url,
             uri: item.url,
             /* substituir por uri do bicho */
