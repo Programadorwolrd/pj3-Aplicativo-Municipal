@@ -7,65 +7,34 @@ import type { CardProps } from "tamagui";
 
 import React, { useRef, useEffect } from "react";
 import useApi from "@/lib/useApi";
+import { getFiles } from "@/lib/useAxios";
 import axios from "axios";
 import { CardDemo } from "../Test";
 
-const data: { nome: string; url: string; id: number }[] = [
-  {
-    nome: "Calango",
-    url: "https://www.coisasdaroca.com/wp-content/uploads/2021/05/Tropidurus-torquatus.jpg",
-    id: 1,
-  },
-  // {
-  //   nome: "Sairá-7-Cores",
-  //   url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-  //   id: 2,
-  // },
-  // {
-  //   nome: "Esquilo",
-  //   url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-  //   id: 3,
-  // },
-  // { nome: "Tucano", url: bichoIcon, id: 4 },
-  // {
-  //   nome: "Calango",
-  //   url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-  //   id: 5,
-  // },
-  // { nome: "Juqueriquerê", url: bichoIcon, id: 6 },
-  // {
-  //   nome: "Caraguatá",
-  //   url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-  //   id: 7,
-  // },
-  // { nome: "Quaresmeira", url: bichoIcon, id: 8 },
-  // {
-  //   nome: "Aranha",
-  //   url: "https://e7.pngegg.com/pngimages/716/242/png-clipart-monkey-monkey.png",
-  //   id: 9,
-  // },
-  // { nome: "Tatu", url: bichoIcon, id: 10 },
-  // { nome: "Bicho 11", url: "https://picsum.photos/100/100", id: 11 },
-  // { nome: "Borboleta", url: bichoIcon, id: 12 },
-  // { nome: "Borboleta", url: bichoIcon, id: 13 },
-  // { nome: "Borboleta", url: bichoIcon, id: 14 },
-  // { nome: "Borboleta", url: bichoIcon, id: 15 },
-  // { nome: "Borboleta", url: bichoIcon, id: 16 },
-];
+// Interfaces
+interface Catalogo {
+  uuid: string;
+  id: number;
+  nomePopular: string;
+  nomeCientifico: string;
+  foto: string;
+}
+
+interface LidoPeloUser extends Catalogo {
+  empty?: boolean;
+}
 
 interface PropsUser {
+  id: string;
   apelido: string;
-  foto: string,
-  lidopelouser: {
-    catalogo: {
-      uuid: string,
-      nomePopular: string
-    }
-  },
+  foto: string;
+  lidoPeloUser: LidoPeloUser[];
   ranking: number;
 }
 
-const formatData = (data: any, numColumns: number) => {
+// Função para formatar os dados e entregar um quadrado vazio caso não tenha um bicho
+
+const formatData = (data: LidoPeloUser[], numColumns: number = 3) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
   let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
   while (
@@ -73,117 +42,88 @@ const formatData = (data: any, numColumns: number) => {
     numberOfElementsLastRow !== 0
   ) {
     data.push({
-      nome: `blank-${numberOfElementsLastRow}`,
-      url: "",
+      uuid: `blank-${numberOfElementsLastRow}`,
       id: -1,
+      nomePopular: "",
+      nomeCientifico: "",
+      foto: "",
       empty: true,
     });
     numberOfElementsLastRow++;
   }
   return data;
 };
-const numColumns: number = 3;
+
 export default function SeresVivos() {
   const navigation = useNavigation();
+
+  // Retorno de dados do user
   const user = useApi("query", (axios) => {
     return {
-      queryKey: ['xabulha'],
+      queryKey: ["user"],
       queryFn: () => {
-        return axios.get('/usuario')
+        return axios.get("/usuario");
+      },
+    };
+  });
 
-      }
-    }
-  })
-  console.log(user.data?.data.usuario, 'user');
+  console.log(user.data?.data.usuario, "user");
 
-  const dataUser: PropsUser = {
-    apelido: user.data?.data.usuario.apelido,
-    foto: user.data?.data.usuario.foto,
-    lidopelouser: {
-      catalogo: {
-        uuid: user.data?.data?.usuario?.catalogo?.uuid,
-        nomePopular: user.data?.data?.usuariocatalogo?.nomePopular
-      }
-    },
-    ranking: 3
-  }
-  console.log(dataUser, 'data user')
+  const data: PropsUser = {
+    id: user.data?.data.usuario.id || "",
+    apelido: user.data?.data.usuario.apelido || "",
+    foto: user.data?.data.usuario.foto || "",
+    lidoPeloUser:
+      user.data?.data.usuario.lidoPeloUser.map((item: any) => ({
+        uuid: item.catalogo_uuid || "",
+        id: item.catalogo.uuid || "",
+        nomePopular: item.catalogo.nomePopular || "",
+        nomeCientifico: item.catalogo.nomeCientifico || "",
+        foto: item.catalogo.ftModel || "",
+      })) || [],
+    ranking: 3,
+  };
 
+  console.log(data, "data user");
+  const numColumns: number = 3;
   return (
     <View style={{ flex: 1, marginTop: 20 }}>
       <FlatList
-        data={formatData(data, numColumns)}
+        data={formatData(data.lidoPeloUser, numColumns)}
         numColumns={numColumns}
         columnWrapperStyle={{ gap: 30, paddingHorizontal: 30 }}
         contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
-        keyExtractor={(item, index) => item.nome + index}
+        keyExtractor={(item, index) => item.uuid + index}
         showsVerticalScrollIndicator={false}
         scrollEnabled={true}
         renderItem={({ item }) => {
-          if (item.empty === true) {
+          if (item.empty) {
             return <View style={[styles.item, styles.itemInvisible]} />;
           }
           return (
             <Pressable
               style={styles.item}
-              onPress={() => router.push("(app)/(home)/1")}
-            // onPress={() => navigation.navigate("(app)/(home)/1", { data })}
+              onPress={() => router.navigate(`(app)/(home)/${item.id}`)}
             >
               <DemoCard
                 animation="bouncy"
                 mb={"$3"}
                 hoverStyle={{ scale: 0.925 }}
                 pressStyle={{ scale: 0.875 }}
+                item={item}
               />
             </Pressable>
-            // trocar depois para a coisa certa
-            // <Pressable style={styles.item} onPress={() => navigation.navigate('aaa', { data })}>
-            //   <YStack w={"100%"} h={"100%"} jc={"center"} ai={"center"} >
-            //     <XStack w={"100%"} flex={2.5} jc={"center"} ai={"center"}>
-            //       <Text fontSize={"$8"} color={"#000"}>
-            //         # {item.id}
-            //       </Text>
-            //     </XStack>
-            //     <Image
-            //       flex={10}
-            //       source={{
-            //         width: 100,
-            //         height: 100,
-            //         uri: item.url,
-            //       }}
-            //       w={"100%"}
-            //       h={"80%"}
-            //     />
-            //     <XStack w={"100%"}
-            //       flex={2.5} borderBottomColor={"#329F60"}
-            //       borderBottomStartRadius={"$3"}
-            //       borderBottomEndRadius={"$3"}
-            //       borderBottomWidth={"$1"} ai={"center"} justifyContent={"center"}>
-            //       <ScrollView
-            //         horizontal
-            //         showsHorizontalScrollIndicator={false}
-            //         w={"100%"}
-
-            //       // scrollEnabled={false}
-            //       >
-            //         <Text fontSize={"$6"} color={"#000"} textAlign={"center"}>
-            //           {item.nome}
-            //         </Text>
-            //       </ScrollView>
-            //     </XStack>
-            //   </YStack>
-            // </Pressable>
           );
         }}
       />
     </View>
-  )
+  );
 }
-function DemoCard(props: CardProps) {
-  const item = data.find((item) => item.id === 1);
+
+function DemoCard(props: CardProps & { item: LidoPeloUser }) {
+  const { item } = props;
   return (
     <Card
-      // bordered
       borderBottomColor={"#329F60"}
       borderBottomStartRadius={"$3"}
       borderBottomEndRadius={"$3"}
@@ -194,31 +134,51 @@ function DemoCard(props: CardProps) {
       {...props}
     >
       <Card.Header padded justifyContent={"center"} alignItems={"center"}>
-        <Text fontSize={"$8"} color={"#000"}>
-          # {item.id}
-          {/* substituir por uuid do bicho */}
+        {/* 
+        ///
+         Solução provisoria de exibição de nome
+        ///
+        */}
+        <Text
+          fontSize={"$8"}
+          color={"#000"}
+          maxWidth={100}
+          maxHeight={25}
+          overflow="scroll"
+        >
+          {item.nomeCientifico}
         </Text>
       </Card.Header>
-      <View >
+      <View>
         <Image
           resizeMode="contain"
           alignSelf="center"
           source={{
             width: 100,
-            height: 200,
-            // uri: item.url,
-            uri: item.url,
-            /* substituir por uri do bicho */
+            height: 100,
+            uri: getFiles(item.foto),
           }}
         />
       </View>
       <Card.Footer p={"$2.5"}>
-        <XStack justifyContent={"center"} alignItems={"center"} />
-        <Text fontSize={"$6"} color={"#000"} textAlign={"center"}>
-          {item.nome}
+        {/* <XStack justifyContent={"center"} alignItems={"center"} > */}
+        {/* 
+        ///
+         Solução provisoria de exibição de nome
+        ///
+        */}
+        <Text
+          fontSize={"$6"}
+          color={"#000"}
+          textAlign={"center"}
+          maxWidth={100}
+          maxHeight={25}
+          overflow="scroll"
+        >
+          {item.nomePopular}
         </Text>
+        {/* </XStack> */}
       </Card.Footer>
-
     </Card>
   );
 }
@@ -229,10 +189,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    // backgroundColor: "#e6e6e6",
-    // height: 150,
-    // width: 100,
-    height: Dimensions.get("window").height / 4 - 12,
+    height: Dimensions.get("window").height / 4 - 6,
     width: Dimensions.get("window").width / 3,
     flex: 1,
   },
