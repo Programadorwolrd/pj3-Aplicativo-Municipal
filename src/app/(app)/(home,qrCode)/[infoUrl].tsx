@@ -18,6 +18,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import useAxios, { getFiles } from "@/lib/useAxios";
 import { isAxiosError } from "axios";
+import ErrorScreen from "@/components/ErrorScreen";
 
 export default function InfoUrl() {
   const axios = useAxios();
@@ -80,24 +81,34 @@ export default function InfoUrl() {
 
   const [carouselData, setCarouselData] = useState<CarouselData[]>([]);
   const [content, setContent] = useState<ContentData | null>(null);
-  const [data, setData] = useState(null);
+  const [notFound, setNotFound] = useState <boolean | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(`/usuario/lerqrcode/${infoUrl}`);
-
+      
+        if (!data || !data.catalogo) {
+          setNotFound(true);
+          return;
+        }
+      
         setCarouselData(data.catalogo.catalogoGaleria);
         setContent(data.catalogo);
-      } catch (error) {
+      } catch (error) {        
         if (isAxiosError(error)) console.log(error?.response?.data);
+        setNotFound(true);
       }
     };
-
+  
     fetchData();
-  }, [infoUrl]);
+  }, [infoUrl, navigation]);
 
-  if (!content) return null;
+  
+  if (notFound) return <ErrorScreen
+  title= "Ser vivo não encontrado"
+  text = "Escaneie um QrCode valido"
+/>
 
   const renderItem = ({
     item,
@@ -113,7 +124,7 @@ export default function InfoUrl() {
         {item.catalogoGaleria.map((galeriaItem) => (
           <Image
             key={galeriaItem.id}
-            source={{ uri: getFiles(galeriaItem.url) }}
+            source={{ uri: getFiles(galeriaItem?.url) }}
             style={{ width: "100%", height: "100%" }}
             resizeMode="cover"
           />
@@ -164,7 +175,8 @@ export default function InfoUrl() {
     });
   };
 
-  return (
+
+ if(content) return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ position: "absolute", top: 50, left: 10, zIndex: 1 }}>
         <Pressable onPress={() => navigation.goBack()}>
@@ -224,7 +236,7 @@ export default function InfoUrl() {
               {content?.nomePopular}
             </Text>
             <Image
-              source={{ uri: getFiles(content.medalha) }}
+              source={{ uri: getFiles(content?.medalha) }}
               style={{
                 marginLeft: 10,
                 height: 50,
