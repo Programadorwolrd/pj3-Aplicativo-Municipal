@@ -12,7 +12,6 @@ import React, { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button, Image, ScrollView, Text, View } from "tamagui";
 import { TabsDemo } from "../../../components/tabs";
 import { AirbnbRating } from "react-native-ratings";
-import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
