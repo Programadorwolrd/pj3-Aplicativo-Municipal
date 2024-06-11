@@ -97,19 +97,7 @@ export default function Profile() {
 
         {/* componente do botão de logout e delete de conta */}
 
-        {/* <View>
-        <Text fontSize={100}>{""}</Text>
-        <YStack gap={10}>
-          <Text fontSize={60}>{data?.data?.usuario?.apelido || "..."}</Text>
-          <ButtonCustom onPress={loggout}>Sair</ButtonCustom>
-          <ButtonCustom backgroundColor={"orange"} onPress={refetch}>
-            Recarregar
-          </ButtonCustom>
-          <ButtonCustom backgroundColor={"$red10"} onPress={mutate}>
-            delete
-          </ButtonCustom>
-        </YStack>
-      </View> */}
+        
       </YStack>
     </SafeAreaView>
 

@@ -11,11 +11,7 @@ import { storeAuth } from "@/lib/logicAuth";
 WebBrowser.maybeCompleteAuthSession();
 const uriRedirect = Linking.createURL("/");
 
-interface Props {
-  size: number;
-  gap: number;
-}
-export default ({ gap, size, ...props }: Props & ButtonProps) => {
+export default (props: ButtonProps) => {
   const login = storeAuth((s) => s.login);
 
   const { mutate } = useApi("mutate", (a) => ({
@@ -40,22 +36,21 @@ export default ({ gap, size, ...props }: Props & ButtonProps) => {
 
   const ButtonStyled = styled(Button, {
     backgroundColor: "$colorTransparent",
-    padding: 10,
-    size: size * 1.4,
+    padding: 0,
+    margin: 0,
+    width: 50,
+    height: 50,
     ...props,
   });
 
   return (
-    <XStack gap={gap}>
-      <ButtonStyled
-        onPress={() => mutate("google")}
-        icon={<IconGoogle width={"100%"} height={"100%"} />}
-      />
-      <ButtonStyled
-        onPress={() => mutate("facebook")}
-        icon={<IconFacebook width={"100%"} height={"100%"} />}
-        {...props}
-      />
-    </XStack>
+    <>
+      <ButtonStyled onPress={() => mutate("google")} {...props}>
+        <IconGoogle height="100%" width="100%" />
+      </ButtonStyled>
+      <ButtonStyled onPress={() => mutate("facebook")} {...props}>
+        <IconFacebook height="100%" width="100%" />
+      </ButtonStyled>
+    </>
   );
 };
