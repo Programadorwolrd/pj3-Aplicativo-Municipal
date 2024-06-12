@@ -1,4 +1,10 @@
-import { FC, PropsWithChildren, useEffect, useRef, useState } from "react";
+import {
+  ComponentType,
+  PropsWithChildren,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import type {
   UseMutationOptions,
   UseMutationResult,
@@ -6,14 +12,14 @@ import type {
 import useApi, { CallbackAxios } from "@/lib/useApi";
 import { TextInputProps } from "react-native";
 
-export class FormPaia<C extends string, Inp extends InputBase> {
+export class FormPaia<C extends string, Inp extends InputMinimoProps> {
   private values = useRef({} as ObjC<C, string>).current;
   private useApiPaia: UseMutation<typeof this.values>["result"];
 
   constructor(
     private options: Options<C>,
-    private InputType: FC<Inp>,
-    private TemplateInput: FC<TemplateInputProps>
+    private InputType: InputMinimo<Inp>,
+    private TemplateInput: ComponentType<TemplateInputProps>
   ) {
     this.useApiPaia = useApi("mutate", options.submitOptions);
   }
@@ -85,7 +91,7 @@ export class FormPaia<C extends string, Inp extends InputBase> {
   }
 }
 
-// 
+//
 
 // AVISO: tipagem abaixo
 
@@ -118,7 +124,7 @@ type ObjC<C extends string, Value> = {
   [K in C]: Value;
 };
 
-type Options<C extends string> = {
+export type Options<C extends string> = {
   campos: ObjC<C, ValidacoesCampo>;
   submitOptions: CallbackAxios<UseMutation<ObjC<C, string>>["options"]>;
 };
@@ -129,7 +135,8 @@ type UseMutation<objC> = {
 };
 
 type EscutarPropsPaia<C extends string> = {
-  children: FC<{ mutation: UseMutation<ObjC<C, string>>["result"] }>;
+  children: ComponentType<{ mutation: UseMutation<ObjC<C, string>>["result"] }>;
 };
 
-type InputBase = Pick<TextInputProps, "value" | "onChangeText">;
+export type InputMinimoProps = Pick<TextInputProps, "value" | "onChangeText">;
+type InputMinimo<P = InputMinimoProps> = ComponentType<P>;
