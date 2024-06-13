@@ -1,4 +1,6 @@
 import {
+  Form,
+  FormProps,
   GetProps,
   Input,
   InputProps,
@@ -10,6 +12,7 @@ import {
 } from "tamagui";
 import { FormPaia, Options, TemplateInputProps } from "./FormClass";
 import { ValidacoesCampo } from "@/components/FormClass";
+import { ButtonCustom } from "./buttonCustom";
 
 /**
  * validações de campos pre definidas
@@ -62,15 +65,20 @@ type InputPaiaProps = InputProps;
  */
 function AvisoPaia(props: TemplateInputProps) {
   const { aviso, campo, children, isValid, isLoading } = props;
+
+  const [color, texto] =
+    (isValid && ["green", `${campo} valido`]) ||
+    (isLoading && ["orange", "validando..."]) ||
+    (aviso && ["red", aviso]) ||
+    ['', ' ']; // pratico, mas feio
+
   return (
     <YStack w="100%">
       <Text fontSize={"$2"} color="green" mb="$1.5" fontFamily={"$outfitBold"}>
         {campo.toUpperCase()}:
       </Text>
       {children}
-      {aviso && <Text>{aviso}</Text>}
-      {isValid && <Text color={"red"}>{campo} valido</Text>}
-      {isLoading && <Text>validando...</Text>}
+      <Text color={color}>{texto}</Text>
     </YStack>
   );
 }
@@ -90,4 +98,33 @@ export class FormPaiado extends FormPaia<
       AvisoPaia
     );
   }
+
+  /**
+   * ButtonSubmit
+   */
+  public ButtonSubmit = (props: { text: string }) => {
+    const isLoading = false;
+
+    return (
+      <Form.Trigger asChild disabled={isLoading}>
+        <ButtonCustom disabled={isLoading} marginLeft="-2%" width="104%">
+          {isLoading ? "aguarde" : props.text}
+          {isLoading && <Spinner size="large" color={"$blue10Dark"} />}
+        </ButtonCustom>
+      </Form.Trigger>
+    );
+  };
+
+  /**
+   * Form
+   */
+  public Form = (props: Omit<FormProps, "onSubmit">) => {
+    return (
+      <Form w={"100%"} alignItems="center" {...props} onSubmit={this.submit}>
+        <YStack width={"100%"} gap={"$4"}>
+          {props.children}
+        </YStack>
+      </Form>
+    );
+  };
 }
