@@ -12,6 +12,8 @@ import type {
 import useApi, { CallbackAxios } from "@/lib/useApi";
 import { TextInputProps } from "react-native";
 
+const TIMEOUT_VALIDY = 500;
+
 export class FormPaia<C extends string, Inp extends InputMinimoProps> {
   private values = useRef({} as ObjC<C, string>).current;
   private useApiPaia: UseMutation<typeof this.values>["result"];
@@ -39,9 +41,9 @@ export class FormPaia<C extends string, Inp extends InputMinimoProps> {
   /*
    * Componente do Input com toda lógica de validação
    */
-  public Input = ({ value, campo, ...props }: Inp & { campo: C }) => {
-    const [valueInput, setValuesInput] = useState(this.values[campo]);
-    const infoValidy = this.useValid(value || "", campo);
+  public Input = ({ campo, ...props }: Inp & { campo: C }) => {
+    const [valueInput, setValuesInput] = useState(this.values[campo] || "");
+    const infoValidy = this.useValid(valueInput, campo);
 
     this.values[campo] = valueInput;
 
@@ -49,7 +51,7 @@ export class FormPaia<C extends string, Inp extends InputMinimoProps> {
       <this.TemplateInput campo={campo} {...infoValidy}>
         <this.InputType
           {...(props as unknown as Inp)}
-          value={value}
+          value={valueInput}
           onChangeText={(v) => setValuesInput(v)}
         />
       </this.TemplateInput>
@@ -60,33 +62,35 @@ export class FormPaia<C extends string, Inp extends InputMinimoProps> {
    *  Hook que cuida de validar os valores do input
    */
   private useValid(value: string, campo: C) {
-    const [aviso, setAviso] = useState<StateValues<typeof State>>(State.EMPTY);
+    const [validy, setValidy] = useState<StateValues<typeof State>>(
+      State.EMPTY
+    );
 
     useEffect(() => {
-      setAviso(State.LOADING);
+      setValidy(State.LOADING);
+      const validadoresDoCampo = this.options.campos?.[campo];
+      if (!validadoresDoCampo) return setValidy(State.EMPTY); // não existe validacao para esse campo
 
       const timeoutId = setTimeout(async () => {
-        const validadoresDoCampo = this.options.campos?.[campo];
-        if (!validadoresDoCampo) return setAviso(State.EMPTY); // não existe validacao para esse campo
-
         for await (const [verify, avisoDoErro] of validadoresDoCampo) {
           if (await verify(value)) {
-            return setAviso(avisoDoErro); // ERROR
+            return setValidy(avisoDoErro); // ERROR
           }
         }
 
         // se passou nos testes seta null como sucesso
-        setAviso(State.SUCCESS);
-      }, 2000);
+        setValidy(State.SUCCESS);
+      }, TIMEOUT_VALIDY);
 
       return () => clearTimeout(timeoutId);
     }, [value]);
 
+    const isError = typeof validy == "string";
+
     return {
-      aviso,
-      isLoading: aviso == State.LOADING,
-      isError: aviso instanceof String,
-      isValid: aviso === State.SUCCESS,
+      aviso: isError ? validy : null,
+      isLoading: validy == State.LOADING,
+      isValid: validy === State.SUCCESS,
     };
   }
 }
@@ -99,24 +103,23 @@ export class FormPaia<C extends string, Inp extends InputMinimoProps> {
 
 export type TemplateInputProps = PropsWithChildren<{
   campo: string;
-  aviso: StateValues<typeof State>;
+  aviso: string | null;
   isLoading: boolean;
-  isError: boolean;
   isValid: boolean;
 }>;
 
 const State = {
-  LOADING: false,
-  SUCCESS: true,
-  EMPTY: null,
-  ERROR: new String(), // qualquer string é considerado erro
-} as const;
+  LOADING: 0,
+  SUCCESS: 1,
+  EMPTY: 2,
+  ERROR: "", // qualquer string é considerado erro
+};
 
 type StateValues<O> = {
   [K in keyof O]: O[K];
 }[keyof O];
 
-type ValidacoesCampo =
+export type ValidacoesCampo =
   | [(t: string) => boolean | Promise<boolean>, string][]
   | null;
 
