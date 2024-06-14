@@ -4,7 +4,6 @@ import FormFooter from "@/components/FormFooter";
 import TAuth from "@/components/templateAuth";
 import { storeAuth } from "@/lib/logicAuth";
 import { router } from "expo-router";
-import { Input } from "tamagui";
 
 export default function Cadastrar() {
   const login = storeAuth((s) => s.login);
@@ -25,23 +24,17 @@ export default function Cadastrar() {
 
   return (
     <TAuth subTitulo="Cadastra-se" titulo="CADASTRAR">
-      <SignUp.Form>
-        <SignUp.Input campo="apelido" />
-        <SignUp.Input campo="email" textContentType="emailAddress" />
-        <SignUp.Input
-          campo="senha"
-          secureTextEntry
-          textContentType="password"
-        />
-        <SignUp.ButtonSubmit text="CADASTRAR" />
-        <FormFooter
-          link={{
-            href: "/(auth)/login",
-            text: "Já está cadastrado?",
-            textLink: "Entre aqui!",
-          }}
-        />
-      </SignUp.Form>
+      <SignUp.Input campo="apelido" />
+      <SignUp.Input campo="email" textContentType="emailAddress" />
+      <SignUp.Input campo="senha" secureTextEntry textContentType="password" />
+      <SignUp.ButtonSubmit text="CADASTRAR" />
+      <FormFooter
+        link={{
+          href: "/(auth)/login",
+          text: "Já está cadastrado?",
+          textLink: "Entre aqui!",
+        }}
+      />
     </TAuth>
   );
 }

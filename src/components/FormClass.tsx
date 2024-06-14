@@ -16,7 +16,7 @@ const TIMEOUT_VALIDY = 500;
 
 export class FormPaia<C extends string, Inp extends InputMinimoProps> {
   private values = useRef({} as ObjC<C, string>).current;
-  private useApiPaia: UseMutation<typeof this.values>["result"];
+  protected useApiPaia: UseMutation<typeof this.values>["result"];
 
   constructor(
     private options: Options<C>,
@@ -45,11 +45,16 @@ export class FormPaia<C extends string, Inp extends InputMinimoProps> {
     const [valueInput, setValuesInput] = useState(this.values[campo] || "");
     const infoValidy = this.useValid(valueInput, campo);
 
+    const { isPending } = this.useApiPaia;
+
     this.values[campo] = valueInput;
 
     return (
       <this.TemplateInput campo={campo} {...infoValidy}>
         <this.InputType
+          editable={!isPending}
+          selectTextOnFocus={!isPending}
+          placeholder={campo}
           {...(props as unknown as Inp)}
           value={valueInput}
           onChangeText={(v) => setValuesInput(v)}
@@ -73,8 +78,10 @@ export class FormPaia<C extends string, Inp extends InputMinimoProps> {
 
       const timeoutId = setTimeout(async () => {
         for await (const [verify, avisoDoErro] of validadoresDoCampo) {
-          if (await verify(value)) {
-            return setValidy(avisoDoErro); // ERROR
+          const isValidy = await verify(value);
+          const isValidyMsg = typeof isValidy === "string" && isValidy;
+          if (isValidy) {
+            return setValidy(isValidyMsg || avisoDoErro); // ERROR
           }
         }
 
@@ -119,11 +126,14 @@ type StateValues<O> = {
   [K in keyof O]: O[K];
 }[keyof O];
 
-export type ValidacoesCampo =
-  | [(t: string) => boolean | Promise<boolean>, string][]
-  | null;
+type ValidsType = [
+  (value: string) => boolean | string | PromiseLike<boolean | string>,
+  string
+];
 
-type ObjC<C extends string, Value> = {
+export type ValidacoesCampo = ValidsType[] | null;
+
+export type ObjC<C extends string, Value> = {
   [K in C]: Value;
 };
 
@@ -141,5 +151,8 @@ type EscutarPropsPaia<C extends string> = {
   children: ComponentType<{ mutation: UseMutation<ObjC<C, string>>["result"] }>;
 };
 
-export type InputMinimoProps = Pick<TextInputProps, "value" | "onChangeText">;
+export type InputMinimoProps = Pick<
+  TextInputProps,
+  "value" | "onChangeText" | "placeholder" | "editable" | "selectTextOnFocus"
+>;
 type InputMinimo<P = InputMinimoProps> = ComponentType<P>;
