@@ -9,7 +9,7 @@ import React, { useRef, useEffect } from "react";
 import useApi from "@/lib/useApi";
 import { getFiles } from "@/lib/useAxios";
 import axios from "axios";
-import { CardDemo } from "../Test";
+// import { CardDemo } from "../Test";
 
 // Interfaces
 interface Catalogo {
@@ -144,6 +144,8 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
           color={"#000"}
           maxWidth={100}
           maxHeight={25}
+          // lembrete de aumentar o tamanho da altura para que o texto não fique cortado.
+          // centralizar o texto para não ficar cortado
           overflow="scroll"
         >
           {item.nomeCientifico}
