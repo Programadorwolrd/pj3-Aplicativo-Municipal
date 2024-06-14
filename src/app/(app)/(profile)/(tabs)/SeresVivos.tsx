@@ -1,15 +1,13 @@
 import { View, Text, Image, YStack, XStack, ScrollView, Card } from "tamagui";
-import { FlatList, StyleSheet, Pressable, Dimensions } from "react-native";
-import bichoIcon from "../../../../assets/macaco.png";
+import { FlatList, StyleSheet, Pressable, Dimensions, RefreshControl } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import type { CardProps } from "tamagui";
 
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useApi from "@/lib/useApi";
 import { getFiles } from "@/lib/useAxios";
 import axios from "axios";
-// import { CardDemo } from "../Test";
 
 // Interfaces
 interface Catalogo {
@@ -17,7 +15,7 @@ interface Catalogo {
   id: number;
   nomePopular: string;
   nomeCientifico: string;
-  foto: string;
+  fotoBicho: string;
 }
 
 interface LidoPeloUser extends Catalogo {
@@ -33,20 +31,16 @@ interface PropsUser {
 }
 
 // Função para formatar os dados e entregar um quadrado vazio caso não tenha um bicho
-
 const formatData = (data: LidoPeloUser[], numColumns: number = 3) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
   let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
-  while (
-    numberOfElementsLastRow !== numColumns &&
-    numberOfElementsLastRow !== 0
-  ) {
+  while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
     data.push({
       uuid: `blank-${numberOfElementsLastRow}`,
       id: -1,
       nomePopular: "",
       nomeCientifico: "",
-      foto: "",
+      fotoBicho: "",
       empty: true,
     });
     numberOfElementsLastRow++;
@@ -56,50 +50,64 @@ const formatData = (data: LidoPeloUser[], numColumns: number = 3) => {
 
 export default function SeresVivos() {
   const navigation = useNavigation();
+  const [atualizar, setAtualizar] = useState(false);
+  const [dataUser, setDataUser] = useState<PropsUser>({
+    id: "",
+    apelido: "",
+    foto: "",
+    lidoPeloUser: [],
+    ranking: 3,
+  });
 
-  // Retorno de dados do user
-  const user = useApi("query", (axios) => {
+  const userApi = useApi("query", (axios) => {
     return {
+      retry: 5,
       queryKey: ["user"],
       queryFn: () => {
         return axios.get("/usuario");
       },
-    }
-    {
-      retry: 5
     };
-  }
-);
+  });
 
-  console.log(user.data?.data.usuario, "user");
+  useEffect(() => {
+    if (userApi.data) {
+      const userData = userApi.data.data.usuario;
+      const formattedData: PropsUser = {
+        id: userData.id || "",
+        apelido: userData.apelido || "",
+        foto: userData.foto || "",
+        lidoPeloUser: userData.lidoPeloUser.map((item: any) => ({
+          uuid: item.catalogo_uuid || "",
+          id: item.catalogo.uuid || "",
+          nomePopular: item.catalogo.nomePopular || "",
+          nomeCientifico: item.catalogo.nomeCientifico || "",
+          fotoBicho: item.catalogo.ftModel || "",
+        })) || [],
+        ranking: 3,
+      };
+      setDataUser(formattedData);
+    }
+  }, [userApi.data]);
 
-  const data: PropsUser = {
-    id: user.data?.data.usuario.id || "",
-    apelido: user.data?.data.usuario.apelido || "",
-    foto: user.data?.data.usuario.foto || "",
-    lidoPeloUser:
-      user.data?.data.usuario.lidoPeloUser.map((item: any) => ({
-        uuid: item.catalogo_uuid || "",
-        id: item.catalogo.uuid || "",
-        nomePopular: item.catalogo.nomePopular || "",
-        nomeCientifico: item.catalogo.nomeCientifico || "",
-        foto: item.catalogo.ftModel || "",
-      })) || [],
-    ranking: 3,
+  const onRefresh = () => {
+    setAtualizar(true);
+    userApi.refetch().finally(() => {
+      setAtualizar(false);
+    });
   };
+console.log(dataUser.lidoPeloUser, 'user data');
 
-  console.log(data, "data user");
-  const numColumns: number = 3;
   return (
-    <View style={{ flex: 1, marginTop: 20 }}>
+    <View style={{ flex: 1, marginTop: 1 }}>
       <FlatList
-        data={formatData(data.lidoPeloUser, numColumns)}
-        numColumns={numColumns}
+        data={formatData(dataUser.lidoPeloUser, 3)}
+        numColumns={3}
         columnWrapperStyle={{ gap: 30, paddingHorizontal: 30 }}
-        contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
+        contentContainerStyle={{ gap: 1, paddingBottom: 20 }}
         keyExtractor={(item, index) => item.uuid + index}
         showsVerticalScrollIndicator={false}
         scrollEnabled={true}
+        refreshControl={<RefreshControl refreshing={atualizar} onRefresh={onRefresh} />}
         renderItem={({ item }) => {
           if (item.empty) {
             return <View style={[styles.item, styles.itemInvisible]} />;
@@ -107,13 +115,13 @@ export default function SeresVivos() {
           return (
             <Pressable
               style={styles.item}
-              onPress={() => router.navigate(`(app)/(home)/${item.id}`)}
+              onPress={() => router.navigate(`(app)/(home)/${item.id}`) }
             >
               <DemoCard
                 animation="bouncy"
-                mb={"$3"}
-                hoverStyle={{ scale: 0.925 }}
-                pressStyle={{ scale: 0.875 }}
+                mb={"$1"}
+                hoverStyle={{ scale: 0.955 }}
+                pressStyle={{ scale: 0.925 }}
                 item={item}
               />
             </Pressable>
@@ -126,57 +134,53 @@ export default function SeresVivos() {
 
 function DemoCard(props: CardProps & { item: LidoPeloUser }) {
   const { item } = props;
+  const imgAnimal = getFiles(item.fotoBicho)
+  console.log(imgAnimal, 'img');
+  
   return (
     <Card
-      
-      backgroundColor={"$colorTransparent"}
+      bordered
+      borderBottomColor={"#329F60"}
+      borderBottomStartRadius={"$3"}
+      borderBottomEndRadius={"$3"}
+      borderBottomWidth={"$1"}
+      backgroundColor={"$white025"}
       justifyContent={"center"}
       alignItems={"center"}
+      paddingTop={"$2.5"}
       {...props}
     >
-      <Card.Header padded justifyContent={"center"} alignItems={"center"}>
-        {/* 
-        ///
-         Solução provisoria de exibição de nome
-        ///
-        */}
-       
-      </Card.Header>
       <View>
         <Image
+       
           resizeMode="contain"
           alignSelf="center"
           source={{
             width: 100,
             height: 100,
-            uri: getFiles(item.foto),
+            // uri: 'https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg',
+            uri: imgAnimal,
           }}
         />
       </View>
-      <Card.Footer m={"$2.5"} 
-      borderBottomColor={"#329F60"}
-      borderBottomStartRadius={"$3"}
-      borderBottomEndRadius={"$3"}
-      borderBottomWidth={"$1"}>
-        {/* <XStack justifyContent={"center"} alignItems={"center"} > */}
-        {/* 
-        ///
-         Solução provisoria de exibição de nome
-        ///
-        */}
-        <Text
-          fontSize={"$6"}
-          color={"#000"}
-          textAlign={"center"}
-          width = {100}
-          maxWidth={100}
-          height={55}
-          maxHeight={55}
-          overflow="scroll"
-        >
-          {item.nomePopular}
-        </Text>
-        {/* </XStack> */}
+      <Card.Footer
+      mt={"$1"}
+        paddingHorizontal={"$2.5"}
+      >
+        <XStack justifyContent={"center"}
+          alignItems={"center"} alignSelf="center" w={100} h={50} >
+          <Text
+          // borderBottomColor={"#329F60"}
+          // borderBottomWidth={"$1"}
+            fontSize={"$5"}
+            color={"#000"}
+            textAlign={"center"}
+            numberOfLines={2}
+            overflow="scroll"
+          >
+            {item.nomePopular}
+          </Text>
+        </XStack>
       </Card.Footer>
     </Card>
   );
