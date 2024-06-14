@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2,
+    
   },
   buttonOpen: {
     backgroundColor: 'transparent',
@@ -89,13 +89,5 @@ const styles = StyleSheet.create({
   buttonClose: {
     backgroundColor: 'transparent',
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-  },
+  
 });

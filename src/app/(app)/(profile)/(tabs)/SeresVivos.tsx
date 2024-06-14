@@ -64,8 +64,12 @@ export default function SeresVivos() {
       queryFn: () => {
         return axios.get("/usuario");
       },
+    }
+    {
+      retry: 5
     };
-  });
+  }
+);
 
   console.log(user.data?.data.usuario, "user");
 
@@ -124,10 +128,7 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
   const { item } = props;
   return (
     <Card
-      borderBottomColor={"#329F60"}
-      borderBottomStartRadius={"$3"}
-      borderBottomEndRadius={"$3"}
-      borderBottomWidth={"$1"}
+      
       backgroundColor={"$colorTransparent"}
       justifyContent={"center"}
       alignItems={"center"}
@@ -139,17 +140,7 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
          Solução provisoria de exibição de nome
         ///
         */}
-        <Text
-          fontSize={"$8"}
-          color={"#000"}
-          maxWidth={100}
-          maxHeight={25}
-          // lembrete de aumentar o tamanho da altura para que o texto não fique cortado.
-          // centralizar o texto para não ficar cortado
-          overflow="scroll"
-        >
-          {item.nomeCientifico}
-        </Text>
+       
       </Card.Header>
       <View>
         <Image
@@ -162,7 +153,11 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
           }}
         />
       </View>
-      <Card.Footer p={"$2.5"}>
+      <Card.Footer m={"$2.5"} 
+      borderBottomColor={"#329F60"}
+      borderBottomStartRadius={"$3"}
+      borderBottomEndRadius={"$3"}
+      borderBottomWidth={"$1"}>
         {/* <XStack justifyContent={"center"} alignItems={"center"} > */}
         {/* 
         ///
@@ -173,8 +168,10 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
           fontSize={"$6"}
           color={"#000"}
           textAlign={"center"}
+          width = {100}
           maxWidth={100}
-          maxHeight={25}
+          height={55}
+          maxHeight={55}
           overflow="scroll"
         >
           {item.nomePopular}
