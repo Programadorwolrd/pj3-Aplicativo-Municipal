@@ -4,6 +4,28 @@ import { Image } from "react-native";
 import { ScrollView } from "tamagui";
 import CardCategoriaSeres, { PropsCard } from "@/components/cardCategoriaSeres";
 import CardSeres from "@/components/CardSeres";
+import useApi from "@/lib/useApi";
+
+
+interface PropsUser {
+  id: string;
+  apelido: string;
+  foto: string;
+  lidoPeloUser: LidoPeloUser[];
+}
+
+// Interfaces
+interface Catalogo {
+  uuid: string;
+  id: number;
+  nomePopular: string;
+  nomeCientifico: string;
+  foto: string;
+}
+
+interface LidoPeloUser extends Catalogo {
+  empty?: boolean;
+}
 
 export default function HomePage() {
   const categorias: PropsCard[] = [
@@ -17,11 +39,42 @@ export default function HomePage() {
   const seres: PropsCardSeres[] = [
     { nome: "Tucano", categoria: "Pássaros" },
     { nome: "Tucano", categoria: "Pássaros" },
+    { nome: "Tucano", categoria: "Pássaros" },
+    { nome: "Tucano", categoria: "Pássaros" },
+    { nome: "Tucano", categoria: "Pássaros" },
+    { nome: "Tucano", categoria: "Pássaros" },
+    { nome: "Tucano", categoria: "Pássaros" },
     { nome: "Tucano", categoria: "Pássaros" }
   ];
 
   const flavio = "Flavio";
+
+  const user = useApi("query", (axios) => {
+    return {
+      queryKey: ["user"],
+      queryFn: () => {
+        return axios.get("/usuario");
+      },
+    };
+  });
+
+  console.log(user.data?.data.usuario, "user");
+
+  const data: PropsUser = {
+    id: user.data?.data.usuario.id || "",
+    apelido: user.data?.data.usuario.apelido || "",
+    foto: user.data?.data.usuario.foto || "",
+    lidoPeloUser:
+      user.data?.data.usuario.lidoPeloUser.map((item: any) => ({
+        uuid: item.catalogo_uuid || "",
+        id: item.catalogo.uuid || "",
+        nomePopular: item.catalogo.nomePopular || "",
+        nomeCientifico: item.catalogo.nomeCientifico || "",
+        foto: item.catalogo.ftModel || "",
+      })) || [],
+  };
   return (
+    
     <View style={{ backgroundColor: "#fff" }}>
       <Text
         style={{
@@ -31,7 +84,7 @@ export default function HomePage() {
           marginTop: 25,
         }}
       >
-        Hello, {flavio} 🍀
+        Hello, {data.apelido} 🌿
       </Text>
       <Text
         style={{
@@ -108,7 +161,6 @@ export default function HomePage() {
         style={{
           marginStart: 25,
           marginEnd: 30,
-          marginTop: 20,
           gap: 10,
           paddingBottom: 200,
         }}
