@@ -12,13 +12,13 @@ import React, { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button, Image, ScrollView, Text, View } from "tamagui";
 import { TabsDemo } from "../../../components/tabs";
 import { AirbnbRating } from "react-native-ratings";
-import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import useAxios, { getFiles } from "@/lib/useAxios";
 import { isAxiosError } from "axios";
+import ErrorScreen from "@/components/ErrorScreen";
 
 export default function InfoUrl() {
   const axios = useAxios();
@@ -26,7 +26,7 @@ export default function InfoUrl() {
   const screenWidth = Dimensions.get("window").width;
   const [activeIndex, setActiveIndex] = useState(0);
   const navigation = useNavigation();
-  const { uuid } = useLocalSearchParams();
+  const { infoUrl } = useLocalSearchParams();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -81,24 +81,34 @@ export default function InfoUrl() {
 
   const [carouselData, setCarouselData] = useState<CarouselData[]>([]);
   const [content, setContent] = useState<ContentData | null>(null);
-  const [data, setData] = useState(null);
+  const [notFound, setNotFound] = useState <boolean | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/usuario/lerqrcode/${4}`);
-
+        const { data } = await axios.get(`/usuario/lerqrcode/${infoUrl}`);
+      
+        if (!data || !data.catalogo) {
+          setNotFound(true);
+          return;
+        }
+      
         setCarouselData(data.catalogo.catalogoGaleria);
         setContent(data.catalogo);
-      } catch (error) {
+      } catch (error) {        
         if (isAxiosError(error)) console.log(error?.response?.data);
+        setNotFound(true);
       }
     };
-
+  
     fetchData();
-  }, [uuid]);
+  }, [infoUrl, navigation]);
 
-  if (!content) return null;
+  
+  if (notFound) return <ErrorScreen
+  title= "Ser vivo não encontrado"
+  text = "Escaneie um QrCode valido"
+/>
 
   const renderItem = ({
     item,
@@ -114,9 +124,9 @@ export default function InfoUrl() {
         {item.catalogoGaleria.map((galeriaItem) => (
           <Image
             key={galeriaItem.id}
-            source={{ uri: getFiles(galeriaItem.url) }}
+            source={{ uri: getFiles(galeriaItem?.url) }}
             style={{ width: "100%", height: "100%" }}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ))}
       </View>
@@ -165,14 +175,14 @@ export default function InfoUrl() {
     });
   };
 
-  return (
+
+ if(content) return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ position: "absolute", top: 50, left: 10, zIndex: 1 }}>
         <Pressable onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={40} color="white" />
         </Pressable>
       </View>
-
       <ScrollView style={{ backgroundColor: "black" }}>
         <View style={{ position: "relative" }}>
           <FlatList
@@ -183,7 +193,7 @@ export default function InfoUrl() {
               <Image
                 source={{ uri: getFiles(item.url) }}
                 w={screenWidth}
-                aspectRatio={"12/13"}
+                aspectRatio={"12/15"}
               />
             )}
             keyExtractor={(item) => item.id.toString()}
@@ -222,17 +232,11 @@ export default function InfoUrl() {
               marginBottom: -15,
             }}
           >
-            <Text
-              style={{
-                color: "white",
-                fontSize: 18,
-                marginVertical: 15,
-              }}
-            >
-              {content?.nascimento}
+            <Text style={{ color: "white", fontSize: 18, marginVertical: 15 }}>
+              {content?.nomePopular}
             </Text>
             <Image
-              source={{ uri: getFiles(content.medalha) }}
+              source={{ uri: getFiles(content?.medalha) }}
               style={{
                 marginLeft: 10,
                 height: 50,
@@ -241,15 +245,14 @@ export default function InfoUrl() {
               }}
             />
           </View>
-          <Text style={{ color: "white", fontSize: 18, marginHorizontal: 20 }}>
-            {content?.nomePopular}
-          </Text>
+
           <Text
             style={{
               color: "#878787",
               fontSize: 18,
               marginHorizontal: 20,
-              marginVertical: 5,
+              marginTop: 10,
+              marginBottom: 5,
             }}
           >
             {content?.nomeCientifico}

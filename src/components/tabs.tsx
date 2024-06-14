@@ -4,6 +4,8 @@ import { Button, Tabs, XStack, YStack, isWeb, Text, View } from "tamagui";
 import { Audio } from "expo-av";
 import { Pressable } from "react-native";
 import { getFiles } from "@/lib/useAxios";
+import { useIsFocused } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 const demos = ["horizontal", "vertical"] as const;
 
@@ -38,13 +40,15 @@ const HorizontalTabs = ({ catalogo }) => {
   const [sound, setSound] = useState<Audio.Sound | undefined>();
   const [content, setContent] = useState<ContentData | null>(null);
   const [shouldPlay, setShouldPlay] = useState(false);
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
 
   async function playSound(soundUrl: string) {
     if (sound) {
       await sound.stopAsync();
       await sound.unloadAsync();
     }
-  
+
     const newSound = new Audio.Sound();
     try {
       await newSound.loadAsync({ uri: soundUrl });
@@ -59,8 +63,26 @@ const HorizontalTabs = ({ catalogo }) => {
     if (shouldPlay) {
       const soundUrl = getFiles(catalogo?.som);
       playSound(soundUrl);
+      setShouldPlay(false); // Reset shouldPlay after playing the sound
     }
   }, [shouldPlay]);
+
+  useEffect(() => {
+    return () => {
+      // Clean up function to stop and unload the sound when the component unmounts
+      if (sound) {
+        sound.stopAsync();
+        sound.unloadAsync();
+      }
+    };
+  }, [sound]); // Adicionei 'sound' como dependência para garantir que o useEffect seja chamado sempre que 'sound' mudar
+
+  useEffect(() => {
+    if (!isFocused && sound) {
+      sound.stopAsync();
+      setShouldPlay(false); // Adicionado para garantir que 'shouldPlay' seja sempre falso quando a página não estiver em foco
+    }
+  }, [isFocused, sound]);
 
   useEffect(() => {
     if (ref.current) {
