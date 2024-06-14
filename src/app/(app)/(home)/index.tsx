@@ -16,8 +16,8 @@ export default function Index(a) {
           tabBarIndicatorStyle: { backgroundColor: "#329F60" },
         }}
       >
-        <Tab.Screen name="Mapa" component={mapaPage} />
         <Tab.Screen name="home" component={homePage} />
+        <Tab.Screen name="Mapa" component={mapaPage} />
       </Tab.Navigator>
     </View>
   );

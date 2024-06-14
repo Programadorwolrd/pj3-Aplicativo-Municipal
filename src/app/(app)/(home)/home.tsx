@@ -14,7 +14,11 @@ export default function HomePage() {
     { link: "", title: "Plantas" },
   ];
 
-  const seres: PropsCardSeres[] = [{ nome: "Tucano", categoria: "Passáros" }];
+  const seres: PropsCardSeres[] = [
+    { nome: "Tucano", categoria: "Pássaros" },
+    { nome: "Tucano", categoria: "Pássaros" },
+    { nome: "Tucano", categoria: "Pássaros" }
+  ];
 
   const flavio = "Flavio";
   return (
@@ -93,7 +97,7 @@ export default function HomePage() {
           marginStart: 25,
           marginEnd: 30,
           marginTop: 20,
-          gap: 10,
+
         }}
         ItemSeparatorComponent={() => <View style={{ padding: 3 }} />}
         horizontal={true}
@@ -108,10 +112,10 @@ export default function HomePage() {
           gap: 10,
           paddingBottom: 200,
         }}
-        ItemSeparatorComponent={() => <View style={{ padding: 3 }} />}
+        ItemSeparatorComponent={() => <View style={{ padding: 5 }} />}
         horizontal={true}
         data={seres}
-        renderItem={({ item }) => <CardSeres nome={item.nome} />}
+        renderItem={({ item }) => <CardSeres nome={item.nome} categoria={item.categoria} />}
       />
     </View>
   );
