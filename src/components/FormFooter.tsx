@@ -1,4 +1,4 @@
-import { Text, YStack } from "tamagui";
+import { Text, View, YStack } from "tamagui";
 import { Link } from "expo-router";
 import ButtonsOauth from "./ButtonsOauth";
 import { XStack } from "tamagui";
@@ -11,7 +11,7 @@ export default function FormFooter(props: {
   };
 }) {
   return (
-    <>
+    <View gap={"$5"}>
       <YStack width={"100%"} alignItems="center">
         <YStack width={"100%"} alignItems="center">
           <Text fontFamily={"$outfitBold"} fontSize={17} marginVertical={18}>
@@ -34,6 +34,6 @@ export default function FormFooter(props: {
           </Text>
         </Link>
       </Text>
-    </>
+    </View>
   );
 }
