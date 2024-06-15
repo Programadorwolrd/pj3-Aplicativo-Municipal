@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { Alert } from "react-native";
 
 // tipos
-type CallbackAxios<R> = (axios: AxiosInstance) => R;
+export type CallbackAxios<R> = (axios: AxiosInstance) => R;
 type QueryType = "mutate" | "query";
 type QueryOptions = CallbackAxios<UseMutationOptions | UseQueryOptions>;
 type QueryResult = UseMutationResult | UseQueryResult;
