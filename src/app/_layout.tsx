@@ -1,14 +1,14 @@
-import { Slot } from 'expo-router';
-import { TamaguiProvider } from 'tamagui';
-import appConfig from 'tamagui.config';
+import { Slot } from "expo-router";
+import { TamaguiProvider } from "tamagui";
+import appConfig from "tamagui.config";
 
-import { loadFonts } from '@/lib/loadFonts';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { loadFonts } from "@/lib/loadFonts";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const clientQuery = new QueryClient({
   defaultOptions: {
     mutations: { retry: 0 },
-    queries: { retry: 1 },
+    queries: { retry: 1, staleTime: 1000 * 60 * 3 },
   },
 });
 
@@ -19,7 +19,7 @@ export default function RootLayout() {
   if (isLoadFont) return null;
 
   return (
-    <TamaguiProvider config={appConfig} defaultTheme='light'>
+    <TamaguiProvider config={appConfig} defaultTheme="light">
       <QueryClientProvider client={clientQuery}>
         <Slot />
       </QueryClientProvider>

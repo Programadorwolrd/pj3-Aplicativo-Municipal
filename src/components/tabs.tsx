@@ -63,24 +63,23 @@ const HorizontalTabs = ({ catalogo }) => {
     if (shouldPlay) {
       const soundUrl = getFiles(catalogo?.som);
       playSound(soundUrl);
-      setShouldPlay(false); // Reset shouldPlay after playing the sound
+      setShouldPlay(false); 
     }
   }, [shouldPlay]);
 
   useEffect(() => {
     return () => {
-      // Clean up function to stop and unload the sound when the component unmounts
       if (sound) {
         sound.stopAsync();
         sound.unloadAsync();
       }
     };
-  }, [sound]); // Adicionei 'sound' como dependência para garantir que o useEffect seja chamado sempre que 'sound' mudar
+  }, [sound]);
 
   useEffect(() => {
     if (!isFocused && sound) {
       sound.stopAsync();
-      setShouldPlay(false); // Adicionado para garantir que 'shouldPlay' seja sempre falso quando a página não estiver em foco
+      setShouldPlay(false); 
     }
   }, [isFocused, sound]);
 

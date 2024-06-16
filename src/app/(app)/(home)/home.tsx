@@ -162,7 +162,7 @@ export default function HomePage() {
           marginStart: 25,
           marginEnd: 30,
           gap: 10,
-          paddingBottom: 200,
+          paddingBottom: 50,
         }}
         ItemSeparatorComponent={() => <View style={{ padding: 5 }} />}
         horizontal={true}
