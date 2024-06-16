@@ -1,118 +1,160 @@
-import { View, Text, Image, YStack, ScrollView, XStack } from "tamagui";
+import React, { useEffect, useState } from "react";
+import { View, Image, Card } from "tamagui";
 import {
   FlatList,
   StyleSheet,
   Pressable,
   Dimensions,
-
+  RefreshControl,
 } from "react-native";
+import type { CardProps } from "tamagui";
+import useApi from "@/lib/useApi";
+import { getFiles } from "@/lib/useAxios";
 
-import React, { useRef, useEffect } from "react";
+// Interfaces
+interface Catalogo {
+  uuid: string;
+  id: number;
+  medalha: string;
+}
 
+interface LidoPeloUser extends Catalogo {
+  empty?: boolean;
+}
 
-const medalha = require("../../../../assets/medalha.png");
-const data: { name: string; url: string; titulo: string }[] = [
-  { name: "Master", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Mestre" },
-  { name: "Dectetive", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Detetive" },
-  { name: "Caçador", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Caçador de Recompensas" },
-  { name: "Jogador", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Jogador Profissional" },
-  { name: "Top 1", url: 'https://cdn.awsli.com.br/600x450/1537/1537255/produto/249065191/ywa460volei-24_001-uso0ij5pz8.jpg', titulo: "Top 1 do Ranking" },
-  { name: "Incrivel", url: medalha, titulo: "Incrível Jogador" },
-  { name: "Biologo", url: "https://picsum.photos/100/100", titulo: "Biólogo" },
-  { name: "Escolhido", url: "https://picsum.photos/100/100", titulo: "O Escolhido" },
-  { name: "Sortudo", url: "https://picsum.photos/100/100", titulo: "Sortudo" },
-  { name: "Medalha 10", url: "https://picsum.photos/100/100", titulo: "Medalha de Ouro" },
-  { name: "Medalha 11", url: "https://picsum.photos/100/100", titulo: "Medalha de Prata" },
-  { name: "Medalha 12", url: "https://picsum.photos/100/100", titulo: "Medalha de Bronze" },
-  { name: "Medalha 13", url: "https://picsum.photos/100/100", titulo: "Medalha de Honra" },
-];
-const formatData = (data: any, numColumns: number) => {
+interface PropsUser {
+  id: string;
+  lidoPeloUser: LidoPeloUser[];
+  ranking: number;
+}
+
+// Função para formatar os dados e entregar um quadrado vazio caso não tenha um bicho
+const formatData = (data: LidoPeloUser[], numColumns: number = 3) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
-  let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
-  while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
-    data.push({ name: `blank-${numberOfElementsLastRow}`, url: "", id: -1, empty: true });
+  let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
+  while (
+    numberOfElementsLastRow !== numColumns &&
+    numberOfElementsLastRow !== 0
+  ) {
+    data.push({
+      uuid: `blank-${numberOfElementsLastRow}`,
+      id: -1,
+      medalha: "",
+      empty: true,
+    });
     numberOfElementsLastRow++;
-
   }
   return data;
-}
-const numColumns: number = 3;
+};
+
 export default function Medalhas() {
+  const [atualizar, setAtualizar] = useState(false);
+  const [dataUser, setDataUser] = useState<PropsUser>({
+    id: "",
+    lidoPeloUser: [],
+    ranking: 3,
+  });
 
-  // const scrollViewRef = useRef<ScrollView>(null);
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (scrollViewRef.current) {
-  //       scrollViewRef.current.scrollTo({ x: 100, animated: true });
-  //     }
-  //   }, 1000);
+  const userApi = useApi("query", (axios) => {
+    return {
+      retry: 5,
+      queryKey: ["user"],
+      queryFn: () => {
+        return axios.get("/usuario");
+      },
+    };
+  });
+  console.log(userApi.data?.data, "user");
 
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
+  useEffect(() => {
+    if (userApi.data) {
+      const userData = userApi.data.data.usuario;
+      const formattedData: PropsUser = {
+        id: userData.id || "",
+
+        lidoPeloUser:
+          userData.lidoPeloUser.map((item: any) => ({
+            uuid: item.catalogo_uuid || "",
+            id: item.catalogo.uuid || "",
+            medalha: item.catalogo.medalha || "",
+          })) || [],
+        ranking: 3,
+      };
+      setDataUser(formattedData);
+    }
+  }, [userApi.data]);
+
+  const onRefresh = () => {
+    setAtualizar(true);
+    userApi.refetch().finally(() => {
+      setAtualizar(false);
+    });
+  };
+  // console.log(dataUser.lidoPeloUser, "user data");
+
   return (
-    <View style={{ flex: 1, marginTop: 20 }}>
-
+    <View style={{ flex: 1, marginTop: 1 }}>
       <FlatList
-        data={formatData(data, numColumns)}
-        numColumns={numColumns}
+        data={formatData(dataUser.lidoPeloUser, 3)}
+        numColumns={3}
         columnWrapperStyle={{ gap: 30, paddingHorizontal: 30 }}
-        contentContainerStyle={{ gap: 10, paddingBottom: 20 }}
-        keyExtractor={(item, index) => item.name + index}
+        contentContainerStyle={{ gap: 1, paddingBottom: 20 }}
+        keyExtractor={(item, index) => item.uuid + index}
         showsVerticalScrollIndicator={false}
         scrollEnabled={true}
+        refreshControl={
+          <RefreshControl refreshing={atualizar} onRefresh={onRefresh} />
+        }
         renderItem={({ item }) => {
-
-          if (item.empty === true) {
+          if (item.empty) {
             return <View style={[styles.item, styles.itemInvisible]} />;
           }
           return (
-            <Pressable style={styles.item} >
-              <YStack w={"100%"} h={"100%"} jc={"center"} ai={"center"} alignContent={"center"}>
-                <ScrollView horizontal
-                  showsHorizontalScrollIndicator={false}
-                  w={"100%"}
-                  flex={2}
-                  margin={"$1.5"} >
-                  <Text fontSize={"$8"} color={"#000"}>
-                    {item.name}
-                  </Text>
-                </ScrollView>
-                <Image
-                  flex={5}
-                  source={{
-                    width: 100,
-                    height: 100,
-                    uri: item.url,
-                  }}
-                  w={"100%"}
-                  h={"70%"}
-
-                />
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  borderBottomColor={"#329F60"}
-                  borderBottomStartRadius={"$3"}
-                  borderBottomEndRadius={"$3"}
-                  borderBottomWidth={"$1"}
-                  w={"100%"}
-                  m={"$1.5"}
-                  flex={2}
-                // scrollEnabled={false}
-                >
-                  <Text fontSize={"$6"} color={"#000"}>
-                    {item.titulo}
-                  </Text>
-                </ScrollView>
-              </YStack>
+            <Pressable style={styles.item}>
+              <DemoCard
+                animation="bouncy"
+                mb={"$1"}
+                hoverStyle={{ scale: 0.955 }}
+                pressStyle={{ scale: 0.925 }}
+                item={item}
+              />
             </Pressable>
-
           );
         }}
       />
     </View>
+  );
+}
+
+function DemoCard(props: CardProps & { item: LidoPeloUser }) {
+  const { item } = props;
+  return (
+    <Card
+      bordered
+      borderBottomColor={"$yellow8Light"}
+      borderBottomStartRadius={"$3"}
+      borderBottomEndRadius={"$3"}
+      borderBottomWidth={"$1"}
+      backgroundColor={"$white025"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      padding={"$1.5"}
+      {...props}
+    >
+      <View>
+        <Image
+          mb={"$1"}
+          resizeMode="contain"
+          alignSelf="center"
+          source={{
+            width: 110,
+            height: 150,
+            uri: getFiles(item.medalha),
+          }}
+        />
+      </View>
+      <Card.Footer mt={"$1"} paddingHorizontal={"$2.5"}></Card.Footer>
+    </Card>
   );
 }
 
@@ -122,16 +164,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    // backgroundColor: "#e6e6e6",
-    // height: 150,
-    // width: 100,
-    height: Dimensions.get("window").height / 5 - 12,
-    width: Dimensions.get("window").width / 3 - 4,
+    height: Dimensions.get("window").height / 4 - 6,
+    width: Dimensions.get("window").width / 3,
     flex: 1,
-    margin: 2,
   },
   itemInvisible: {
     backgroundColor: "transparent",
-  }
+  },
 });
-

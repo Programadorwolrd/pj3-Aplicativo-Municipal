@@ -12,7 +12,7 @@ export default function ProfileData({ nome, ranking }: PropsProfile) {
   };
 
   return (
-    <YStack mt={"$6"} ai={"center"}>
+    <YStack mt={"$3"} ai={"center"}>
       <Text fontSize={"$7"} color={"$white2"}>
         {user.nome}
       </Text>

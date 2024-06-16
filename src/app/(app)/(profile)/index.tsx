@@ -1,71 +1,75 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useState } from "react";
+import { Alert, Modal, Pressable } from "react-native";
 import { router } from "expo-router";
 import { ButtonCustom } from "@/components/buttonCustom";
 import { storeAuth } from "@/lib/logicAuth";
 import useApi from "@/lib/useApi";
-import { YStack, Image, Text, XStack } from "tamagui";
+import { YStack, Image, Text, XStack, View } from "tamagui";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvatarProfile from "./Avatar";
 import ProfileData from "./ProfileData";
 import Tabs from "./(tabs)";
-import axios from "axios";
+import { Button } from "react-native-elements";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { Settings } from "@tamagui/lucide-icons";
+// import { PopoverDemo } from "./Test";
 
 const backProfile = require("../../../assets/background-perfil.png");
 
 interface PropsUser {
+  id: string;
   apelido: string;
-  foto: string,
-  lidopelouser: {
-    catalogo: {
-      uuid: string,
-      nomePopular: string
-    }
-  },
+  foto: string;
+  // lidopelouser: {
+  //   catalogo: {
+  //     uuid: string,
+  //     nomePopular: string
+  //   }
+  // },
   ranking: number;
 }
-
 
 export default function Profile() {
   // botão de logout e delete de conta
 
-  // const loggout = storeAuth((s) => s.logout);
+  const loggout = storeAuth((s) => s.logout);
 
-  // const { data, refetch } = useApi("query", (axios) => ({
-  //   queryKey: ["getMyProfile"],
-  //   queryFn() {
-  //     return axios.get("/usuario");
-  //   },
-  // }));
+  const { data, refetch } = useApi("query", (axios) => ({
+    queryKey: ["getMyProfile"],
+    queryFn() {
+      return axios.get("/usuario");
+    },
+  }));
 
-  // const { mutate } = useApi("mutate", (axios) => ({
-  //   mutationFn() {
-  //     return axios.delete("/usuario");
-  //   },
-  // }));
+  const { mutate } = useApi("mutate", (axios) => ({
+    mutationFn() {
+      return axios.delete("/usuario");
+    },
+  }));
+
   const user = useApi("query", (axios) => {
     return {
-      queryKey: ['xabulha'],
+      queryKey: ["user"],
       queryFn: () => {
-        return axios.get('/usuario')
-
-      }
-    }
-  })
-  console.log(user.data?.data.usuario, 'user');
+        return axios.get("/usuario");
+      },
+    };
+  });
+  console.log(user.data?.data.usuario, "user");
 
   const dataUser: PropsUser = {
-    apelido: user.data?.data.usuario.apelido,
-    foto: user.data?.data.usuario.foto,
-    lidopelouser: {
-      catalogo: {
-        uuid: user.data?.data?.usuario?.catalogo?.uuid,
-        nomePopular: user.data?.data?.usuariocatalogo?.nomePopular
-      }
-    },
-    ranking: 3
-  }
-  console.log(dataUser, 'data user')
+    id: user.data?.data.usuario.id || "",
+    apelido: user.data?.data.usuario.apelido || "",
+    foto: user.data?.data.usuario.foto || "",
+    // lidopelouser: {
+    //   catalogo: {
+    //     uuid: user.data?.data?.usuario?.catalogo?.uuid,
+    //     nomePopular: user.data?.data?.usuariocatalogo?.nomePopular
+    //   }
+    // },
+    ranking: 3,
+  };
+  console.log(dataUser, "data user profile");
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -79,16 +83,37 @@ export default function Profile() {
             position="absolute"
             zi={"$0"}
           />
-          <XStack mt={"$3"} ai={"center"} jc={"center"}>
+
+          <XStack mt={"$4"} ai={"center"} jc={"center"}>
             <Text
               fontSize={"$8"}
               fontWeight={"bold"}
-              mt={"$5"}
+              mt={"$3"}
               color={"$white2"}
             >
               Perfil
             </Text>
+            <View
+              style={{ position: "absolute", backgroundColor: "transparent" }}
+              alignSelf="flex-end"
+              right={"$3"}
+              top={"$1.5"}
+            >
+              {/* <PopoverDemo /> */}
+              <Button
+                onPress={loggout}
+                icon={<Settings size={24} color="white" />}
+                type="clear"
+              />
 
+              <Button
+                onPress={loggout}
+                icon={
+                  <Ionicons name="ellipsis-vertical" size={24} color="white" />
+                }
+                type="clear"
+              />
+            </View>
           </XStack>
           <ProfileData nome={dataUser.apelido} ranking={dataUser.ranking} />
           <AvatarProfile img={dataUser.foto} />
@@ -96,10 +121,7 @@ export default function Profile() {
         <Tabs />
 
         {/* componente do botão de logout e delete de conta */}
-
-        
       </YStack>
     </SafeAreaView>
-
   );
 }
