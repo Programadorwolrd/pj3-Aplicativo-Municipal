@@ -1,16 +1,12 @@
-import useApi from "@/lib/useApi";
+import { useGetUserRank } from "./querys";
+
 interface Ranking {
   id: string;
   qrCodeUnicosLidos: number;
 }
 
-export function rankOrdenado(): Ranking[] {
-  const userRank = useApi("query", (axios) => ({
-    retry: 5,
-    queryKey: ["rank"],
-    queryFn: () => axios.get("/usuario/rank"),
-  }));
-
-  const rankings: Ranking[] = userRank.data?.data.rank || [];
+export function ranksOrdenados(): Ranking[] {
+  const { data: userRank } = useGetUserRank();
+  const rankings: Ranking[] = userRank?.data?.rank || [];
   return rankings.sort((a, b) => b.qrCodeUnicosLidos - a.qrCodeUnicosLidos);
 }
