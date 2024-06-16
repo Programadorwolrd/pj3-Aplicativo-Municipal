@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import { Alert, Modal, Pressable } from "react-native";
-import { router } from "expo-router";
-import { ButtonCustom } from "@/components/buttonCustom";
+import React from "react";
 import { storeAuth } from "@/lib/logicAuth";
 import useApi from "@/lib/useApi";
 import { YStack, Image, Text, XStack, View } from "tamagui";
@@ -12,6 +9,8 @@ import Tabs from "./(tabs)";
 import { Button } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Settings } from "@tamagui/lucide-icons";
+import { ranksOrdenados } from "@/lib/rankings";
+import { useGetUser } from "@/lib/querys";
 // import { PopoverDemo } from "./Test";
 
 const backProfile = require("../../../assets/background-perfil.png");
@@ -20,13 +19,18 @@ interface PropsUser {
   id: string;
   apelido: string;
   foto: string;
-  // lidopelouser: {
-  //   catalogo: {
-  //     uuid: string,
-  //     nomePopular: string
-  //   }
-  // },
   ranking: number;
+}
+
+function rankUser(userId: string): number | undefined {
+  try {
+    const rankings = ranksOrdenados();
+    const index = rankings.findIndex((rank) => rank.id === userId);
+    return index !== -1 ? index + 1 : undefined;
+  } catch (error) {
+    console.error(`Erro ao obter a colocação do usuário ${userId}:`, error);
+    return undefined;
+  }
 }
 
 export default function Profile() {
@@ -61,13 +65,7 @@ export default function Profile() {
     id: user.data?.data.usuario.id || "",
     apelido: user.data?.data.usuario.apelido || "",
     foto: user.data?.data.usuario.foto || "",
-    // lidopelouser: {
-    //   catalogo: {
-    //     uuid: user.data?.data?.usuario?.catalogo?.uuid,
-    //     nomePopular: user.data?.data?.usuariocatalogo?.nomePopular
-    //   }
-    // },
-    ranking: 3,
+    ranking: rankUser(user.data?.data.usuario.id) || 0,
   };
   console.log(dataUser, "data user profile");
 
