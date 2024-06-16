@@ -1,4 +1,4 @@
-import { View, Text, Image, YStack, XStack, ScrollView, Card } from "tamagui";
+import { View, Text, Image, XStack, Card } from "tamagui";
 import {
   FlatList,
   StyleSheet,
@@ -6,14 +6,12 @@ import {
   Dimensions,
   RefreshControl,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+
 import { router } from "expo-router";
 import type { CardProps } from "tamagui";
-
 import React, { useEffect, useState } from "react";
 import useApi from "@/lib/useApi";
 import { getFiles } from "@/lib/useAxios";
-import axios from "axios";
 
 // Interfaces
 interface Catalogo {
@@ -60,7 +58,6 @@ const formatData = (data: LidoPeloUser[], numColumns: number = 3) => {
 };
 
 export default function SeresVivos() {
-  const navigation = useNavigation();
   const [atualizar, setAtualizar] = useState(false);
   const [dataUser, setDataUser] = useState<PropsUser>({
     id: "",
@@ -77,10 +74,20 @@ export default function SeresVivos() {
       queryFn: () => {
         return axios.get("/usuario");
       },
-      
     };
   });
-  console.log(userApi.data?.data, "user");
+  const userRank = useApi("query", (axios) => {
+    return {
+      retry: 5,
+      queryKey: ["rank"],
+      queryFn: () => {
+        return axios.get("/usuario/rank");
+      },
+    };
+  });
+  console.log(userRank.data?.data, "rank user");
+  const rank = userRank.data?.data.rank;
+  console.log(rank, "rank");
 
   useEffect(() => {
     if (userApi.data) {
@@ -132,7 +139,6 @@ export default function SeresVivos() {
           return (
             <Pressable
               style={styles.item}
-              // onPress={() => navigation.navigate(`(app)/(home)/ ${item.id}`)}
               onPress={() => {
                 router.navigate(`(app)/(home)/${item.id}`);
                 console.log(item.id, "item");
@@ -155,8 +161,6 @@ export default function SeresVivos() {
 
 function DemoCard(props: CardProps & { item: LidoPeloUser }) {
   const { item } = props;
-  // const imgAnimal = getFiles(item.fotoBicho)
-  // console.log(imgAnimal, 'img');
 
   return (
     <Card
@@ -173,7 +177,6 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
     >
       <View>
         <Pressable
-          // onPress={() => navigation.navigate(`(app)/(home)/ ${item.id}`)}
           onPress={() => {
             router.navigate(`(app)/(home)/${item.id}`);
             console.log(item.id, "item");
@@ -185,7 +188,7 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
             source={{
               width: 100,
               height: 100,
-              // uri: 'https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg',
+
               uri: getFiles(item.fotoBicho),
             }}
           />
@@ -193,7 +196,6 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
       </View>
       <Card.Footer mt={"$1"} paddingHorizontal={"$2.5"}>
         <Pressable
-          // onPress={() => navigation.navigate(`(app)/(home)/ ${item.id}`)}
           onPress={() => {
             router.navigate(`(app)/(home)/${item.id}`);
             console.log(item.id, "item");
@@ -207,8 +209,6 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
             h={50}
           >
             <Text
-              // borderBottomColor={"#329F60"}
-              // borderBottomWidth={"$1"}
               fontSize={"$5"}
               color={"#000"}
               textAlign={"center"}

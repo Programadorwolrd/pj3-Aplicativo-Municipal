@@ -9,10 +9,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AvatarProfile from "./Avatar";
 import ProfileData from "./ProfileData";
 import Tabs from "./(tabs)";
-import { Button } from 'react-native-elements';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import axios from "axios";
-import { PopoverDemo } from "./Test";
+import { Button } from "react-native-elements";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { Settings } from "@tamagui/lucide-icons";
+// import { PopoverDemo } from "./Test";
 
 const backProfile = require("../../../assets/background-perfil.png");
 
@@ -93,18 +93,25 @@ export default function Profile() {
             >
               Perfil
             </Text>
-            <View style={{ position: "absolute",  backgroundColor: "transparent" }} alignSelf="flex-end" right={"$3"} top={"$1.5"} >
+            <View
+              style={{ position: "absolute", backgroundColor: "transparent" }}
+              alignSelf="flex-end"
+              right={"$3"}
+              top={"$1.5"}
+            >
               {/* <PopoverDemo /> */}
               <Button
                 onPress={loggout}
+                icon={<Settings size={24} color="white" />}
+                type="clear"
+              />
+
+              <Button
+                onPress={loggout}
                 icon={
-                  <Ionicons
-                    name="ellipsis-vertical"
-                    size={24}
-                    color="white"
-                  />
+                  <Ionicons name="ellipsis-vertical" size={24} color="white" />
                 }
-                type="clear" // Este tipo remove o fundo padrão do botão
+                type="clear"
               />
             </View>
           </XStack>
@@ -118,5 +125,3 @@ export default function Profile() {
     </SafeAreaView>
   );
 }
-
-

@@ -11,14 +11,10 @@ import type { CardProps } from "tamagui";
 import useApi from "@/lib/useApi";
 import { getFiles } from "@/lib/useAxios";
 
-
 // Interfaces
 interface Catalogo {
   uuid: string;
   id: number;
-  nomePopular: string;
-  nomeCientifico: string;
-  fotoBicho: string;
   medalha: string;
 }
 
@@ -28,8 +24,6 @@ interface LidoPeloUser extends Catalogo {
 
 interface PropsUser {
   id: string;
-  apelido: string;
-  foto: string;
   lidoPeloUser: LidoPeloUser[];
   ranking: number;
 }
@@ -45,9 +39,6 @@ const formatData = (data: LidoPeloUser[], numColumns: number = 3) => {
     data.push({
       uuid: `blank-${numberOfElementsLastRow}`,
       id: -1,
-      nomePopular: "",
-      nomeCientifico: "",
-      fotoBicho: "",
       medalha: "",
       empty: true,
     });
@@ -57,12 +48,9 @@ const formatData = (data: LidoPeloUser[], numColumns: number = 3) => {
 };
 
 export default function Medalhas() {
-
   const [atualizar, setAtualizar] = useState(false);
   const [dataUser, setDataUser] = useState<PropsUser>({
     id: "",
-    apelido: "",
-    foto: "",
     lidoPeloUser: [],
     ranking: 3,
   });
@@ -74,7 +62,6 @@ export default function Medalhas() {
       queryFn: () => {
         return axios.get("/usuario");
       },
-
     };
   });
   console.log(userApi.data?.data, "user");
@@ -84,15 +71,11 @@ export default function Medalhas() {
       const userData = userApi.data.data.usuario;
       const formattedData: PropsUser = {
         id: userData.id || "",
-        apelido: userData.apelido || "",
-        foto: userData.foto || "",
+
         lidoPeloUser:
           userData.lidoPeloUser.map((item: any) => ({
             uuid: item.catalogo_uuid || "",
             id: item.catalogo.uuid || "",
-            nomePopular: item.catalogo.nomePopular || "",
-            nomeCientifico: item.catalogo.nomeCientifico || "",
-            fotoBicho: item.catalogo.ftModel || "",
             medalha: item.catalogo.medalha || "",
           })) || [],
         ranking: 3,
@@ -127,10 +110,7 @@ export default function Medalhas() {
             return <View style={[styles.item, styles.itemInvisible]} />;
           }
           return (
-            <Pressable
-              style={styles.item}
-
-            >
+            <Pressable style={styles.item}>
               <DemoCard
                 animation="bouncy"
                 mb={"$1"}
@@ -148,9 +128,6 @@ export default function Medalhas() {
 
 function DemoCard(props: CardProps & { item: LidoPeloUser }) {
   const { item } = props;
-  // const imgAnimal = getFiles(item.fotoBicho)
-  // console.log(imgAnimal, 'img');
-
   return (
     <Card
       bordered
@@ -170,35 +147,13 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
           resizeMode="contain"
           alignSelf="center"
           source={{
-            width: 120,
+            width: 110,
             height: 150,
-            // uri: 'https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg',
             uri: getFiles(item.medalha),
           }}
         />
-        {/* </Pressable> */}
       </View>
-      <Card.Footer mt={"$1"} paddingHorizontal={"$2.5"}>
-        {/* <XStack
-            justifyContent={"center"}
-            alignItems={"center"}
-            alignSelf="center"
-            w={100}
-            h={50}
-          >
-            <Text
-              // borderBottomColor={"#329F60"}
-              // borderBottomWidth={"$1"}
-              fontSize={"$5"}
-              color={"#000"}
-              textAlign={"center"}
-              numberOfLines={2}
-              overflow="scroll"
-            >
-              {item.nomePopular}
-            </Text>
-          </XStack> */}
-      </Card.Footer>
+      <Card.Footer mt={"$1"} paddingHorizontal={"$2.5"}></Card.Footer>
     </Card>
   );
 }
