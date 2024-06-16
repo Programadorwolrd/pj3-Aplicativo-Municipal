@@ -12,6 +12,7 @@ import Tabs from "./(tabs)";
 import { Button } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Settings } from "@tamagui/lucide-icons";
+import { rankOrdenado } from "@/lib/rankings";
 // import { PopoverDemo } from "./Test";
 
 const backProfile = require("../../../assets/background-perfil.png");
@@ -20,13 +21,18 @@ interface PropsUser {
   id: string;
   apelido: string;
   foto: string;
-  // lidopelouser: {
-  //   catalogo: {
-  //     uuid: string,
-  //     nomePopular: string
-  //   }
-  // },
   ranking: number;
+}
+
+function rankUser(userId: string): number | undefined {
+  try {
+    const rankings = rankOrdenado();
+    const index = rankings.findIndex((rank) => rank.id === userId);
+    return index !== -1 ? index + 1 : undefined;
+  } catch (error) {
+    console.error(`Erro ao obter a colocação do usuário ${userId}:`, error);
+    return undefined;
+  }
 }
 
 export default function Profile() {
@@ -67,7 +73,7 @@ export default function Profile() {
     //     nomePopular: user.data?.data?.usuariocatalogo?.nomePopular
     //   }
     // },
-    ranking: 3,
+    ranking: rankUser(user.data?.data.usuario.id) || 0,
   };
   console.log(dataUser, "data user profile");
 
