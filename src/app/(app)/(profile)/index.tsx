@@ -106,13 +106,13 @@ export default function Profile() {
                 type="clear"
               />
 
-              <Button
+              {/* <Button
                 onPress={loggout}
                 icon={
                   <Ionicons name="ellipsis-vertical" size={24} color="white" />
                 }
                 type="clear"
-              />
+              /> */}
             </View>
           </XStack>
           <ProfileData nome={dataUser.apelido} ranking={dataUser.ranking} />
