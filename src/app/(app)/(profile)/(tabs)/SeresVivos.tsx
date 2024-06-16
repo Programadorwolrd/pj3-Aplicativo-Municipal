@@ -76,18 +76,6 @@ export default function SeresVivos() {
       },
     };
   });
-  const userRank = useApi("query", (axios) => {
-    return {
-      retry: 5,
-      queryKey: ["rank"],
-      queryFn: () => {
-        return axios.get("/usuario/rank");
-      },
-    };
-  });
-  console.log(userRank.data?.data, "rank user");
-  const rank = userRank.data?.data.rank;
-  console.log(rank, "rank");
 
   useEffect(() => {
     if (userApi.data) {
@@ -117,7 +105,6 @@ export default function SeresVivos() {
       setAtualizar(false);
     });
   };
-  console.log(dataUser.lidoPeloUser, "user data");
 
   return (
     <View style={{ flex: 1, marginTop: 1 }}>
@@ -141,7 +128,6 @@ export default function SeresVivos() {
               style={styles.item}
               onPress={() => {
                 router.navigate(`(app)/(home)/${item.id}`);
-                console.log(item.id, "item");
               }}
             >
               <DemoCard
@@ -179,7 +165,6 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
         <Pressable
           onPress={() => {
             router.navigate(`(app)/(home)/${item.id}`);
-            console.log(item.id, "item");
           }}
         >
           <Image
@@ -198,7 +183,6 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
         <Pressable
           onPress={() => {
             router.navigate(`(app)/(home)/${item.id}`);
-            console.log(item.id, "item");
           }}
         >
           <XStack

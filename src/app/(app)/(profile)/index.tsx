@@ -10,6 +10,7 @@ import { Button } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Settings } from "@tamagui/lucide-icons";
 import { ranksOrdenados } from "@/lib/rankings";
+import { router, useNavigation } from "expo-router";
 import { useGetUser } from "@/lib/querys";
 // import { PopoverDemo } from "./Test";
 
@@ -35,7 +36,7 @@ function rankUser(userId: string): number | undefined {
 
 export default function Profile() {
   // botão de logout e delete de conta
-
+  const navigate = useNavigation
   const loggout = storeAuth((s) => s.logout);
 
   const { data, refetch } = useApi("query", (axios) => ({
@@ -59,7 +60,6 @@ export default function Profile() {
       },
     };
   });
-  console.log(user.data?.data.usuario, "user");
 
   const dataUser: PropsUser = {
     id: user.data?.data.usuario.id || "",
@@ -67,7 +67,6 @@ export default function Profile() {
     foto: user.data?.data.usuario.foto || "",
     ranking: rankUser(user.data?.data.usuario.id) || 0,
   };
-  console.log(dataUser, "data user profile");
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -98,8 +97,16 @@ export default function Profile() {
               top={"$1.5"}
             >
               {/* <PopoverDemo /> */}
-              <Button
+              {/* <Button
                 onPress={loggout}
+                icon={<Settings size={24} color="white" />}
+                type="clear"
+              /> */}
+          
+              <Button
+                onPress={() => { router.navigate(`(app)/(profile)/Editar/`)}}
+                // onPress={() => { router.navigate(`(app)/(profile)/Editar/${dataUser.id}`)}}
+                // onPress={ router.navigate("(app)/(profile)/Editar") }
                 icon={<Settings size={24} color="white" />}
                 type="clear"
               />

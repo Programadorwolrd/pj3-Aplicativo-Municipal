@@ -64,7 +64,6 @@ export default function Medalhas() {
       },
     };
   });
-  console.log(userApi.data?.data, "user");
 
   useEffect(() => {
     if (userApi.data) {
@@ -90,7 +89,6 @@ export default function Medalhas() {
       setAtualizar(false);
     });
   };
-  // console.log(dataUser.lidoPeloUser, "user data");
 
   return (
     <View style={{ flex: 1, marginTop: 1 }}>
