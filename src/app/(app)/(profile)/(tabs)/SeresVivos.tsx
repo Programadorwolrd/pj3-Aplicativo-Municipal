@@ -1,5 +1,11 @@
 import { View, Text, Image, YStack, XStack, ScrollView, Card } from "tamagui";
-import { FlatList, StyleSheet, Pressable, Dimensions, RefreshControl } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+  RefreshControl,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
 import type { CardProps } from "tamagui";
@@ -16,6 +22,7 @@ interface Catalogo {
   nomePopular: string;
   nomeCientifico: string;
   fotoBicho: string;
+  medalha: string;
 }
 
 interface LidoPeloUser extends Catalogo {
@@ -34,13 +41,17 @@ interface PropsUser {
 const formatData = (data: LidoPeloUser[], numColumns: number = 3) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
   let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
-  while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
+  while (
+    numberOfElementsLastRow !== numColumns &&
+    numberOfElementsLastRow !== 0
+  ) {
     data.push({
       uuid: `blank-${numberOfElementsLastRow}`,
       id: -1,
       nomePopular: "",
       nomeCientifico: "",
       fotoBicho: "",
+      medalha: "",
       empty: true,
     });
     numberOfElementsLastRow++;
@@ -66,8 +77,10 @@ export default function SeresVivos() {
       queryFn: () => {
         return axios.get("/usuario");
       },
+      
     };
   });
+  console.log(userApi.data?.data, "user");
 
   useEffect(() => {
     if (userApi.data) {
@@ -76,13 +89,15 @@ export default function SeresVivos() {
         id: userData.id || "",
         apelido: userData.apelido || "",
         foto: userData.foto || "",
-        lidoPeloUser: userData.lidoPeloUser.map((item: any) => ({
-          uuid: item.catalogo_uuid || "",
-          id: item.catalogo.uuid || "",
-          nomePopular: item.catalogo.nomePopular || "",
-          nomeCientifico: item.catalogo.nomeCientifico || "",
-          fotoBicho: item.catalogo.ftModel || "",
-        })) || [],
+        lidoPeloUser:
+          userData.lidoPeloUser.map((item: any) => ({
+            uuid: item.catalogo_uuid || "",
+            id: item.catalogo.uuid || "",
+            nomePopular: item.catalogo.nomePopular || "",
+            nomeCientifico: item.catalogo.nomeCientifico || "",
+            fotoBicho: item.catalogo.ftModel || "",
+            medalha: item.catalogo.medalha || "",
+          })) || [],
         ranking: 3,
       };
       setDataUser(formattedData);
@@ -95,7 +110,7 @@ export default function SeresVivos() {
       setAtualizar(false);
     });
   };
-console.log(dataUser.lidoPeloUser, 'user data');
+  console.log(dataUser.lidoPeloUser, "user data");
 
   return (
     <View style={{ flex: 1, marginTop: 1 }}>
@@ -107,7 +122,9 @@ console.log(dataUser.lidoPeloUser, 'user data');
         keyExtractor={(item, index) => item.uuid + index}
         showsVerticalScrollIndicator={false}
         scrollEnabled={true}
-        refreshControl={<RefreshControl refreshing={atualizar} onRefresh={onRefresh} />}
+        refreshControl={
+          <RefreshControl refreshing={atualizar} onRefresh={onRefresh} />
+        }
         renderItem={({ item }) => {
           if (item.empty) {
             return <View style={[styles.item, styles.itemInvisible]} />;
@@ -115,7 +132,11 @@ console.log(dataUser.lidoPeloUser, 'user data');
           return (
             <Pressable
               style={styles.item}
-              onPress={() => router.navigate(`(app)/(home)/${item.id}`) }
+              // onPress={() => navigation.navigate(`(app)/(home)/ ${item.id}`)}
+              onPress={() => {
+                router.navigate(`(app)/(home)/${item.id}`);
+                console.log(item.id, "item");
+              }}
             >
               <DemoCard
                 animation="bouncy"
@@ -134,9 +155,9 @@ console.log(dataUser.lidoPeloUser, 'user data');
 
 function DemoCard(props: CardProps & { item: LidoPeloUser }) {
   const { item } = props;
-  const imgAnimal = getFiles(item.fotoBicho)
-  console.log(imgAnimal, 'img');
-  
+  // const imgAnimal = getFiles(item.fotoBicho)
+  // console.log(imgAnimal, 'img');
+
   return (
     <Card
       bordered
@@ -151,36 +172,53 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
       {...props}
     >
       <View>
-        <Image
-       
-          resizeMode="contain"
-          alignSelf="center"
-          source={{
-            width: 100,
-            height: 100,
-            // uri: 'https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg',
-            uri: imgAnimal,
+        <Pressable
+          // onPress={() => navigation.navigate(`(app)/(home)/ ${item.id}`)}
+          onPress={() => {
+            router.navigate(`(app)/(home)/${item.id}`);
+            console.log(item.id, "item");
           }}
-        />
+        >
+          <Image
+            resizeMode="contain"
+            alignSelf="center"
+            source={{
+              width: 100,
+              height: 100,
+              // uri: 'https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg',
+              uri: getFiles(item.fotoBicho),
+            }}
+          />
+        </Pressable>
       </View>
-      <Card.Footer
-      mt={"$1"}
-        paddingHorizontal={"$2.5"}
-      >
-        <XStack justifyContent={"center"}
-          alignItems={"center"} alignSelf="center" w={100} h={50} >
-          <Text
-          // borderBottomColor={"#329F60"}
-          // borderBottomWidth={"$1"}
-            fontSize={"$5"}
-            color={"#000"}
-            textAlign={"center"}
-            numberOfLines={2}
-            overflow="scroll"
+      <Card.Footer mt={"$1"} paddingHorizontal={"$2.5"}>
+        <Pressable
+          // onPress={() => navigation.navigate(`(app)/(home)/ ${item.id}`)}
+          onPress={() => {
+            router.navigate(`(app)/(home)/${item.id}`);
+            console.log(item.id, "item");
+          }}
+        >
+          <XStack
+            justifyContent={"center"}
+            alignItems={"center"}
+            alignSelf="center"
+            w={100}
+            h={50}
           >
-            {item.nomePopular}
-          </Text>
-        </XStack>
+            <Text
+              // borderBottomColor={"#329F60"}
+              // borderBottomWidth={"$1"}
+              fontSize={"$5"}
+              color={"#000"}
+              textAlign={"center"}
+              numberOfLines={2}
+              overflow="scroll"
+            >
+              {item.nomePopular}
+            </Text>
+          </XStack>
+        </Pressable>
       </Card.Footer>
     </Card>
   );

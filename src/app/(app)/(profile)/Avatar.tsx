@@ -5,6 +5,7 @@ import { Alert, Modal, Pressable, StyleSheet, Image } from "react-native";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { X } from "@tamagui/lucide-icons";
+import { PopoverDemo } from "./Test";
 interface avatarPerfil {
   img: string;
 }
@@ -23,6 +24,7 @@ export default function AvatarProfile({ img }: avatarPerfil) {
   }
 
   return (
+    
     <YStack mt={"$3"} ai={"center"}>
       <Modal
         animationType="slide"
@@ -57,6 +59,7 @@ export default function AvatarProfile({ img }: avatarPerfil) {
         </Avatar>
         {/* <Text mt={"$3"}>alterar incone</Text> */}
       </Pressable>
+      {/* <PopoverDemo /> */}
     </YStack>
   );
 }

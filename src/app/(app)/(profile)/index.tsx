@@ -12,6 +12,7 @@ import Tabs from "./(tabs)";
 import { Button } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from "axios";
+import { PopoverDemo } from "./Test";
 
 const backProfile = require("../../../assets/background-perfil.png");
 
@@ -83,7 +84,7 @@ export default function Profile() {
             zi={"$0"}
           />
 
-          <XStack mt={"$3"} ai={"center"} jc={"center"}>
+          <XStack mt={"$4"} ai={"center"} jc={"center"}>
             <Text
               fontSize={"$8"}
               fontWeight={"bold"}
@@ -92,7 +93,8 @@ export default function Profile() {
             >
               Perfil
             </Text>
-            <View style={{ position: "absolute", right: 20, top: 6 }}>
+            <View style={{ position: "absolute",  backgroundColor: "transparent" }} alignSelf="flex-end" right={"$3"} top={"$1.5"} >
+              {/* <PopoverDemo /> */}
               <Button
                 onPress={loggout}
                 icon={

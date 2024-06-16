@@ -204,3 +204,103 @@
 //     textAlign: 'center',
 //   },
 // });
+
+import {
+  Menu,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Settings,
+} from "@tamagui/lucide-icons";
+
+import Ionicons from "react-native-vector-icons/Ionicons";
+import type { PopoverProps } from "tamagui";
+
+import { Adapt, Button, Input, Label, Popover, Text, XStack, YStack } from "tamagui";
+export function PopoverDemo() {
+  return (
+    <XStack
+      space="$2"
+      h={50}
+      justifyContent="center"
+      alignItems="center"
+      backgroundColor={"$colorTransparent"}
+    >
+      <Demo
+        placement="top"
+        Icon={<Settings size={24} color="white" />}
+        Name="bottom-popover"
+      />
+    </XStack>
+  );
+}
+export function Demo({
+  Icon,
+
+  Name,
+
+  ...props
+}: PopoverProps & { Icon?: any; Name?: string }) {
+  return (
+    <Popover size="$5"  allowFlip {...props}>
+      {/* botão  */}
+      <Popover.Trigger asChild>
+        <Button icon={Icon} backgroundColor={"$colorTransparent"} />
+      </Popover.Trigger>
+
+      <Adapt when="sm" platform="touch" >
+        <Popover.Sheet modal dismissOnSnapToBottom >
+          <Popover.Sheet.Frame padding="$4">
+            <Adapt.Contents />
+          </Popover.Sheet.Frame>
+          <Popover.Sheet.Overlay
+            animation="lazy"
+            enterStyle={{ opacity: 0 }}
+            exitStyle={{ opacity: 0 }}
+          />
+        </Popover.Sheet>
+      </Adapt>
+      <Popover.Content
+        borderWidth={1}
+        backgroundColor={"$colorTransparent"}
+        borderColor="$red10Light"
+        enterStyle={{ y: -10, opacity: 0 }}
+        exitStyle={{ y: -10, opacity: 0 }}
+        elevate
+        size={"$5"}
+        animation={[
+          "quick",
+          {
+            opacity: {
+              overshootClamping: true,
+            },
+          },
+        ]}
+      >
+
+       
+        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
+        <YStack space="$3">
+          <XStack space="$3">
+            <Label size="$3" htmlFor={Name}>
+              Name
+            </Label>
+
+            <Input size="$3" id={Name} />
+          </XStack>
+          <Popover.Close asChild>
+            <Button
+              backgroundColor={"$colorTransparent"}
+              size="$3"
+              onPress={() => {
+                /* Custom code goes here, does not interfere with popover closure */
+              }}
+            >
+              Submit
+            </Button>
+          </Popover.Close>
+        </YStack>
+      </Popover.Content>
+    </Popover>
+  );
+}
