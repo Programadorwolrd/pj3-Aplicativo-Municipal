@@ -1,17 +1,16 @@
-import { Avatar, YStack, Text } from "tamagui";
+import { Avatar, YStack } from "tamagui";
 import React, { useState } from "react";
-import { Alert, Modal, Pressable, StyleSheet, Image } from "react-native";
-// const avatarPerfil = require("../../../assets/avatar-icon.jpeg");
+import { Alert, Modal, Pressable, StyleSheet } from "react-native";
 import { View } from "react-native";
 import { X } from "@tamagui/lucide-icons";
-// import { PopoverDemo } from "./Test";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 interface avatarPerfil {
   img: string;
 }
 
 export default function AvatarProfile({ img }: avatarPerfil) {
   const [modalVisible, setModalVisible] = useState(false);
-  //teste
   const avatar: avatarPerfil = {
     img,
   };
@@ -32,25 +31,27 @@ export default function AvatarProfile({ img }: avatarPerfil) {
           setModalVisible(!modalVisible);
         }}
       >
-        {/* <SafeAreaView style={{flex: 1}} onTouch={() => setModalVisible(!modalVisible)}> */}
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Avatar circular size={"$20"}>
-              <Avatar.Image accessibilityLabel="avatar" src={avatar.img} />
-              <Avatar.Fallback backgroundColor="$blue10" />
-            </Avatar>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <X size={30} color={"#000"} />
-              {/* <Text style={styles.textStyle}>Hide Modal</Text> */}
-            </Pressable>
+        <SafeAreaView
+          style={{ flex: 1 }}
+          onTouchStart={() => setModalVisible(false)}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Avatar circular size={"$20"}>
+                <Avatar.Image accessibilityLabel="avatar" src={avatar.img} />
+                <Avatar.Fallback backgroundColor="$blue10" />
+              </Avatar>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <X size={30} color={"#000"} />
+                {/* <Text style={styles.textStyle}>Hide Modal</Text> */}
+              </Pressable>
+            </View>
           </View>
-        </View>
-        {/* </SafeAreaView> */}
+        </SafeAreaView>
       </Modal>
-
       <Pressable onPress={() => setModalVisible(true)}>
         <Avatar circular size={"$11"}>
           <Avatar.Image accessibilityLabel="avatar" src={avatar.img} />

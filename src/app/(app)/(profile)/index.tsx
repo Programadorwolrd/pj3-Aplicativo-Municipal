@@ -6,12 +6,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AvatarProfile from "./Avatar";
 import ProfileData from "./ProfileData";
 import Tabs from "./(tabs)";
-import { Button } from "react-native-elements";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { Settings } from "@tamagui/lucide-icons";
 import { ranksOrdenados } from "@/lib/rankings";
+import { router, useNavigation } from "expo-router";
 import { useGetUser } from "@/lib/querys";
-// import { PopoverDemo } from "./Test";
+import DropdownMenu from "./DropdownMenu";
 
 const backProfile = require("../../../assets/background-perfil.png");
 
@@ -34,22 +32,14 @@ function rankUser(userId: string): number | undefined {
 }
 
 export default function Profile() {
-  // botão de logout e delete de conta
-
-  const loggout = storeAuth((s) => s.logout);
-
-  const { data, refetch } = useApi("query", (axios) => ({
-    queryKey: ["getMyProfile"],
-    queryFn() {
-      return axios.get("/usuario");
-    },
-  }));
-
   const { mutate } = useApi("mutate", (axios) => ({
     mutationFn() {
       return axios.delete("/usuario");
     },
   }));
+
+  // const { data: userData } = useGetUser();
+  // console.log(userData?.data?.usuario.apelido, "apelido profile");
 
   const user = useApi("query", (axios) => {
     return {
@@ -59,7 +49,6 @@ export default function Profile() {
       },
     };
   });
-  console.log(user.data?.data.usuario, "user");
 
   const dataUser: PropsUser = {
     id: user.data?.data.usuario.id || "",
@@ -67,7 +56,6 @@ export default function Profile() {
     foto: user.data?.data.usuario.foto || "",
     ranking: rankUser(user.data?.data.usuario.id) || 0,
   };
-  console.log(dataUser, "data user profile");
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -94,23 +82,10 @@ export default function Profile() {
             <View
               style={{ position: "absolute", backgroundColor: "transparent" }}
               alignSelf="flex-end"
-              right={"$3"}
-              top={"$1.5"}
+              right={"$6"}
+              top={"$3"}
             >
-              {/* <PopoverDemo /> */}
-              <Button
-                onPress={loggout}
-                icon={<Settings size={24} color="white" />}
-                type="clear"
-              />
-
-              {/* <Button
-                onPress={loggout}
-                icon={
-                  <Ionicons name="ellipsis-vertical" size={24} color="white" />
-                }
-                type="clear"
-              /> */}
+              <DropdownMenu />
             </View>
           </XStack>
           <ProfileData nome={dataUser.apelido} ranking={dataUser.ranking} />
