@@ -1,80 +1,30 @@
 import { View, Text, FlatList } from "react-native";
 import React from "react";
 import { Image } from "react-native";
-import { ScrollView } from "tamagui";
 import CardCategoriaSeres, { PropsCard } from "@/components/cardCategoriaSeres";
 import CardSeres from "@/components/CardSeres";
-import useApi from "@/lib/useApi";
-
-
-interface PropsUser {
-  id: string;
-  apelido: string;
-  foto: string;
-  lidoPeloUser: LidoPeloUser[];
-}
-
-// Interfaces
-interface Catalogo {
-  uuid: string;
-  id: number;
-  nomePopular: string;
-  nomeCientifico: string;
-  foto: string;
-}
-
-interface LidoPeloUser extends Catalogo {
-  empty?: boolean;
-}
+import { useGetUser } from "@/lib/querys";
 
 export default function HomePage() {
-  const categorias: PropsCard[] = [
-    { link: "", title: "Todos" },
-    { link: "", title: "Pássaros" },
-    { link: "", title: "Insetos" },
-    { link: "", title: "Roedores" },
-    { link: "", title: "Plantas" },
-  ];
+  const response = useGetUser();
 
-  const seres: PropsCardSeres[] = [
-    { nome: "Tucano", categoria: "Pássaros" },
-    { nome: "Tucano", categoria: "Pássaros" },
-    { nome: "Tucano", categoria: "Pássaros" },
-    { nome: "Tucano", categoria: "Pássaros" },
-    { nome: "Tucano", categoria: "Pássaros" },
-    { nome: "Tucano", categoria: "Pássaros" },
-    { nome: "Tucano", categoria: "Pássaros" },
-    { nome: "Tucano", categoria: "Pássaros" }
-  ];
+  if (response.isLoading) return <Text>Carregando...</Text>;
+  if (response.isError) return <Text>Erro ao carregar</Text>;
+  if (!response.data) return null;
 
-  const flavio = "Flavio";
+  const data = response.data.data.usuario;
 
-  const user = useApi("query", (axios) => {
-    return {
-      queryKey: ["user"],
-      queryFn: () => {
-        return axios.get("/usuario");
-      },
-    };
-  });
+  const especies = data.catalogoNLido
+    .map((item) => item.especie)
+    .concat(data.lidoPeloUser.map((item) => item.catalogo.especie))
+    .filter((item, index, array) => array.indexOf(item) === index);
 
-  console.log(user.data?.data.usuario, "user");
+  const seres = data.lidoPeloUser
+    .map(({ catalogo }) => ({ ...catalogo, isRead: true }))
+    .concat(data.catalogoNLido.map((item) => ({ ...item, isRead: false })));
 
-  const data: PropsUser = {
-    id: user.data?.data.usuario.id || "",
-    apelido: user.data?.data.usuario.apelido || "",
-    foto: user.data?.data.usuario.foto || "",
-    lidoPeloUser:
-      user.data?.data.usuario.lidoPeloUser.map((item: any) => ({
-        uuid: item.catalogo_uuid || "",
-        id: item.catalogo.uuid || "",
-        nomePopular: item.catalogo.nomePopular || "",
-        nomeCientifico: item.catalogo.nomeCientifico || "",
-        foto: item.catalogo.ftModel || "",
-      })) || [],
-  };
+
   return (
-    
     <View style={{ backgroundColor: "#fff" }}>
       <Text
         style={{
@@ -150,12 +100,11 @@ export default function HomePage() {
           marginStart: 25,
           marginEnd: 30,
           marginTop: 20,
-
         }}
         ItemSeparatorComponent={() => <View style={{ padding: 3 }} />}
         horizontal={true}
-        data={categorias}
-        renderItem={({ item }) => <CardCategoriaSeres title={item.title} />}
+        data={especies}
+        renderItem={({ item }) => <CardCategoriaSeres title={item} />}
       />
       <FlatList
         style={{
@@ -167,7 +116,15 @@ export default function HomePage() {
         ItemSeparatorComponent={() => <View style={{ padding: 5 }} />}
         horizontal={true}
         data={seres}
-        renderItem={({ item }) => <CardSeres nome={item.nome} categoria={item.categoria} />}
+        keyExtractor={(item) => item.uuid}
+        renderItem={({ item }) => (
+          <CardSeres
+            nome={item.nomePopular}
+            categoria={item.especie}
+            photo={item.ftModel}
+            uuid={item.uuid}
+          />
+        )}
       />
     </View>
   );
