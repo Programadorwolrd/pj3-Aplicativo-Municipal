@@ -5,7 +5,6 @@ interface PropsProfile {
 }
 
 export default function ProfileData({ nome, ranking }: PropsProfile) {
-  //teste
   const user: PropsProfile = {
     nome,
     ranking,

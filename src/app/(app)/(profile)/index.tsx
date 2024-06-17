@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { storeAuth } from "@/lib/logicAuth";
 import useApi from "@/lib/useApi";
 import { YStack, Image, Text, XStack, View } from "tamagui";
@@ -6,14 +6,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AvatarProfile from "./Avatar";
 import ProfileData from "./ProfileData";
 import Tabs from "./(tabs)";
-import { Button } from "react-native-elements";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { Settings } from "@tamagui/lucide-icons";
 import { ranksOrdenados } from "@/lib/rankings";
 import { router, useNavigation } from "expo-router";
 import { useGetUser } from "@/lib/querys";
 import DropdownMenu from "./DropdownMenu";
-// import { PopoverDemo } from "./Test";
 
 const backProfile = require("../../../assets/background-perfil.png");
 
@@ -36,15 +32,6 @@ function rankUser(userId: string): number | undefined {
 }
 
 export default function Profile() {
-  const loggout = storeAuth((s) => s.logout);
-
-  const { data, refetch } = useApi("query", (axios) => ({
-    queryKey: ["getMyProfile"],
-    queryFn() {
-      return axios.get("/usuario");
-    },
-  }));
-
   const { mutate } = useApi("mutate", (axios) => ({
     mutationFn() {
       return axios.delete("/usuario");
@@ -53,6 +40,7 @@ export default function Profile() {
 
   // const { data: userData } = useGetUser();
   // console.log(userData?.data?.usuario.apelido, "apelido profile");
+
   const user = useApi("query", (axios) => {
     return {
       queryKey: ["user"],
@@ -97,30 +85,7 @@ export default function Profile() {
               right={"$6"}
               top={"$3"}
             >
-              {/* <PopoverDemo /> */}
-              {/* <Button
-                onPress={loggout}
-                icon={<Settings size={24} color="white" />}
-                type="clear"
-              /> */}
               <DropdownMenu />
-              {/* <Button
-                onPress={() => {
-                  router.navigate(`(app)/(profile)/Editar/`);
-                }}
-                // onPress={() => { router.navigate(`(app)/(profile)/Editar/${dataUser.id}`)}}
-                // onPress={ router.navigate("(app)/(profile)/Editar") }
-                icon={<Settings size={24} color="white" />}
-                type="clear"
-              /> */}
-
-              {/* <Button
-                onPress={loggout}
-                icon={
-                  <Ionicons name="ellipsis-vertical" size={24} color="white" />
-                }
-                type="clear"
-              /> */}
             </View>
           </XStack>
           <ProfileData nome={dataUser.apelido} ranking={dataUser.ranking} />

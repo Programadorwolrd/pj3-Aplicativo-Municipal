@@ -9,14 +9,17 @@ import { useGetUser } from "@/lib/querys";
 export default function Editar() {
   const { data: userData } = useGetUser();
 
-    const [sexo, setSexo] = useState<string>("");
+  const [sexo, setSexo] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (userData?.data) {
-      setSexo(userData.data.sexo);
+      setSexo(userData.data.usuario.sexo);
+      let apelido: string = userData?.data?.usuario.apelido ?? "";
+      console.log(typeof apelido);
+      console.log(apelido);
+      EditForm.values.apelido = apelido;
     }
   }, [userData]);
-  console.log(userData?.data?.usuario.apelido);
 
   const EditForm = new FormPaiado((axios) => ({
     mutationFn: async (allValues) => {
@@ -47,22 +50,9 @@ export default function Editar() {
     { label: "Outro", value: "outro" },
   ];
 
-
-
-
-useEffect(() => {
-  var apelido:string = userData?.data?.usuario.apelido
-  console.log(typeof apelido);
-  EditForm.values.apelido = apelido;
-  console.log('useEffect executado após o carregamento do componente');
-}, []);
-
   return (
     <TAuth subTitulo="Edite seus dados" titulo="EDITAR">
-      <EditForm.Input
-        campo="apelido"
-      />
-      
+      <EditForm.Input campo="apelido" />
 
       <YStack w="104%" mb="$2">
         <Select value={sexo} onValueChange={handleSexoChange}>

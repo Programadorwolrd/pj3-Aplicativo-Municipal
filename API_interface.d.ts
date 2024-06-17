@@ -4,6 +4,7 @@ interface Usuario {
   id: string;
   apelido: string;
   foto: string;
+  sexo?: string | undefined;
   lidoPeloUser: LidoPeloUser[];
   catalogoNLido: Catalogo[];
   progresso: {
