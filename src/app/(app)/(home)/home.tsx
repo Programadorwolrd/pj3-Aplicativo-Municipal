@@ -1,12 +1,12 @@
-import { View, Text, FlatList } from "react-native";
-import React from "react";
-import { Image } from "react-native";
-import CardCategoriaSeres, { PropsCard } from "@/components/cardCategoriaSeres";
+import React, { useState } from "react";
+import { View, Text, FlatList, Image } from "react-native";
+import CardCategoriaSeres from "@/components/cardCategoriaSeres";
 import CardSeres from "@/components/CardSeres";
 import { useGetUser } from "@/lib/querys";
 
 export default function HomePage() {
   const response = useGetUser();
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   if (response.isLoading) return <Text>Carregando...</Text>;
   if (response.isError) return <Text>Erro ao carregar</Text>;
@@ -14,15 +14,30 @@ export default function HomePage() {
 
   const data = response.data.data.usuario;
 
-  const especies = data.catalogoNLido
-    .map((item) => item.especie)
-    .concat(data.lidoPeloUser.map((item) => item.catalogo.especie))
-    .filter((item, index, array) => array.indexOf(item) === index);
+  
 
+  const especies = ["Todos os Seres"].concat(
+    data.catalogoNLido
+      .map((item) => item.especie)
+      .concat(data.lidoPeloUser.map((item) => item.catalogo.especie))
+      .filter((item, index, array) => array.indexOf(item) === index)
+  );
+
+
+  
   const seres = data.lidoPeloUser
     .map(({ catalogo }) => ({ ...catalogo, isRead: true }))
     .concat(data.catalogoNLido.map((item) => ({ ...item, isRead: false })));
 
+    const filteredSeres = selectedCategory
+    ? selectedCategory === "Todos os Seres"
+      ? seres
+      : seres.filter((ser) => ser.especie === selectedCategory)
+    : seres;
+
+    console.log(seres);
+
+    
 
   return (
     <View style={{ backgroundColor: "#fff" }}>
@@ -44,7 +59,6 @@ export default function HomePage() {
           fontSize: 22,
         }}
       >
-        {" "}
         Seja Bem Vindo ao Parque
       </Text>
 
@@ -69,7 +83,6 @@ export default function HomePage() {
           flexDirection: "row",
           display: "flex",
           justifyContent: "space-between",
-
           marginStart: 30,
           marginEnd: 40,
           marginTop: 30,
@@ -82,7 +95,6 @@ export default function HomePage() {
               fontSize: 25,
             }}
           >
-            {" "}
             Descubra novos seres
           </Text>
         </View>
@@ -96,16 +108,22 @@ export default function HomePage() {
         </View>
       </View>
       <FlatList
-        style={{
-          marginStart: 25,
-          marginEnd: 30,
-          marginTop: 20,
-        }}
-        ItemSeparatorComponent={() => <View style={{ padding: 3 }} />}
-        horizontal={true}
-        data={especies}
-        renderItem={({ item }) => <CardCategoriaSeres title={item} />}
-      />
+  style={{
+    marginStart: 25,
+    marginEnd: 30,
+    marginTop: 20,
+  }}
+  ItemSeparatorComponent={() => <View style={{ padding: 3 }} />}
+  horizontal={true}
+  data={especies}
+  renderItem={({ item }) => (
+    <CardCategoriaSeres
+      title={item}
+      onPress={() => setSelectedCategory(item)}
+    />
+  )}
+  keyExtractor={(item) => item}
+/>
       <FlatList
         style={{
           marginStart: 25,
@@ -115,10 +133,11 @@ export default function HomePage() {
         }}
         ItemSeparatorComponent={() => <View style={{ padding: 5 }} />}
         horizontal={true}
-        data={seres}
+        data={filteredSeres}
         keyExtractor={(item) => item.uuid}
         renderItem={({ item }) => (
           <CardSeres
+          isRead= {item.isRead}
             nome={item.nomePopular}
             categoria={item.especie}
             photo={item.ftModel}
@@ -129,5 +148,3 @@ export default function HomePage() {
     </View>
   );
 }
-
-//diferença de uma varivel normal para um usestate ele é uma varivael que atualiza quando muda ele é um estado, varivaeis efunçoes glboais voce porde importar elas

@@ -20,6 +20,7 @@ import { useLocalSearchParams } from "expo-router";
 import useAxios, { getFiles } from "@/lib/useAxios";
 import { isAxiosError } from "axios";
 import ErrorScreen from "@/components/ErrorScreen";
+import { clientQuery } from "@/app/_layout";
 
 export default function InfoUrl() {
   const axios = useAxios();
@@ -94,6 +95,7 @@ export default function InfoUrl() {
           return;
         }
 
+        clientQuery.invalidateQueries({ queryKey: ['currentUser']})
         setCarouselData(data.catalogo.catalogoGaleria);
         setContent(data.catalogo);
       } catch (error) {
