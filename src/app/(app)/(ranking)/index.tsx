@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   FlatList,
   Image,
@@ -10,11 +10,13 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import MedalIcon from "@/assets/medal-1.svg";
+import { useGetUserRank } from "@/lib/querys";
 
 interface User {
-  nome: string;
-  funcao: string;
-  linkImagem: string;
+  id: string;
+  apelido: string;
+  foto: string;
+  ranking: number;
 }
 
 function Itens({ item, index }: { item: User; index: number }) {
@@ -23,10 +25,10 @@ function Itens({ item, index }: { item: User; index: number }) {
       <View style={styles.hr} />
       <View style={styles.itemContainer}>
         <View style={styles.userInfoContainer}>
-          <Image source={{ uri: item.linkImagem }} style={styles.userImage} />
+          <Image source={{ uri: item.foto }} style={styles.userImage} />
           <View style={styles.textContainer}>
-            <Text style={styles.userName}>{item.nome}</Text>
-            <Text>{item.funcao}</Text>
+            <Text style={styles.userName}>{item.apelido}</Text>
+            <Text>{`Ranking: ${item.ranking}`}</Text>
           </View>
         </View>
         <View style={styles.rankContainer}>
@@ -44,76 +46,86 @@ function Itens({ item, index }: { item: User; index: number }) {
 }
 
 export default function Lista() {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const { data, isLoading, error } = useGetUserRank();
+
+  if (isLoading) {
+    return <Text>Carregando...</Text>;
+  }
+
+  if (error) {
+    return <Text>Erro ao carregar dados</Text>;
+  }
+
+  // Acessa a propriedade correta da resposta da API e garante o tipo User[]
+  const usuarios = Array.isArray(data?.data.rank) ? (data.data.rank as User[]) : [];
 
   return (
     <View style={{ flex: 1 }}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "rgba(0,0,0,0.5)",
-              }}
-            >
-              <TouchableWithoutFeedback>
-                <View
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0,0,0,0.5)",
+            }}
+          >
+            <TouchableWithoutFeedback>
+              <View
+                style={{
+                  backgroundColor: "white",
+                  padding: 20,
+                  margin: 20,
+                  borderRadius: 10,
+                  alignItems: "center",
+                }}
+              >
+                <Text
                   style={{
-                    backgroundColor: "white",
-                    padding: 20,
-                    margin: 20,
+                    color: "black",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    marginBottom: 10,
+                  }}
+                >
+                  Como funciona o ranking?
+                </Text>
+                <Text style={{ color: "black", fontSize: 16, marginBottom: 10 }}>
+                  A posição no ranking é definida pela velocidade levada para
+                  ler todos os QrCodes espalhados pelo parque
+                </Text>
+
+                <TouchableHighlight
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                  style={{
+                    backgroundColor: "#329F60",
+                    padding: 10,
+                    marginTop: 30,
                     borderRadius: 10,
+                    position: "absolute",
+                    bottom: -20,
+                    width: "30%",
                     alignItems: "center",
                   }}
                 >
-                  <Text
-                    style={{
-                      color: "black",
-                      fontSize: 18,
-                      fontWeight: "bold",
-                      marginBottom: 10,
-                    }}
-                  >
-                    Como funciona o ranking?
-                  </Text>
-                  <Text
-                    style={{ color: "black", fontSize: 16, marginBottom: 10 }}
-                  >
-                    A posição no ranking é definida pela velocidade levada para
-                    ler todos os QrCodes espalhados pelo parque
-                  </Text>
-
-                  <TouchableHighlight
-                    onPress={() => {
-                      setModalVisible(!modalVisible);
-                    }}
-                    style={{
-                      backgroundColor: "#329F60",
-                      padding: 10,
-                      marginTop: 30,
-                      borderRadius: 10,
-                      position: "absolute",
-                      bottom: -20,
-                      width: "30%",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text style={{ color: "white", fontSize: 18 }}>Fechar</Text>
-                  </TouchableHighlight>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
+                  <Text style={{ color: "white", fontSize: 18 }}>Fechar</Text>
+                </TouchableHighlight>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
 
       <View style={styles.header}>
         <Image
@@ -129,10 +141,12 @@ export default function Lista() {
           style={styles.medalhas}
         />
       </View>
+
       <FlatList
         data={usuarios}
         renderItem={({ item, index }) => <Itens item={item} index={index} />}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.list}
       />
     </View>
   );
@@ -184,6 +198,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignSelf: "center",
+    marginBottom: 10,
   },
   hr: {
     borderBottomColor: "#D9D9D9",
@@ -202,45 +217,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
+  list: {
+    paddingBottom: 20, // Adiciona um espaço no final da lista
   },
 });
