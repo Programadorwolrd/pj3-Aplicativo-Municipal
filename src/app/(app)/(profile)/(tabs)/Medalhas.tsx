@@ -11,6 +11,7 @@ import {
 import type { CardProps } from "tamagui";
 import useApi from "@/lib/useApi";
 import { getFiles } from "@/lib/useAxios";
+import { useGetUser } from "@/lib/querys";
 
 // Interfaces
 interface Catalogo {
@@ -56,15 +57,7 @@ export default function Medalhas() {
     ranking: 3,
   });
 
-  const userApi = useApi("query", (axios) => {
-    return {
-      retry: 5,
-      queryKey: ["user"],
-      queryFn: () => {
-        return axios.get("/usuario");
-      },
-    };
-  });
+  const userApi = useGetUser();
 
   useEffect(() => {
     if (userApi.data) {
