@@ -17,79 +17,6 @@ interface User {
   linkImagem: string;
 }
 
-const usuarios: User[] = [
-  {
-    nome: "Flavio Santos",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Clemerson Rodrigues",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Leonardo Paioso SP",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Phet",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Phet",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Phet",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Leonardo Paioso SP",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Phet",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Phet",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Phet",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Leonardo Paioso SP",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Phet",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Phet",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-  {
-    nome: "Phet",
-    funcao: "Desenvolvedor web",
-    linkImagem: "https://via.placeholder.com/50",
-  },
-];
-
 function Itens({ item, index }: { item: User; index: number }) {
   return (
     <View>
@@ -121,7 +48,6 @@ export default function Lista() {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ flex: 1, marginBottom: 25 }}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -188,26 +114,6 @@ export default function Lista() {
             </View>
           </TouchableWithoutFeedback>
         </Modal>
-
-        <View style={{ position: "absolute", top: 10, right: 10 }}>
-          <TouchableHighlight
-            onPress={() => {
-              setModalVisible(true);
-            }}
-            style={{
-              backgroundColor: "#329F60",
-              padding: 5,
-              borderRadius: 50,
-              width: 35,
-              height: 35,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 18 }}>?</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
 
       <View style={styles.header}>
         <Image
