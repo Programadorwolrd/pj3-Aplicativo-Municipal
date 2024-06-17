@@ -12,22 +12,30 @@ export default function Editar() {
 
   const [sexo, setSexo] = useState<string | undefined>(undefined);
 
+  useEffect(() => {
+    if (userData?.data) {
+      setSexo(userData.data.usuario.sexo);
+      // EditForm.values.apelido = userData?.data?.usuario.apelido ?? "";
+    }
+  }, [userData]);
 
   const EditForm = new FormPaiado((axios) => ({
+    
     mutationFn: async (allValues) => {
       await axios.put("/usuario", { ...allValues, sexo });
-      clientQuery.invalidateQueries()
+      clientQuery.invalidateQueries();
       router.replace("/(app)/(profile)");
     },
   }));
   EditForm.values.apelido = userData?.data?.usuario.apelido ?? "";
+  
 
   const handleSexoChange = (itemValue: string) => {
     if (itemValue === "masculino") {
       setSexo("M");
     } else if (itemValue === "feminino") {
       setSexo("F");
-    } else if (itemValue === "outro") {
+    } else if (itemValue === "prefiroNaoInformar") {
       setSexo("O");
     }
   };
@@ -37,7 +45,7 @@ export default function Editar() {
     { label: "Selecione seu sexo", value: "" },
     { label: "Masculino", value: "masculino" },
     { label: "Feminino", value: "feminino" },
-    { label: "Outro", value: "outro" },
+    { label: "Prefiro Não Informar", value: "prefiroNaoInformar" },
   ];
 
   return (

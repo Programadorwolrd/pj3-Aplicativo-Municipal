@@ -11,6 +11,7 @@ import {
 import type { CardProps } from "tamagui";
 import useApi from "@/lib/useApi";
 import { getFiles } from "@/lib/useAxios";
+import { useGetUser } from "@/lib/querys";
 
 // Interfaces
 interface Catalogo {
@@ -56,15 +57,7 @@ export default function Medalhas() {
     ranking: 3,
   });
 
-  const userApi = useApi("query", (axios) => {
-    return {
-      retry: 5,
-      queryKey: ["user"],
-      queryFn: () => {
-        return axios.get("/usuario");
-      },
-    };
-  });
+  const userApi = useGetUser();
 
   useEffect(() => {
     if (userApi.data) {
@@ -150,8 +143,8 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
           resizeMode="contain"
           alignSelf="center"
           source={{
-            width: isVerySmallScreen ? 50 : isSmallScreen ? 70 : 100,
-            height: isVerySmallScreen ? 50 : isSmallScreen ? 70 : 100,
+            width: isVerySmallScreen ? 50 : isSmallScreen ? 70 : 110,
+            height: isVerySmallScreen ? 50 : isSmallScreen ? 70 : 110,
             uri: getFiles(item.medalha),
           }}
         />
@@ -167,7 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    height: Dimensions.get("window").height / 4 - 6,
+    height: Dimensions.get("window").height / 5 - 6,
     width: Dimensions.get("window").width / 3,
     flex: 1,
   },
