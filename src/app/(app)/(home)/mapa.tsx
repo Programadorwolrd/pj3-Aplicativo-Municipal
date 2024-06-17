@@ -81,7 +81,7 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                Pontos escaneados
+              Seres vistos
               </Text>
             </View>
 
@@ -107,7 +107,7 @@ export default function MapaPage() {
               />
               <Text
                 style={{
-                  color: "black",
+                  color: "green",
                   fontWeight: "bold",
                   fontSize: 40,
                   alignSelf: "left",
@@ -125,7 +125,8 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                Medalhas obtidas
+                {/* ----------------------- */}
+                 Suas medalhas 
               </Text>
 
               <Image
@@ -157,7 +158,8 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                Pontos descobertos
+                {/* --------------- */}
+                Descubertas
               </Text>
             </View>
 
