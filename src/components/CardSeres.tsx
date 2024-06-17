@@ -1,5 +1,5 @@
 import { getFiles } from "@/lib/useAxios";
-import { Image } from "tamagui";
+import { Image, StyleSheet } from "tamagui";
 import { Text, View } from "tamagui";
 import { Pressable } from "react-native";
 import { router } from "expo-router";
@@ -9,12 +9,12 @@ export interface PropsCardSeres {
   uuid: string;
   photo: string;
   categoria: string;
-  isRead: boolean; // nova propriedade
+  isRead: boolean; // Nova propriedade
 }
 
 export default ({ nome, uuid, photo, categoria, isRead }: PropsCardSeres) => {
-  const backgroundColor = isRead ? "#329F60" : "gray"; // altera a cor de fundo com base em isRead
-  const onPress = isRead ? () => router.navigate(`(app)/(home)/${uuid}`) : undefined; // desabilita a navegação se o card não foi lido
+  const backgroundColor = isRead ? "#329F60" : "gray";
+  const onPress = isRead ? () => router.navigate(`(app)/(home)/${uuid}`) : undefined;
 
   return (
     <Pressable onPress={onPress}>
@@ -26,15 +26,17 @@ export default ({ nome, uuid, photo, categoria, isRead }: PropsCardSeres) => {
           height={150}
           width={130}
         >
-          <View display="flex" justifyContent="center" alignItems="center"> 
+          <View display="flex" justifyContent="center" alignItems="center">
             <Image
-              style={{ width: 100, height: 90, marginTop: -10 }}
               source={{ uri: getFiles(photo) }}
+              style={[styles.image, isRead ? null : styles.grayscale]} // Conditional style application
             />
           </View>
 
           <View marginLeft={10}>
-            <Text marginTop={2} color={"#fff"} fontSize={14} fontWeight={"unset"}>{categoria}</Text>
+            <Text marginTop={2} color={"#fff"} fontSize={14} fontWeight={"unset"}>
+              {categoria}
+            </Text>
             <Text marginTop={5} color={"#fff"} fontWeight="normal">{nome}</Text>
           </View>
         </View>
@@ -42,3 +44,15 @@ export default ({ nome, uuid, photo, categoria, isRead }: PropsCardSeres) => {
     </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  image: {
+    width: 100,
+    height: 90,
+    marginTop: -10,
+  },
+  grayscale: {
+    filter: 'grayscale(100%)', // Convert to grayscale when isRead is false
+  },
+});
+
