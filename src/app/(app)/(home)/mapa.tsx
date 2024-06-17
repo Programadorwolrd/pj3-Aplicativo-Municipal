@@ -107,7 +107,7 @@ export default function MapaPage() {
               />
               <Text
                 style={{
-                  color: "green",
+                  color: "black",
                   fontWeight: "bold",
                   fontSize: 40,
                   alignSelf: "left",
@@ -118,12 +118,13 @@ export default function MapaPage() {
               </Text>
               <Text
                 style={{
-                  color: "black",
+                  color: "green",
                   fontWeight: "bold",
                   fontSize: 15,
                   alignSelf: "left",
                   marginLeft: 20,
                 }}
+                
               >
                 {/* ----------------------- */}
                  Suas medalhas 
