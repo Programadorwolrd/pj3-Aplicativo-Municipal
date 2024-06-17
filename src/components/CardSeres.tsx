@@ -2,6 +2,7 @@ import { getFiles } from "@/lib/useAxios";
 import { Image } from "tamagui";
 import { Text, View } from "tamagui";
 import { Pressable } from "react-native";
+import { router } from "expo-router";
 
 export interface PropsCardSeres {
   nome: string;
