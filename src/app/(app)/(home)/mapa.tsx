@@ -81,7 +81,7 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                Pontos Scanead
+                Pontos escaneados
               </Text>
             </View>
 
@@ -114,7 +114,7 @@ export default function MapaPage() {
                   marginLeft: 14,
                 }}
               >
-                 {lidos} / {total} 
+                 {lidos} / 9 
               </Text>
               <Text
                 style={{
@@ -125,7 +125,7 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                Pontos Scanead
+                Medalhas obtidas
               </Text>
 
               <Image
@@ -146,7 +146,7 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                seres 
+                   {lidos} / {total}  
               </Text>
               <Text
                 style={{
@@ -157,7 +157,7 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                Pontos Scanead
+                Pontos descobertos
               </Text>
             </View>
 
