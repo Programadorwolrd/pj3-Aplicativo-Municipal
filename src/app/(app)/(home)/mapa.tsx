@@ -3,15 +3,25 @@ import Button from "../../../components/botao";
 import Card from "../../../components/card-mapa";
 import { Image, Text, View } from "tamagui";
 import { LocateFixed } from "@tamagui/lucide-icons";
+import { useGetUser } from "@/lib/querys";
+
+
+
 
 export default function MapaPage() {
+
+  const user = useGetUser();
+  const total = user.data?.data.usuario.progresso.total;
+  const lidos = user.data?.data.usuario.progresso.lido;
+
+  
   return (
     <>
       <View width={"100%"} backgroundColor={"white"}>
         <Text
           textAlign="center"
           marginBottom={"$5"}
-          marginTop={"$6"}
+          marginTop={"$4"}
           fontWeight={"bold"}
           fontSize={"$9"}
           color={"green"}
@@ -34,12 +44,12 @@ export default function MapaPage() {
             <View
               style={{
                 width: "90%",
-                height: "20%",
+                height: "23%",
                 alignSelf: "flex-start",
                 borderRadius: 20,
                 marginLeft: 10,
                 backgroundColor: "#25353E",
-                marginTop: 10,
+                marginTop: 0,
               }}
             >
               <Image
@@ -55,7 +65,7 @@ export default function MapaPage() {
                 style={{
                   color: "white",
                   fontWeight: "bold",
-                  fontSize: 50,
+                  fontSize: 40,
                   alignSelf: "left",
                   marginLeft: 20,
                 }}
@@ -78,7 +88,7 @@ export default function MapaPage() {
             <View
               style={{
                 width: "90%",
-                height: "40%",
+                height: "45%",
                 alignSelf: "flex-start",
                 marginTop: 15,
                 borderRadius: 20,
@@ -99,7 +109,7 @@ export default function MapaPage() {
                 style={{
                   color: "black",
                   fontWeight: "bold",
-                  fontSize: 50,
+                  fontSize: 40,
                   alignSelf: "left",
                   marginLeft: 14,
                 }}
@@ -131,7 +141,7 @@ export default function MapaPage() {
                 style={{
                   color: "black",
                   fontWeight: "bold",
-                  fontSize: 50,
+                  fontSize: 40,
                   alignSelf: "left",
                   marginLeft: 20,
                 }}
@@ -167,7 +177,7 @@ export default function MapaPage() {
                 style={{
                   color: "green",
                   fontWeight: "bold",
-                  fontSize: 21,
+                  fontSize: 18,
                   alignSelf: "left",
                   marginLeft: 20,
                 }}
@@ -178,7 +188,7 @@ export default function MapaPage() {
               <Text
                 style={{
                   color: "black",
-                  fontSize: 15,
+                  fontSize: 14,
                   alignSelf: "left",
                   marginLeft: 20,
                 }}
@@ -193,7 +203,7 @@ export default function MapaPage() {
         <View style={{ flex: 2, backgroundColor: "white" }}>
           <Image
             source={require("../../../assets/mapaoficial.png")}
-            style={{ width: "100%", height: "60%", marginTop: "4%" }}
+            style={{ width: "100%", height: "60%", marginTop: "6%" }}
             resizeMode="cover"
           />
         </View>
