@@ -10,7 +10,7 @@ export const unstable_settings = {
 
 export default function HomeLayout() {
   return (
-    <StackApp
+    <StackApp backgroundColor="#fff"
       HeaderTitle={() => (
         
         <Image
