@@ -5,32 +5,22 @@ import { router } from "expo-router";
 import { ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
 import { YStack, Text, Adapt, Sheet, Select } from "tamagui";
 import { useGetUser } from "@/lib/querys";
+import { clientQuery } from "@/app/_layout";
 
 export default function Editar() {
   const { data: userData } = useGetUser();
 
   const [sexo, setSexo] = useState<string | undefined>(undefined);
 
-  useEffect(() => {
-    if (userData?.data) {
-      setSexo(userData.data.usuario.sexo);
-      let apelido: string = userData?.data?.usuario.apelido ?? "";
-      console.log(typeof apelido);
-      console.log(apelido);
-      EditForm.values.apelido = apelido;
-    }
-  }, [userData]);
 
   const EditForm = new FormPaiado((axios) => ({
     mutationFn: async (allValues) => {
-      try {
-        await axios.put("/usuario", { ...allValues, sexo });
-        router.replace("/(app)/(profile)");
-      } catch (error) {
-        console.error("Error updating user data:", error);
-      }
+      await axios.put("/usuario", { ...allValues, sexo });
+      clientQuery.invalidateQueries()
+      router.replace("/(app)/(profile)");
     },
   }));
+  EditForm.values.apelido = userData?.data?.usuario.apelido ?? "";
 
   const handleSexoChange = (itemValue: string) => {
     if (itemValue === "masculino") {
