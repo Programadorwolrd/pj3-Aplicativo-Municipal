@@ -1,9 +1,18 @@
-import { Button } from 'tamagui';
+import { Button } from "tamagui";
 
-interface Props {
-    title: string;
-    link: string;
+export interface PropsCard {
+  title: string;
+  onPress: () => void;
 }
-export default ({ title, link }: Props) => <Button backgroundColor={'white'} color={'green'} borderWidth={1} borderColor={"#000000"} >{title}</Button>;
 
-
+export default ({ title, onPress }: PropsCard) => (
+  <Button
+    backgroundColor={"white"}
+    color={"green"}
+    borderWidth={1}
+    borderColor={"$red1Dark"}
+    onPress={onPress}
+  >
+    {title}
+  </Button>
+);
