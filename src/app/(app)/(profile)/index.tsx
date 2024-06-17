@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { storeAuth } from "@/lib/logicAuth";
 import useApi from "@/lib/useApi";
 import { YStack, Image, Text, XStack, View } from "tamagui";
@@ -12,6 +12,7 @@ import { Settings } from "@tamagui/lucide-icons";
 import { ranksOrdenados } from "@/lib/rankings";
 import { router, useNavigation } from "expo-router";
 import { useGetUser } from "@/lib/querys";
+import DropdownMenu from "./DropdownMenu";
 // import { PopoverDemo } from "./Test";
 
 const backProfile = require("../../../assets/background-perfil.png");
@@ -35,8 +36,6 @@ function rankUser(userId: string): number | undefined {
 }
 
 export default function Profile() {
-  // botão de logout e delete de conta
-  const navigate = useNavigation
   const loggout = storeAuth((s) => s.logout);
 
   const { data, refetch } = useApi("query", (axios) => ({
@@ -52,6 +51,8 @@ export default function Profile() {
     },
   }));
 
+  // const { data: userData } = useGetUser();
+  // console.log(userData?.data?.usuario.apelido, "apelido profile");
   const user = useApi("query", (axios) => {
     return {
       queryKey: ["user"],
@@ -93,8 +94,8 @@ export default function Profile() {
             <View
               style={{ position: "absolute", backgroundColor: "transparent" }}
               alignSelf="flex-end"
-              right={"$3"}
-              top={"$1.5"}
+              right={"$6"}
+              top={"$3"}
             >
               {/* <PopoverDemo /> */}
               {/* <Button
@@ -102,14 +103,16 @@ export default function Profile() {
                 icon={<Settings size={24} color="white" />}
                 type="clear"
               /> */}
-          
-              <Button
-                onPress={() => { router.navigate(`(app)/(profile)/Editar/`)}}
+              <DropdownMenu />
+              {/* <Button
+                onPress={() => {
+                  router.navigate(`(app)/(profile)/Editar/`);
+                }}
                 // onPress={() => { router.navigate(`(app)/(profile)/Editar/${dataUser.id}`)}}
                 // onPress={ router.navigate("(app)/(profile)/Editar") }
                 icon={<Settings size={24} color="white" />}
                 type="clear"
-              />
+              /> */}
 
               {/* <Button
                 onPress={loggout}

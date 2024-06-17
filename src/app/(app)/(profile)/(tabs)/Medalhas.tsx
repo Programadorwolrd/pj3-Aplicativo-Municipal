@@ -6,6 +6,7 @@ import {
   Pressable,
   Dimensions,
   RefreshControl,
+  useWindowDimensions,
 } from "react-native";
 import type { CardProps } from "tamagui";
 import useApi from "@/lib/useApi";
@@ -125,6 +126,9 @@ export default function Medalhas() {
 }
 
 function DemoCard(props: CardProps & { item: LidoPeloUser }) {
+  const { width } = useWindowDimensions();
+  const isSmallScreen = width < 390;
+  const isVerySmallScreen = width < 300;
   const { item } = props;
   return (
     <Card
@@ -137,6 +141,7 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
       justifyContent={"center"}
       alignItems={"center"}
       padding={"$1.5"}
+      mt={"$1"}
       {...props}
     >
       <View>
@@ -145,8 +150,8 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
           resizeMode="contain"
           alignSelf="center"
           source={{
-            width: 110,
-            height: 150,
+            width: isVerySmallScreen ? 50 : isSmallScreen ? 70 : 100,
+            height: isVerySmallScreen ? 50 : isSmallScreen ? 70 : 100,
             uri: getFiles(item.medalha),
           }}
         />

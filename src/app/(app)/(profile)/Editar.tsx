@@ -1,43 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Picker } from "@react-native-picker/picker";
 import { FormPaiado } from "@/components/FormConfigs";
 import TAuth from "@/components/templateAuth";
-import { storeAuth } from "@/lib/logicAuth";
 import { router } from "expo-router";
-import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
-import { YStack, Text, Adapt, Sheet, Select } from "tamagui"; // Importe os componentes necessários do tamagui
-
+import { ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
+import { YStack, Text, Adapt, Sheet, Select } from "tamagui";
 import { useGetUser } from "@/lib/querys";
 
 export default function Editar() {
-  const login = storeAuth((s) => s.login);
   const { data: userData } = useGetUser();
 
-  const [apelido, setApelido] = useState<string>(
-    () => userData?.data?.apelido ?? ""
-  );
-  const [sexo, setSexo] = useState("");
+    const [sexo, setSexo] = useState<string>("");
 
   useEffect(() => {
     if (userData?.data) {
       setSexo(userData.data.sexo);
     }
   }, [userData]);
+  console.log(userData?.data?.usuario.apelido);
 
   const EditForm = new FormPaiado((axios) => ({
     mutationFn: async (allValues) => {
-      await axios.put("/usuario", { ...allValues, sexo });
-
-      const { data } = await axios.post("/usuario/login", allValues);
-
-      login(data.token);
-      console.log(allValues);
-      
-
-      router.replace("/(app)/(home)");
+      try {
+        await axios.put("/usuario", { ...allValues, sexo });
+        router.replace("/(app)/(profile)");
+      } catch (error) {
+        console.error("Error updating user data:", error);
+      }
     },
   }));
 
+  const handleSexoChange = (itemValue: string) => {
+    if (itemValue === "masculino") {
+      setSexo("M");
+    } else if (itemValue === "feminino") {
+      setSexo("F");
+    } else if (itemValue === "outro") {
+      setSexo("O");
+    }
+  };
+
+  // Definindo as opções para o Select
   const options = [
     { label: "Selecione seu sexo", value: "" },
     { label: "Masculino", value: "masculino" },
@@ -45,17 +47,25 @@ export default function Editar() {
     { label: "Outro", value: "outro" },
   ];
 
+
+
+
+useEffect(() => {
+  var apelido:string = userData?.data?.usuario.apelido
+  console.log(typeof apelido);
+  EditForm.values.apelido = apelido;
+  console.log('useEffect executado após o carregamento do componente');
+}, []);
+
   return (
     <TAuth subTitulo="Edite seus dados" titulo="EDITAR">
       <EditForm.Input
         campo="apelido"
-        value={userData?.data.usuario.apelido}
-        onChangeText={setApelido}
       />
+      
 
       <YStack w="104%" mb="$2">
-        {/* Utilizando o SelectDemoItem diretamente no componente */}
-        <Select value={sexo} onValueChange={setSexo}>
+        <Select value={sexo} onValueChange={handleSexoChange}>
           <Select.Trigger
             size="$4.5"
             iconAfter={ChevronDown}
@@ -107,7 +117,7 @@ export default function Editar() {
             </Select.ScrollUpButton>
             <Select.Viewport minWidth={200}>
               {options.map((option, index) => (
-                <Select.Item key={index} value={option.value}>
+                <Select.Item key={index} value={option.value} index={index}>
                   <Select.ItemText>{option.label}</Select.ItemText>
                 </Select.Item>
               ))}

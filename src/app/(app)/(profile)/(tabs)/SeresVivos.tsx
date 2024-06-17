@@ -5,6 +5,7 @@ import {
   Pressable,
   Dimensions,
   RefreshControl,
+  useWindowDimensions,
 } from "react-native";
 
 import { router } from "expo-router";
@@ -146,6 +147,9 @@ export default function SeresVivos() {
 }
 
 function DemoCard(props: CardProps & { item: LidoPeloUser }) {
+  const { width } = useWindowDimensions();
+  const isSmallScreen = width < 390;
+  const isVerySmallScreen = width < 300;
   const { item } = props;
 
   return (
@@ -159,6 +163,7 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
       justifyContent={"center"}
       alignItems={"center"}
       paddingTop={"$2.5"}
+      mt={"$1"}
       {...props}
     >
       <View>
@@ -171,8 +176,8 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
             resizeMode="contain"
             alignSelf="center"
             source={{
-              width: 100,
-              height: 100,
+              width: isVerySmallScreen ? 50 : isSmallScreen ? 70 : 100,
+              height: isVerySmallScreen ? 50 : isSmallScreen ? 70 : 100,
 
               uri: getFiles(item.fotoBicho),
             }}
@@ -186,10 +191,10 @@ function DemoCard(props: CardProps & { item: LidoPeloUser }) {
           }}
         >
           <XStack
+            style={{ width: isVerySmallScreen ? 50 : isSmallScreen ? 70 : 100 }}
             justifyContent={"center"}
             alignItems={"center"}
             alignSelf="center"
-            w={100}
             h={50}
           >
             <Text

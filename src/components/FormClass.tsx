@@ -15,7 +15,7 @@ import { TextInputProps } from "react-native";
 const TIMEOUT_VALIDY = 500;
 
 export class FormPaia<C extends string, Inp extends InputMinimoProps> {
-  private values = useRef({} as ObjC<C, string>).current;
+  public values = useRef({} as ObjC<C, string>).current;
   protected useApiPaia: UseMutation<typeof this.values>["result"];
 
   constructor(

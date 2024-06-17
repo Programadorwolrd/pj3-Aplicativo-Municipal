@@ -4,6 +4,7 @@ import { Alert, Modal, Pressable, StyleSheet, Image } from "react-native";
 // const avatarPerfil = require("../../../assets/avatar-icon.jpeg");
 import { View } from "react-native";
 import { X } from "@tamagui/lucide-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 // import { PopoverDemo } from "./Test";
 interface avatarPerfil {
   img: string;
@@ -32,7 +33,8 @@ export default function AvatarProfile({ img }: avatarPerfil) {
           setModalVisible(!modalVisible);
         }}
       >
-        {/* <SafeAreaView style={{flex: 1}} onTouch={() => setModalVisible(!modalVisible)}> */}
+
+        <SafeAreaView style={{flex: 1}} onTouchStart={() => setModalVisible(false)}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Avatar circular size={"$20"}>
@@ -48,9 +50,8 @@ export default function AvatarProfile({ img }: avatarPerfil) {
             </Pressable>
           </View>
         </View>
-        {/* </SafeAreaView> */}
+        </SafeAreaView>
       </Modal>
-
       <Pressable onPress={() => setModalVisible(true)}>
         <Avatar circular size={"$11"}>
           <Avatar.Image accessibilityLabel="avatar" src={avatar.img} />
