@@ -1,5 +1,5 @@
 import StackApp from '@/components/StackApp';
 
 export default function ProfileLayout() {
-  return <StackApp titulo='Rank' />;
+  return <StackApp titulo='Ranking' />;
 }
