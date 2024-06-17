@@ -45,7 +45,7 @@ export default ({ nome, uuid, photo, categoria, isRead }: PropsCardSeres) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ({
   image: {
     width: 100,
     height: 90,
