@@ -70,7 +70,7 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                4/13
+                   {lidos} / {total} 
               </Text>
               <Text
                 style={{
@@ -114,7 +114,7 @@ export default function MapaPage() {
                   marginLeft: 14,
                 }}
               >
-                1/14
+                 {lidos} / {total} 
               </Text>
               <Text
                 style={{
@@ -146,7 +146,7 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                6/43
+                seres 
               </Text>
               <Text
                 style={{
