@@ -18,16 +18,18 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import useAxios, { getFiles } from "@/lib/useAxios";
-import { isAxiosError } from "axios";
 import ErrorScreen from "@/components/ErrorScreen";
 import { clientQuery } from "@/app/_layout";
+import { useGetQrcode } from "@/lib/querys";
+import Loading from "@/components/loading";
 
 export default function InfoUrl() {
-  const axios = useAxios();
   const flatlistRef = useRef<FlatList>(null);
   const screenWidth = Dimensions.get("window").width;
   const [activeIndex, setActiveIndex] = useState(0);
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+
   const { infoUrl } = useLocalSearchParams();
 
   useEffect(() => {
@@ -47,6 +49,33 @@ export default function InfoUrl() {
 
     return () => clearInterval(interval);
   });
+
+  // API
+  const uri = Array.isArray(infoUrl) ? infoUrl[0] : infoUrl;
+
+  const { data, isLoading, isSuccess } = useGetQrcode(uri);
+
+  useEffect(() => {
+    if (isSuccess) {
+      clientQuery.invalidateQueries({ queryKey: ["currentUser"] });
+      clientQuery.invalidateQueries({ queryKey: ["rank"] });
+    }
+  }, [isSuccess]);
+
+  if (isLoading) return <Loading />;
+
+  if (!data)
+    return (
+      <ErrorScreen
+        title="Ser vivo não encontrado"
+        text="Escaneie um QrCode valido"
+      />
+    );
+
+  // API
+
+  const carouselData = data.data.catalogo.catalogoGaleria;
+  const content = data.data.catalogo;
 
   const getItemLayout = (data: unknown, index: number) => ({
     length: screenWidth,
@@ -79,41 +108,6 @@ export default function InfoUrl() {
       deleted_at: string | null;
     }>;
   }
-
-  const [carouselData, setCarouselData] = useState<CarouselData[]>([]);
-  const [content, setContent] = useState<ContentData | null>(null);
-  const [notFound, setNotFound] = useState<boolean | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get(`/usuario/lerqrcode/${infoUrl}`);
-
-        if (!data || !data.catalogo) {
-          setNotFound(true);
-          return;
-        }
-
-        clientQuery.invalidateQueries({ queryKey: ['currentUser']})
-        setCarouselData(data.catalogo.catalogoGaleria);
-        setContent(data.catalogo);
-      } catch (error) {
-        if (isAxiosError(error)) console.log(error?.response?.data);
-        setNotFound(true);
-      }
-    };
-
-    fetchData();
-  }, [infoUrl, navigation]);
-
-  if (notFound)
-    return (
-      <ErrorScreen
-        title="Ser vivo não encontrado"
-        text="Escaneie um QrCode valido"
-      />
-    );
 
   const renderItem = ({
     item,
@@ -318,8 +312,16 @@ export default function InfoUrl() {
                         alignItems: "center",
                       }}
                     >
-                      <Text style={{ color: "black", fontSize: 16 }}>Sucesso</Text>
-                      <Text style={{ color: "black", fontSize: 16, marginBottom: 10 }}>
+                      <Text style={{ color: "black", fontSize: 16 }}>
+                        Sucesso
+                      </Text>
+                      <Text
+                        style={{
+                          color: "black",
+                          fontSize: 16,
+                          marginBottom: 10,
+                        }}
+                      >
                         Você capturou o Ser vivo com sucesso!
                       </Text>
 
@@ -338,7 +340,9 @@ export default function InfoUrl() {
                           alignItems: "center",
                         }}
                       >
-                        <Text style={{ color: "white", fontSize: 18 }}>Fechar</Text>
+                        <Text style={{ color: "white", fontSize: 18 }}>
+                          Fechar
+                        </Text>
                       </TouchableHighlight>
                     </View>
                   </TouchableWithoutFeedback>

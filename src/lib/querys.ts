@@ -20,6 +20,20 @@ export const useGetUserRank = () =>
     };
   });
 
+export const useGetQrcode = <Visita = false>(uri?: string) => {
+  type Data = Visita extends true
+    ? { details: "OK" }
+    : { catalogo: CatalogoInfo }
+
+  return useApi("query", (axios) => {
+    return {
+      queryKey: ["rank", uri],
+      queryFn: () => {
+        return axios.get<Res<Data>>(`/usuario/lerQrCode/${uri}`);
+      },
+    };
+  });
+};
 // para formatar a resposta da api
 type Res<D extends object> = {
   [K in keyof D]: D[K];

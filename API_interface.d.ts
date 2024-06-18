@@ -34,3 +34,21 @@ interface Rank {
   qrCodeUnicosLidos: number;
   isCurrentUser: boolean;
 }
+
+interface CatalogoInfo {
+  uuid: string;
+  medalha: string;
+  som: string;
+  nomePopular: string;
+  nomeCientifico: string;
+  especie: string;
+  ftModel: string;
+  descricao: string;
+  catalogoGaleria: CatalogoGaleria[];
+}
+
+interface CatalogoGaleria {
+  id: number;
+  catalogo_uuid: string;
+  url: string;
+}
