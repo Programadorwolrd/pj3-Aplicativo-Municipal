@@ -3,8 +3,10 @@
 interface Usuario {
   id: string;
   apelido: string;
+  nomeCompleto?: string;
   foto: string;
   sexo?: string | undefined;
+  nascimento?: string | undefined;
   lidoPeloUser: LidoPeloUser[];
   catalogoNLido: Catalogo[];
   progresso: {
