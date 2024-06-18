@@ -47,7 +47,7 @@ const EstadoScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text fontSize={"$2"} color="green" style={{marginTop:16}} mb="$1.5" fontFamily={"$outfitBold"}>
-        Escolha seu Estado
+        ESCOLHA O SEU ESTADO
       </Text>
       <View style={styles.pickerWrapper}>
         <Picker
@@ -66,7 +66,7 @@ const EstadoScreen: React.FC = () => {
         </Picker>
       </View>
       <Text fontSize={"$2"} color="green" mb="$1.5" fontFamily={"$outfitBold"}>
-        Escolha sua Cidade
+        ESCOLHA A SUA CIDADE
       </Text>
       
       <View style={styles.pickerWrapper}>
@@ -95,11 +95,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  label: {
-    fontSize: 16,
-    marginBottom: 8,
-    color: "#333",
-  },
   pickerWrapper: {
     backgroundColor: "#e8f5e9",
     borderWidth: 1.7,
@@ -109,12 +104,6 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: "100%",
-  },
-  buttonPosition: {
-    marginTop: 20,
-    backgroundColor: "#43a047",
-    borderRadius: 10,
-    overflow: "hidden",
   },
 });
 

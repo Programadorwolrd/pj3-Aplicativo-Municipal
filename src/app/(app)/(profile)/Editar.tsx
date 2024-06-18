@@ -8,6 +8,7 @@ import { useGetUser } from "@/lib/querys";
 import { clientQuery } from "@/app/_layout";
 import EstadoScreen from "./test";
 import NascimentoScreen from "./test2";
+import NomeCompletoScreen from "./test3";
 
 export default function Editar() {
   const { data: userData } = useGetUser();
@@ -53,11 +54,16 @@ export default function Editar() {
   return (
     <TAuth subTitulo="Edite seus dados" titulo="EDITAR">
       <EditForm.Input campo="apelido" defaultValue={apelido} />
-
       <YStack w="104%" mb="$2">
-      <Text fontSize={"$2"} color="green" mb="$1.5" fontFamily={"$outfitBold"}>
-        escolha seu sexo
-      </Text>
+        <NomeCompletoScreen />
+        <Text
+          fontSize={"$2"}
+          color="green"
+          mb="$1.5"
+          fontFamily={"$outfitBold"}
+        >
+          ESCOLHA O SEU SEXO
+        </Text>
         <Select value={sexo} onValueChange={handleSexoChange}>
           <Select.Trigger
             size="$4.5"

@@ -33,7 +33,7 @@ const NascimentoScreen: React.FC = () => {
         mb="$1.5"
         fontFamily={"$outfitBold"}
       >
-        Escolha sua Data de Nascimento
+        ESCOLHA SUA DATA DE NASCIMENTO
       </Text>
       <View style={styles.pickerWrapper}>
         <Text style={styles.dateText}>{formatDate(date)}</Text>
@@ -59,11 +59,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  label: {
-    fontSize: 16,
-    marginBottom: 8,
-    color: "#333",
-  },
   pickerWrapper: {
     flexDirection: 'row',
     backgroundColor: '#e8f5e9',
@@ -75,7 +70,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   dateText: {
-    marginTop: 10,
     fontSize: 16,
     color: "#333",
     textAlign: 'center',
