@@ -5,11 +5,12 @@ import { Text } from "tamagui";
 import { PropsPicker } from "./PickerSexo";
 
 const NascimentoScreen = ({ values }: PropsPicker) => {
-  const [date, setDate] = useState<Date>(new Date());
+  const dateNow = new Date();
+  const [date, setDate] = useState<Date>(dateNow);
   const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
-    values["nascimento"] = date.toISOString();
+    if (date != dateNow) values["nascimento"] = date.toISOString();
   }, [date, values]);
 
   const onChange = (event: any, selectedDate?: Date) => {

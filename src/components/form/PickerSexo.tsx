@@ -20,11 +20,11 @@ export default function PickerSexo({ values, defaultValue }: PropsPicker) {
   ];
 
   const handleSexoChange = (itemValue: string) => {
-    if (itemValue === "masculino") {
+    if (itemValue === "M") {
       setSexo("M");
-    } else if (itemValue === "feminino") {
+    } else if (itemValue === "F") {
       setSexo("F");
-    } else if (itemValue === "prefiroNaoInformar") {
+    } else if (itemValue === "O") {
       setSexo("O");
     }
   };
