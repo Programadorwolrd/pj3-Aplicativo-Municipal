@@ -34,7 +34,6 @@ export default function HomePage() {
       : seres.filter((ser) => ser.especie === selectedCategory)
     : seres;
 
-  console.log(seres);
 
   return (
     <View style={{ backgroundColor: "#fff" }}>

@@ -53,7 +53,7 @@ export class FormPaia<C extends string, Inp extends InputMinimoProps> {
 
     const { isPending } = this.useApiPaia;
 
-    this.values[campo] = valueInput;
+    if (valueInput) this.values[campo] = valueInput;
 
     return (
       <this.TemplateInput campo={campo} {...infoValidy}>
