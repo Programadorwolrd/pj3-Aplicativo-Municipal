@@ -31,7 +31,7 @@ export const validsPaia = {
     [(t) => t.length < 1, "Insira um apelido/nome"],
     [(t) => t.length < 3 || t.length > 40, "Entre 3 e 40 caracteres"],
     [
-      (t) => !/^[a-zA-Z\s\d]{3,40}$/.test(t),
+      (t) => !/^[a-zA-Z\s\dÀ-ú]{3,40}$/.test(t),
       "Apenas letras, números e espaços",
     ],
   ],
@@ -39,4 +39,4 @@ export const validsPaia = {
     [(t) => t.length < 1, "Insira uma senha"],
     [(t) => t.length < 4 || t.length > 40, "Entre 4 e 40 caracteres"],
   ],
-} satisfies Record<string, ValidacoesCampo>;
+} as Record<string, ValidacoesCampo>;
