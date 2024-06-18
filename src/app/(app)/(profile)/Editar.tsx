@@ -6,9 +6,12 @@ import { ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
 import { YStack, Text, Adapt, Sheet, Select } from "tamagui";
 import { useGetUser } from "@/lib/querys";
 import { clientQuery } from "@/app/_layout";
+import EstadoScreen from "./test";
+import NascimentoScreen from "./test2";
 
 export default function Editar() {
   const { data: userData } = useGetUser();
+  console.log(userData?.data);
 
   const [sexo, setSexo] = useState<string | undefined>(undefined);
 
@@ -20,15 +23,14 @@ export default function Editar() {
   }, [userData]);
 
   const EditForm = new FormPaiado((axios) => ({
-    
     mutationFn: async (allValues) => {
       await axios.put("/usuario", { ...allValues, sexo });
       clientQuery.invalidateQueries();
       router.replace("/(app)/(profile)");
     },
   }));
-  EditForm.values.apelido = userData?.data?.usuario.apelido ?? "";
-  
+  // EditForm.values.apelido = userData?.data?.usuario.apelido ?? "";
+  const apelido = userData?.data?.usuario.apelido ?? "";
 
   const handleSexoChange = (itemValue: string) => {
     if (itemValue === "masculino") {
@@ -50,9 +52,12 @@ export default function Editar() {
 
   return (
     <TAuth subTitulo="Edite seus dados" titulo="EDITAR">
-      <EditForm.Input campo="apelido" />
+      <EditForm.Input campo="apelido" defaultValue={apelido} />
 
       <YStack w="104%" mb="$2">
+      <Text fontSize={"$2"} color="green" mb="$1.5" fontFamily={"$outfitBold"}>
+        escolha seu sexo
+      </Text>
         <Select value={sexo} onValueChange={handleSexoChange}>
           <Select.Trigger
             size="$4.5"
@@ -65,7 +70,7 @@ export default function Editar() {
             focusStyle={{ borderColor: "green" }}
             hoverStyle={{ borderColor: "green" }}
           >
-            <Select.Value placeholder="Selecione seu sexo" />
+            <Select.Value placeholder="Sexo" />
           </Select.Trigger>
           <Adapt when="sm" platform="touch">
             <Sheet
@@ -123,8 +128,9 @@ export default function Editar() {
             </Select.ScrollDownButton>
           </Select.Content>
         </Select>
+        <EstadoScreen />
+        <NascimentoScreen />
       </YStack>
-
       <EditForm.ButtonSubmit text="SALVAR" />
 
       <YStack alignItems="center" mt="$4">
