@@ -25,9 +25,11 @@ export const useGetQrcode = <Visita = false>(uri?: string) => {
     ? { details: "OK" }
     : { catalogo: CatalogoInfo };
 
+  const isVisit = uri?.startsWith("PAIA:");
+
   return useApi("query", (axios) => {
     return {
-      queryKey: ["rank", uri],
+      queryKey: ["qrCode", isVisit ? "PAIA" : uri],
       queryFn: () => {
         return axios.get<Res<Data>>(`/usuario/lerQrCode/${uri}`);
       },
