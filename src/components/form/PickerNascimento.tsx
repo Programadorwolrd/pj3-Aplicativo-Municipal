@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Button, StyleSheet, Platform } from "react-native";
+import { View, Button, StyleSheet, Platform, TouchableOpacity } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Text } from "tamagui";
 import { PropsPicker } from "./PickerSexo";
@@ -46,11 +46,10 @@ const NascimentoScreen = ({ values, defaultValue }: PropsPicker) => {
       <View style={styles.pickerWrapper}>
         <Text style={styles.dateText}>{formatDate(date)}</Text>
         <View style={styles.buttonContainer}>
-          <Button
-            title="Selecionar Data"
-            onPress={showDatePicker}
-            color="#4caf50"
-          />
+        <TouchableOpacity style={styles.button} onPress={showDatePicker}>
+          <Text style={styles.buttonText}>Selecionar Data</Text>
+        </TouchableOpacity>
+        
         </View>
       </View>
       {show && (
@@ -88,6 +87,19 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginLeft: 10,
+  },
+  button: {
+    backgroundColor: '#fff',
+    borderColor: '#4caf50',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  buttonText: {
+    color: '#000',
+    fontSize: 16,
+    textAlign: 'center',
   },
   datePicker: {
     width: "100%",

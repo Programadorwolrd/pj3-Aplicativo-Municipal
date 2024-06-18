@@ -75,8 +75,8 @@ export function InputPaia(props: InputProps) {
     <Input
       size="$4.5"
       borderWidth={1.7}
-      borderColor="$green9Light"
-      backgroundColor="$green4Light"
+      borderColor="green"
+      backgroundColor="#e8f5e9"
       color="black"
       marginLeft="-2%"
       width="104%"
