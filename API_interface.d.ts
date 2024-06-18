@@ -3,8 +3,12 @@
 interface Usuario {
   id: string;
   apelido: string;
-  foto: string;
-  sexo?: string | undefined;
+  nomeCompleto?: string;
+  foto: string | null;
+  nome: string | null;
+  nascimento: string | null;
+  sexo: string | null;
+  cidade: string | null;
   lidoPeloUser: LidoPeloUser[];
   catalogoNLido: Catalogo[];
   progresso: {
@@ -33,4 +37,22 @@ interface Rank {
   foto: string;
   qrCodeUnicosLidos: number;
   isCurrentUser: boolean;
+}
+
+interface CatalogoInfo {
+  uuid: string;
+  medalha: string;
+  som: string;
+  nomePopular: string;
+  nomeCientifico: string;
+  especie: string;
+  ftModel: string;
+  descricao: string;
+  catalogoGaleria: CatalogoGaleria[];
+}
+
+interface CatalogoGaleria {
+  id: number;
+  catalogo_uuid: string;
+  url: string;
 }

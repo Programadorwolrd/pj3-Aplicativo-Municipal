@@ -160,7 +160,7 @@ export default function MapaPage() {
                 }}
               >
                 {/* --------------- */}
-                Descubertas
+                Descobertas
               </Text>
             </View>
 

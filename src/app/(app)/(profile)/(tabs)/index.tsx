@@ -23,7 +23,7 @@ export default function Tabs() {
       <Tab.Screen
         name="seresVivos"
         component={SeresVivos}
-        options={{ tabBarLabel: `Seres Vivos \n ${lidos} / ${total}` }}
+        options={{ tabBarLabel: `Seres Conhecidos \n ${lidos} / ${total}` }}
       />
       <Tab.Screen
         name="medalhas"
