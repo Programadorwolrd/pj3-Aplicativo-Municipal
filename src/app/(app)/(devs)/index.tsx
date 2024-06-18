@@ -56,8 +56,8 @@ const usuarios: User[] = [
     nome: "Luis Eduardo",
     funcao: "Dev FullStack",
     linkImagem: "Imageluis",
-    linkGithub: "",
-    linkLinkedin: "",
+    linkGithub: "https://github.com/Luis-eduardo-sl",
+    linkLinkedin: "http://www.linkedin.com/in/luis-eduardo-sl",
     descricao:
       "É um desenvolvedor talentoso que contribuiu significativamente para o desenvolvimento das funcionalidades do aplicativo. Suas habilidades foram fundamentais para o sucesso do projeto.",
   },
@@ -92,7 +92,7 @@ const usuarios: User[] = [
       "Desenvolvedora talentosa que contribuiu significativamente para o desenvolvimento das funcionalidades do aplicativo. Suas habilidades foram fundamentais para o sucesso do projeto.",
   },
   {
-    nome: "Fabricio Ryan",
+    nome: "Francisco Ryan",
     funcao: "Dev FrontEnd",
     linkImagem: "https://avatars.githubusercontent.com/u/133154067?v=4",
     linkGithub: "https://github.com/ryanolv44",
