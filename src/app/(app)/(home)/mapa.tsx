@@ -115,7 +115,7 @@ export default function MapaPage() {
                   marginLeft: 14,
                 }}
               >
-                {lidos} / 9
+                {lidos} / {total}
               </Text>
               <Text
                 style={{

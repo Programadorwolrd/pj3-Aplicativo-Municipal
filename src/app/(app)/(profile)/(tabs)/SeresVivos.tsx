@@ -6,15 +6,14 @@ import {
   Dimensions,
   RefreshControl,
   useWindowDimensions,
+  TouchableOpacity,
 } from "react-native";
-
-import { router } from "expo-router";
+import { router, } from "expo-router";
 import type { CardProps } from "tamagui";
 import React, { useEffect, useState } from "react";
-import useApi from "@/lib/useApi";
 import { getFiles } from "@/lib/useAxios";
 import { useGetUser } from "@/lib/querys";
-
+import Loading from "@/components/loading";
 // Interfaces
 interface Catalogo {
   uuid: string;
@@ -70,6 +69,23 @@ export default function SeresVivos() {
   });
 
   const userApi = useGetUser();
+  if (userApi.isLoading) return <Loading />;
+  if (userApi.data?.data.usuario.lidoPeloUser.length === 0)
+    return (
+      <View flex={1} jc={"center"} ai={"center"} margin={"$true"}>
+        <Text textAlign="center" fontSize={"$7"}>
+        Nenhuma Ser Conhecido encontrado, Leia Qr Codes para Aumentar seu Catalogo de Seres Conhecidos
+        </Text>
+        <TouchableOpacity
+          onPress={() => router.navigate("/(app)/(qrCode)")}
+          style={{ flexDirection: "row", marginTop: 10}}
+        >
+          <Text textAlign="center" fontSize={"$7"} color={"green"}>
+            Ler Qr Codes
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
 
   useEffect(() => {
     if (userApi.data) {
