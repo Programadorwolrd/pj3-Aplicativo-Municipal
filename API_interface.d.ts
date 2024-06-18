@@ -8,7 +8,6 @@ interface Usuario {
   nome: string | null;
   nascimento: string | null;
   sexo: string | null;
-  nascimento: string | null;
   cidade: string | null;
   lidoPeloUser: LidoPeloUser[];
   catalogoNLido: Catalogo[];
