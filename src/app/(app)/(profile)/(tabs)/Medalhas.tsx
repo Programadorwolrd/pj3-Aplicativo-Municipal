@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, Card } from "tamagui";
+import { View, Image, Card, Text } from "tamagui";
 import {
   FlatList,
   StyleSheet,
@@ -7,11 +7,14 @@ import {
   Dimensions,
   RefreshControl,
   useWindowDimensions,
+  TouchableOpacity,
 } from "react-native";
 import type { CardProps } from "tamagui";
 import useApi from "@/lib/useApi";
 import { getFiles } from "@/lib/useAxios";
 import { useGetUser } from "@/lib/querys";
+import Loading from "@/components/loading";
+import { router } from "expo-router";
 
 // Interfaces
 interface Catalogo {
@@ -56,9 +59,24 @@ export default function Medalhas() {
     lidoPeloUser: [],
     ranking: 3,
   });
-
   const userApi = useGetUser();
-
+  if (userApi.isLoading) return <Loading />;
+  if (userApi.data?.data.usuario.lidoPeloUser.length === 0)
+    return (
+      <View flex={1} jc={"center"} ai={"center"} margin={"$true"}>
+        <Text textAlign="center" fontSize={"$7"}>
+          Nenhuma Medalha encontrada, Leia Qr Codes para Ganhar Medalhas
+        </Text>
+        <TouchableOpacity
+          onPress={() => router.navigate("/(app)/(qrCode)")}
+          style={{ flexDirection: "row", marginTop: 10 }}
+        >
+          <Text textAlign="center" fontSize={"$7"} color={"green"}>
+            Ler Qr Codes
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
   useEffect(() => {
     if (userApi.data) {
       const userData = userApi.data.data.usuario;
