@@ -15,7 +15,7 @@ export const useGetUserRank = () =>
     return {
       queryKey: ["rank"],
       queryFn: () => {
-        return axios.get<Res<{ rank: Rank }>>("/usuario/rank");
+        return axios.get<Res<{ rank: Rank[] }>>("/usuario/rank");
       },
     };
   });

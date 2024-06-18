@@ -3,18 +3,19 @@ import { View, Text, FlatList, Image } from "react-native";
 import CardCategoriaSeres from "@/components/cardCategoriaSeres";
 import CardSeres from "@/components/CardSeres";
 import { useGetUser } from "@/lib/querys";
+import Loading from "@/components/loading";
 
 export default function HomePage() {
   const response = useGetUser();
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState<null | string>(null);
 
-  if (response.isLoading) return <Text>Carregando...</Text>;
-  if (response.isError) return <Text>Erro ao carregar</Text>;
-  if (!response.data) return null;
+  if (response.isLoading) return <Loading />;
+
+  if (!response.data) {
+    return <Text>Erro ao carregar dados</Text>;
+  }
 
   const data = response.data.data.usuario;
-
-  
 
   const especies = ["Todos os Seres"].concat(
     data.catalogoNLido
@@ -23,21 +24,17 @@ export default function HomePage() {
       .filter((item, index, array) => array.indexOf(item) === index)
   );
 
-
-  
   const seres = data.lidoPeloUser
     .map(({ catalogo }) => ({ ...catalogo, isRead: true }))
     .concat(data.catalogoNLido.map((item) => ({ ...item, isRead: false })));
 
-    const filteredSeres = selectedCategory
+  const filteredSeres = selectedCategory
     ? selectedCategory === "Todos os Seres"
       ? seres
       : seres.filter((ser) => ser.especie === selectedCategory)
     : seres;
 
-    console.log(seres);
-
-    
+  console.log(seres);
 
   return (
     <View style={{ backgroundColor: "#fff" }}>
@@ -108,22 +105,22 @@ export default function HomePage() {
         </View>
       </View>
       <FlatList
-  style={{
-    marginStart: 25,
-    marginEnd: 30,
-    marginTop: 20,
-  }}
-  ItemSeparatorComponent={() => <View style={{ padding: 3 }} />}
-  horizontal={true}
-  data={especies}
-  renderItem={({ item }) => (
-    <CardCategoriaSeres
-      title={item}
-      onPress={() => setSelectedCategory(item)}
-    />
-  )}
-  keyExtractor={(item) => item}
-/>
+        style={{
+          marginStart: 25,
+          marginEnd: 30,
+          marginTop: 20,
+        }}
+        ItemSeparatorComponent={() => <View style={{ padding: 3 }} />}
+        horizontal={true}
+        data={especies}
+        renderItem={({ item }) => (
+          <CardCategoriaSeres
+            title={item}
+            onPress={() => setSelectedCategory(item)}
+          />
+        )}
+        keyExtractor={(item) => item}
+      />
       <FlatList
         style={{
           marginStart: 25,
@@ -137,7 +134,7 @@ export default function HomePage() {
         keyExtractor={(item) => item.uuid}
         renderItem={({ item }) => (
           <CardSeres
-          isRead= {item.isRead}
+            isRead={item.isRead}
             nome={item.nomePopular}
             categoria={item.especie}
             photo={item.ftModel}

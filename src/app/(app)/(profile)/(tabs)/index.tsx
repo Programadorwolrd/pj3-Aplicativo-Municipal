@@ -28,7 +28,7 @@ export default function Tabs() {
       <Tab.Screen
         name="medalhas"
         component={Medalhas}
-        options={{ tabBarLabel: `Seres Vivos \n ${lidos} / ${total}` }}
+        options={{ tabBarLabel: `Medalhas \n ${lidos} / ${total}` }}
       />
     </Tab.Navigator>
   );

@@ -16,8 +16,7 @@ export default function AvatarProfile({ img }: avatarPerfil) {
   };
 
   if (!avatar.img) {
-    avatar.img =
-      "https://t3.ftcdn.net/jpg/03/58/90/78/360_F_358907879_Vdu96gF4XVhjCZxN2kCG0THTsSQi8IhT.jpg";
+    avatar.img = require("@/assets/fotoPadrao.jpg");;
   }
 
   return (

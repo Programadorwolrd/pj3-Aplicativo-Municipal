@@ -6,30 +6,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AvatarProfile from "./Avatar";
 import ProfileData from "./ProfileData";
 import Tabs from "./(tabs)";
-import { ranksOrdenados } from "@/lib/rankings";
-import { router, useNavigation } from "expo-router";
-import { useGetUser } from "@/lib/querys";
+import { useGetUser, useGetUserRank } from "@/lib/querys";
 import DropdownMenu from "./DropdownMenu";
+import Loading from "@/components/loading";
 
-const backProfile = require("../../../assets/background-perfil.png");
-
-interface PropsUser {
-  id: string;
-  apelido: string;
-  foto: string;
-  ranking: number;
-}
-
-function rankUser(userId: string): number | undefined {
-  try {
-    const rankings = ranksOrdenados();
-    const index = rankings.findIndex((rank) => rank.id === userId);
-    return index !== -1 ? index + 1 : undefined;
-  } catch (error) {
-    console.error(`Erro ao obter a colocação do usuário ${userId}:`, error);
-    return undefined;
-  }
-}
+import backProfile from "../../../assets/background-perfil.png";
 
 export default function Profile() {
   const { mutate } = useApi("mutate", (axios) => ({
@@ -38,24 +19,19 @@ export default function Profile() {
     },
   }));
 
-  // const { data: userData } = useGetUser();
-  // console.log(userData?.data?.usuario.apelido, "apelido profile");
+  const rank = useGetUserRank();
 
-  const user = useApi("query", (axios) => {
-    return {
-      queryKey: ["user"],
-      queryFn: () => {
-        return axios.get("/usuario");
-      },
-    };
-  });
+  const user = useGetUser();
 
-  const dataUser: PropsUser = {
-    id: user.data?.data.usuario.id || "",
-    apelido: user.data?.data.usuario.apelido || "",
-    foto: user.data?.data.usuario.foto || "",
-    ranking: rankUser(user.data?.data.usuario.id) || 0,
-  };
+  if (user.isLoading || rank.isLoading) return <Loading />;
+
+  if (!user.data || !rank.data) {
+    return <Text>Erro ao carregar dados</Text>;
+  }
+
+  let currentUserRankIndex = rank.data.data.rank.findIndex(
+    (item) => item.isCurrentUser
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -88,8 +64,11 @@ export default function Profile() {
               <DropdownMenu />
             </View>
           </XStack>
-          <ProfileData nome={dataUser.apelido} ranking={dataUser.ranking} />
-          <AvatarProfile img={dataUser.foto} />
+          <ProfileData
+            nome={user.data.data.usuario.apelido}
+            ranking={currentUserRankIndex}
+          />
+          <AvatarProfile img={user.data.data.usuario.foto} />
         </YStack>
         <Tabs />
 

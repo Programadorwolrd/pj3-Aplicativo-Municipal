@@ -3,42 +3,47 @@ import {
   FlatList,
   Image,
   StyleSheet,
-  View,
-  Text,
   Modal,
   TouchableHighlight,
   TouchableWithoutFeedback,
 } from "react-native";
 import MedalIcon from "@/assets/medal-1.svg";
 import { useGetUserRank } from "@/lib/querys";
+import { Avatar, Button, Spinner, Text, View } from "tamagui";
 
-interface User {
-  id: string;
-  apelido: string;
-  foto: string;
-  ranking: number;
+interface ItemProps {
+  item: Rank;
+  index: number;
 }
-
-function Itens({ item, index }: { item: User; index: number }) {
+function Itens({ item, index }: ItemProps) {
   return (
     <View>
       <View style={styles.hr} />
       <View style={styles.itemContainer}>
         <View style={styles.userInfoContainer}>
-          <Image source={{ uri: item.foto }} style={styles.userImage} />
+          <Avatar circular size={"$4.5"}>
+            <Avatar.Image
+              accessibilityLabel="avatar"
+              src={item.foto || require("@/assets/fotoPadrao.jpg")}
+            />
+            <Avatar.Fallback backgroundColor="$blue10" />
+          </Avatar>
           <View style={styles.textContainer}>
             <Text style={styles.userName}>{item.apelido}</Text>
-            <Text>{`Ranking: ${item.ranking}`}</Text>
+            <Text
+              fontSize={"$2"}
+              mt={"$1.5"}
+              fontWeight={"$4"}
+            >{`LIDOS: ${item.qrCodeUnicosLidos}`}</Text>
           </View>
         </View>
         <View style={styles.rankContainer}>
+          <Text fontFamily={"$outfitBold"} fontSize={20} marginEnd={10}>
+            {index + 1}
+          </Text>
           {index < 3 && (
-            <View style={styles.medalContainer}>
-              <Text style={styles.rankTextAbove}>{index + 1}</Text>
-              <MedalIcon width={30} height={30} />
-            </View>
+            <MedalIcon width={30} height={30} style={{ alignSelf: "center" }} />
           )}
-          {index >= 3 && <Text style={styles.rankText}>{index + 1}</Text>}
         </View>
       </View>
     </View>
@@ -50,15 +55,18 @@ export default function Lista() {
   const { data, isLoading, error } = useGetUserRank();
 
   if (isLoading) {
-    return <Text>Carregando...</Text>;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Spinner size="large" color="#0000ff" />
+      </View>
+    );
   }
 
   if (error) {
     return <Text>Erro ao carregar dados</Text>;
   }
 
-  // Acessa a propriedade correta da resposta da API e garante o tipo User[]
-  const usuarios = Array.isArray(data?.data.rank) ? (data.data.rank as User[]) : [];
+  if (!data) return <Text>Erro ao carregar dados</Text>;
 
   return (
     <View style={{ flex: 1 }}>
@@ -71,55 +79,20 @@ export default function Lista() {
         }}
       >
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "rgba(0,0,0,0.5)",
-            }}
-          >
+          <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback>
-              <View
-                style={{
-                  backgroundColor: "white",
-                  padding: 20,
-                  margin: 20,
-                  borderRadius: 10,
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 18,
-                    fontWeight: "bold",
-                    marginBottom: 10,
-                  }}
-                >
-                  Como funciona o ranking?
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>Como funciona o ranking?</Text>
+                <Text style={styles.modalText}>
+                  A posição no ranking é definida pela quantidade de QrCodes
+                  escaneados. Escaneie o maior número possível para alcançar uma
+                  boa colocação!
                 </Text>
-                <Text style={{ color: "black", fontSize: 16, marginBottom: 10 }}>
-                  A posição no ranking é definida pela velocidade levada para
-                  ler todos os QrCodes espalhados pelo parque
-                </Text>
-
                 <TouchableHighlight
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
-                  style={{
-                    backgroundColor: "#329F60",
-                    padding: 10,
-                    marginTop: 30,
-                    borderRadius: 10,
-                    position: "absolute",
-                    bottom: -20,
-                    width: "30%",
-                    alignItems: "center",
-                  }}
+                  onPress={() => setModalVisible(!modalVisible)}
+                  style={styles.modalCloseButton}
                 >
-                  <Text style={{ color: "white", fontSize: 18 }}>Fechar</Text>
+                  <Text style={styles.modalCloseButtonText}>Fechar</Text>
                 </TouchableHighlight>
               </View>
             </TouchableWithoutFeedback>
@@ -128,24 +101,50 @@ export default function Lista() {
       </Modal>
 
       <View style={styles.header}>
-        <Image
-          source={require("../../../assets/medalha-prata.png")}
-          style={styles.medalhas}
-        />
-        <Image
-          source={require("../../../assets/medalha-ouro.png")}
-          style={styles.medalha}
-        />
-        <Image
-          source={require("../../../assets/medalha-bronze.png")}
-          style={styles.medalhas}
-        />
+        <View>
+          <Image
+            source={require("../../../assets/medalha-prata.png")}
+            style={styles.medalhas}
+          />
+          <Text style={{ textAlign: "center" }}>
+            {data.data.rank[1]?.apelido}
+          </Text>
+        </View>
+
+        <View>
+          <Image
+            source={require("../../../assets/medalha-ouro.png")}
+            style={styles.medalha}
+          />
+          <Text style={{ textAlign: "center" }}>
+            {data.data.rank[0]?.apelido}
+          </Text>
+        </View>
+        <View>
+          <Image
+            source={require("../../../assets/medalha-bronze.png")}
+            style={styles.medalhas}
+          />
+          <Text style={{ textAlign: "center" }}>
+            {data.data.rank[2]?.apelido}
+          </Text>
+        </View>
+        <Button
+          circular
+          onPress={() => setModalVisible(true)}
+          position="absolute"
+          backgroundColor={"green"}
+          end={0}
+          size={"$3"}
+        >
+          <Text style={styles.infoButtonText}>?</Text>
+        </Button>
       </View>
 
       <FlatList
-        data={usuarios}
+        data={data.data.rank}
         renderItem={({ item, index }) => <Itens item={item} index={index} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.list}
       />
     </View>
@@ -184,13 +183,6 @@ const styles = StyleSheet.create({
   medalContainer: {
     alignItems: "center",
   },
-  rankTextAbove: {
-    position: "absolute",
-    top: -17,
-    fontWeight: "bold",
-    fontSize: 16,
-    color: "#000",
-  },
   rankText: {
     fontWeight: "bold",
     fontSize: 20,
@@ -199,25 +191,74 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     marginBottom: 10,
+    position: "relative",
   },
   hr: {
     borderBottomColor: "#D9D9D9",
     borderBottomWidth: 1,
-    width: 310,
+    width: "100%",
     alignSelf: "center",
   },
   medalha: {
-    marginTop: -20,
-    width: 130,
-    height: 160,
+    marginTop: -30,
+    width: 120,
+    height: 150,
   },
   medalhas: {
-    marginTop: 25,
-    marginBottom: 30,
-    width: 120,
-    height: 120,
+    marginTop: 40,
+    width: 100,
+    height: 100,
   },
   list: {
     paddingBottom: 20, // Adiciona um espaço no final da lista
+  },
+  infoButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    backgroundColor: "#329F60",
+    padding: 10,
+    borderRadius: 20,
+  },
+  infoButtonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    margin: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    color: "black",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalText: {
+    color: "black",
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  modalCloseButton: {
+    backgroundColor: "#329F60",
+    padding: 10,
+    marginTop: 30,
+    borderRadius: 10,
+    width: "30%",
+    alignItems: "center",
+  },
+  modalCloseButtonText: {
+    color: "white",
+    fontSize: 18,
   },
 });

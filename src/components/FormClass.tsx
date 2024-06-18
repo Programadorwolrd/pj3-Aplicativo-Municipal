@@ -41,8 +41,14 @@ export class FormPaia<C extends string, Inp extends InputMinimoProps> {
   /*
    * Componente do Input com toda lógica de validação
    */
-  public Input = ({ campo, ...props }: Inp & { campo: C }) => {
-    const [valueInput, setValuesInput] = useState(this.values[campo] || "");
+  public Input = ({
+    campo,
+    defaultValue,
+    ...props
+  }: Omit<Inp, "value" | "onChangeText"> & { campo: C }) => {
+    const [valueInput, setValuesInput] = useState(
+      this.values[campo] || defaultValue || ""
+    );
     const infoValidy = this.useValid(valueInput, campo);
 
     const { isPending } = this.useApiPaia;
@@ -153,6 +159,11 @@ type EscutarPropsPaia<C extends string> = {
 
 export type InputMinimoProps = Pick<
   TextInputProps,
-  "value" | "onChangeText" | "placeholder" | "editable" | "selectTextOnFocus"
+  | "value"
+  | "onChangeText"
+  | "placeholder"
+  | "editable"
+  | "selectTextOnFocus"
+  | "defaultValue"
 >;
 type InputMinimo<P = InputMinimoProps> = ComponentType<P>;

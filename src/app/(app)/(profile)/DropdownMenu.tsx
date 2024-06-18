@@ -85,7 +85,7 @@ const DropdownMenu = () => {
                   width: "100%",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  paddingVertical: 10,
+                  paddingVertical: 12,
                   borderBottomColor: "green",
                   borderBottomWidth: index === options.length - 1 ? 0 : 1,
                 }}
@@ -109,21 +109,21 @@ export default DropdownMenu;
 
 const styles = StyleSheet.create({
   popup: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
     backgroundColor: "white",
     borderColor: "$black",
     borderRadius: 10,
     borderWidth: 1,
     position: "absolute",
-    width: 110,
+    width: 120,
     top: 40,
     right: 38,
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
   },
   logout: {
     color: "red",
-    fontSize: 16,
+    fontSize: 18,
   },
 });

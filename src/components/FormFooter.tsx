@@ -11,7 +11,7 @@ export default function FormFooter(props: {
   };
 }) {
   return (
-    <View gap={"$5"}>
+    <View gap={"$5"} alignItems="center">
       <YStack width={"100%"} alignItems="center">
         <YStack width={"100%"} alignItems="center">
           <Text fontFamily={"$outfitBold"} fontSize={17} marginVertical={18}>
