@@ -32,6 +32,7 @@ const NascimentoScreen: React.FC = () => {
         style={{ marginTop: 16 }}
         mb="$1.5"
         fontFamily={"$outfitBold"}
+        marginLeft="2%"
       >
         ESCOLHA SUA DATA DE NASCIMENTO
       </Text>

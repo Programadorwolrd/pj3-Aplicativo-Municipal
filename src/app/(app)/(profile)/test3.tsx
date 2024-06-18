@@ -15,7 +15,7 @@ const NomeCompletoScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text fontSize={"$2"} color="green" mb="$1.5" fontFamily={"$outfitBold"}>
+      <Text fontSize={"$2"} color="green" marginLeft="2%" mb="$1.5" fontFamily={"$outfitBold"}>
         DIGITE O SEU NOME COMPLETO
       </Text>
       <View style={styles.inputWrapper}>
