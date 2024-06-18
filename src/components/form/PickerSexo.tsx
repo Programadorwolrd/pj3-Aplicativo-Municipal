@@ -8,26 +8,18 @@ export interface PropsPicker {
   values: Record<string, string>;
   defaultValue?: string;
 }
+
 export default function PickerSexo({ values, defaultValue }: PropsPicker) {
   const [sexo, setSexo] = useState<string | undefined>(defaultValue || "");
 
   // Definindo as opções pSelectSelect
   const options = [
     { label: "Selecione seu sexo", value: "" },
-    { label: "Masculino", value: "masculino" },
-    { label: "Feminino", value: "feminino" },
-    { label: "Prefiro Não Informar", value: "prefiroNaoInformar" },
+    { label: "Masculino", value: "M" },
+    { label: "Feminino", value: "F" },
+    { label: "Prefiro Não Informar", value: "O" },
   ];
 
-  const handleSexoChange = (itemValue: string) => {
-    if (itemValue === "M") {
-      setSexo("M");
-    } else if (itemValue === "F") {
-      setSexo("F");
-    } else if (itemValue === "O") {
-      setSexo("O");
-    }
-  };
 
   if (sexo) values["sexo"] = sexo;
 

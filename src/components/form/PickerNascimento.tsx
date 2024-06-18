@@ -4,8 +4,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Text } from "tamagui";
 import { PropsPicker } from "./PickerSexo";
 
-const NascimentoScreen = ({ values }: PropsPicker) => {
-  const dateNow = new Date();
+const NascimentoScreen = ({ values, defaultValue }: PropsPicker) => {
+  const dateNow = new Date(defaultValue || '');
   const [date, setDate] = useState<Date>(dateNow);
   const [show, setShow] = useState<boolean>(false);
 
