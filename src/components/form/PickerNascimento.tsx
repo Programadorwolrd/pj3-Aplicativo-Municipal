@@ -1,15 +1,20 @@
-import React, { useState } from "react";
-import { View, Button, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Button, StyleSheet, Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Text } from "tamagui";
+import { PropsPicker } from "./PickerSexo";
 
-const NascimentoScreen: React.FC = () => {
+const NascimentoScreen = ({ values }: PropsPicker) => {
   const [date, setDate] = useState<Date>(new Date());
   const [show, setShow] = useState<boolean>(false);
 
+  useEffect(() => {
+    values["nascimento"] = date.toISOString();
+  }, [date, values]);
+
   const onChange = (event: any, selectedDate?: Date) => {
     const currentDate = selectedDate || date;
-    setShow(false);
+    setShow(Platform.OS === "ios"); // Para iOS, manter o DatePicker visível até a confirmação
     setDate(currentDate);
   };
 
@@ -29,7 +34,7 @@ const NascimentoScreen: React.FC = () => {
       <Text
         fontSize={"$2"}
         color="green"
-        style={{ marginTop: 16 }}
+        style={{ marginTop: 7 }}
         mb="$1.5"
         fontFamily={"$outfitBold"}
         marginLeft="2%"
@@ -39,7 +44,11 @@ const NascimentoScreen: React.FC = () => {
       <View style={styles.pickerWrapper}>
         <Text style={styles.dateText}>{formatDate(date)}</Text>
         <View style={styles.buttonContainer}>
-          <Button title="Selecionar Data" onPress={showDatePicker} color="#4caf50" />
+          <Button
+            title="Selecionar Data"
+            onPress={showDatePicker}
+            color="#4caf50"
+          />
         </View>
       </View>
       {show && (
@@ -61,19 +70,19 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   pickerWrapper: {
-    flexDirection: 'row',
-    backgroundColor: '#e8f5e9',
+    flexDirection: "row",
+    backgroundColor: "#e8f5e9",
     borderWidth: 1.7,
-    borderColor: '#43a047',
+    borderColor: "#43a047",
     borderRadius: 10,
     padding: 10,
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   dateText: {
     fontSize: 16,
     color: "#333",
-    textAlign: 'center',
+    textAlign: "center",
   },
   buttonContainer: {
     marginLeft: 10,
