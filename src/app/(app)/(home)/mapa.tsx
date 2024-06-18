@@ -4,17 +4,18 @@ import Card from "../../../components/card-mapa";
 import { Image, Text, View } from "tamagui";
 import { LocateFixed } from "@tamagui/lucide-icons";
 import { useGetUser } from "@/lib/querys";
-
-
-
+import Loading from "@/components/loading";
 
 export default function MapaPage() {
-
   const user = useGetUser();
-  const total = user.data?.data.usuario.progresso.total;
-  const lidos = user.data?.data.usuario.progresso.lido;
+  if (user.isLoading) return <Loading />;
 
-  
+  if (!user.data) {
+    return <Text>Erro ao carregar dados</Text>;
+  }
+  const total = user.data.data.usuario.progresso.total;
+  const lidos = user.data.data.usuario.progresso.lido;
+
   return (
     <>
       <View width={"100%"} backgroundColor={"white"}>
@@ -70,7 +71,7 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                   {lidos} / {total} 
+                {lidos} / {total}
               </Text>
               <Text
                 style={{
@@ -81,7 +82,7 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-              Seres vistos
+                Seres vistos
               </Text>
             </View>
 
@@ -114,7 +115,7 @@ export default function MapaPage() {
                   marginLeft: 14,
                 }}
               >
-                 {lidos} / 9 
+                {lidos} / 9
               </Text>
               <Text
                 style={{
@@ -124,10 +125,9 @@ export default function MapaPage() {
                   alignSelf: "left",
                   marginLeft: 20,
                 }}
-                
               >
                 {/* ----------------------- */}
-                 Suas medalhas 
+                Suas medalhas
               </Text>
 
               <Image
@@ -148,7 +148,7 @@ export default function MapaPage() {
                   marginLeft: 20,
                 }}
               >
-                   {lidos} / {total}  
+                {lidos} / {total}
               </Text>
               <Text
                 style={{

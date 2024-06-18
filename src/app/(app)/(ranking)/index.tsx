@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import MedalIcon from "@/assets/medal-1.svg";
 import { useGetUserRank } from "@/lib/querys";
-import { Avatar, Spinner, Text, View } from "tamagui";
+import { Avatar, Button, Spinner, Text, View } from "tamagui";
 
 interface ItemProps {
   item: Rank;
@@ -84,7 +84,9 @@ export default function Lista() {
               <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>Como funciona o ranking?</Text>
                 <Text style={styles.modalText}>
-                A posição no ranking é definida pela quantidade de QrCodes escaneados. Escaneie o maior número possível para alcançar uma boa colocação!
+                  A posição no ranking é definida pela quantidade de QrCodes
+                  escaneados. Escaneie o maior número possível para alcançar uma
+                  boa colocação!
                 </Text>
                 <TouchableHighlight
                   onPress={() => setModalVisible(!modalVisible)}
@@ -127,12 +129,16 @@ export default function Lista() {
             {data.data.rank[2]?.apelido}
           </Text>
         </View>
-        <TouchableHighlight
+        <Button
+          circular
           onPress={() => setModalVisible(true)}
-          style={styles.infoButton}
+          position="absolute"
+          backgroundColor={"green"}
+          end={0}
+          size={"$3"}
         >
           <Text style={styles.infoButtonText}>?</Text>
-        </TouchableHighlight>
+        </Button>
       </View>
 
       <FlatList
