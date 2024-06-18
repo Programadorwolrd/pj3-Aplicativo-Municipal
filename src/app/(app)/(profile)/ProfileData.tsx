@@ -16,7 +16,7 @@ export default function ProfileData({ nome, ranking }: PropsProfile) {
         {user.nome}
       </Text>
       <Text fontSize={"$6"} color={"$white2"} mt={"$3"} fontWeight={"bold"}>
-        Ranking #{user.ranking}
+        {ranking < 0 ? "Sem ranking" : `Ranking #${user.ranking + 1}`}
       </Text>
     </YStack>
   );

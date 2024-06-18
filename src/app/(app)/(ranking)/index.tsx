@@ -11,15 +11,13 @@ import {
 } from "react-native";
 import MedalIcon from "@/assets/medal-1.svg";
 import { useGetUserRank } from "@/lib/querys";
+import { Spinner } from "tamagui";
 
-interface User {
-  id: string;
-  apelido: string;
-  foto: string;
-  ranking: number;
+interface ItemProps {
+  item: Rank;
+  index: number;
 }
-
-function Itens({ item, index }: { item: User; index: number }) {
+function Itens({ item, index }: ItemProps) {
   return (
     <View>
       <View style={styles.hr} />
@@ -28,7 +26,7 @@ function Itens({ item, index }: { item: User; index: number }) {
           <Image source={{ uri: item.foto }} style={styles.userImage} />
           <View style={styles.textContainer}>
             <Text style={styles.userName}>{item.apelido}</Text>
-            <Text>{`Ranking: ${item.ranking}`}</Text>
+            <Text>{`Ranking: ${item.qrCodeUnicosLidos}`}</Text>
           </View>
         </View>
         <View style={styles.rankContainer}>
@@ -50,15 +48,18 @@ export default function Lista() {
   const { data, isLoading, error } = useGetUserRank();
 
   if (isLoading) {
-    return <Text>Carregando...</Text>;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Spinner size="large" color="#0000ff" />
+      </View>
+    );
   }
 
   if (error) {
     return <Text>Erro ao carregar dados</Text>;
   }
 
-  // Acessa a propriedade correta da resposta da API e garante o tipo User[]
-  const usuarios = Array.isArray(data?.data.rank) ? (data.data.rank as User[]) : [];
+  if (!data) return <Text>Erro ao carregar dados</Text>;
 
   return (
     <View style={{ flex: 1 }}>
@@ -99,7 +100,9 @@ export default function Lista() {
                 >
                   Como funciona o ranking?
                 </Text>
-                <Text style={{ color: "black", fontSize: 16, marginBottom: 10 }}>
+                <Text
+                  style={{ color: "black", fontSize: 16, marginBottom: 10 }}
+                >
                   A posição no ranking é definida pela velocidade levada para
                   ler todos os QrCodes espalhados pelo parque
                 </Text>
@@ -143,9 +146,9 @@ export default function Lista() {
       </View>
 
       <FlatList
-        data={usuarios}
+        data={data.data.rank}
         renderItem={({ item, index }) => <Itens item={item} index={index} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.list}
       />
     </View>
