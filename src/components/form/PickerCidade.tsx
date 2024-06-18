@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View,  Button, StyleSheet } from "react-native";
+import { View, Button, StyleSheet } from "react-native";
 import axios from "axios";
 import { Picker } from "@react-native-picker/picker";
 import { Text } from "tamagui";
+import { PropsPicker } from "./PickerSexo";
 
 interface Estado {
   id: number;
@@ -15,13 +16,13 @@ interface Cidade {
   nome: string;
 }
 
-const EstadoScreen: React.FC<{values: Record<string, string> }> = (values) => {
+const EstadoScreen = ({ values }: PropsPicker) => {
   const [estados, setEstados] = useState<Estado[]>([]);
   const [cidades, setCidades] = useState<Cidade[]>([]);
   const [estadoSelecionado, setEstadoSelecionado] = useState<string>("");
   const [cidadeSelecionada, setCidadeSelecionada] = useState<string>("");
 
-values.values.cidade = cidadeSelecionada;
+  if (cidadeSelecionada) values["cidade"] = cidadeSelecionada;
 
   useEffect(() => {
     axios
@@ -41,21 +42,23 @@ values.values.cidade = cidadeSelecionada;
     }
   }, [estadoSelecionado]);
 
-  const handleAvancar = () => {
-    console.log("Estado selecionado:", estadoSelecionado);
-    console.log("Cidade selecionada:", cidadeSelecionada);
-  };
-
   return (
-    <View style={styles.container}>
-      <Text fontSize={"$2"} color="green" style={{marginTop:16}} mb="$1.5" marginLeft="2%" fontFamily={"$outfitBold"}>
+    <View style={stylesPicker.container}>
+      <Text
+        fontSize={"$2"}
+        color="green"
+        style={{ marginTop: 16 }}
+        mb="$1.5"
+        marginLeft="2%"
+        fontFamily={"$outfitBold"}
+      >
         ESCOLHA O SEU ESTADO
       </Text>
-      <View style={styles.pickerWrapper}>
+      <View style={stylesPicker.pickerWrapper}>
         <Picker
           selectedValue={estadoSelecionado}
           onValueChange={(itemValue) => setEstadoSelecionado(itemValue)}
-          style={styles.picker}
+          style={stylesPicker.picker}
         >
           <Picker.Item label="Estado..." value="" />
           {estados.map((estado) => (
@@ -67,16 +70,23 @@ values.values.cidade = cidadeSelecionada;
           ))}
         </Picker>
       </View>
-      <Text fontSize={"$2"} marginLeft="2%" color="green" mb="$1.5" fontFamily={"$outfitBold"}>
+      <Text
+        fontSize={"$2"}
+        marginLeft="2%"
+        style={{ marginTop: 16 }}
+        color="green"
+        mb="$1.5"
+        fontFamily={"$outfitBold"}
+      >
         ESCOLHA A SUA CIDADE
       </Text>
-      
-      <View style={styles.pickerWrapper}>
+
+      <View style={stylesPicker.pickerWrapper}>
         <Picker
           selectedValue={cidadeSelecionada}
           onValueChange={(itemValue) => setCidadeSelecionada(itemValue)}
           enabled={!!estadoSelecionado}
-          style={styles.picker}
+          style={stylesPicker.picker}
         >
           <Picker.Item label="Cidade..." value="" />
           {cidades.map((cidade) => (
@@ -91,21 +101,29 @@ values.values.cidade = cidadeSelecionada;
     </View>
   );
 };
-
-const styles = StyleSheet.create({
+export const stylesPicker = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
   },
   pickerWrapper: {
+    flexDirection: "row",
     backgroundColor: "#e8f5e9",
     borderWidth: 1.7,
     borderColor: "#43a047",
     borderRadius: 10,
-    marginBottom: 16,
+    padding: 1,
+    alignItems: "center",
   },
   picker: {
     width: "100%",
+    height: 45,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    borderWidth: 1.7,
+    borderColor: "#46d39a",
+    backgroundColor: "#DDF3E4",
+    color: "black",
   },
 });
 

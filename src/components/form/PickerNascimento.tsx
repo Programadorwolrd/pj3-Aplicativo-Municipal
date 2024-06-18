@@ -1,16 +1,22 @@
-import React, { useState } from "react";
-import { View, Button, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Button, StyleSheet, Platform } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Text } from "tamagui";
-// <{values: Record<string, string> }> = (values)
-const NascimentoScreen: React.FC = () => {
-  const [date, setDate] = useState<Date>(new Date());
-  const [show, setShow] = useState<boolean>(false);
+import { PropsPicker } from "./PickerSexo";
 
-  // values.values.nascimento = date;
+const NascimentoScreen = ({ values, defaultValue }: PropsPicker) => {
+  const dateNow = defaultValue ? new Date(defaultValue) : new Date();
+  const [date, setDate] = useState<Date>(dateNow);
+  const [show, setShow] = useState<boolean>(false);
+  console.log(defaultValue);
+
+  useEffect(() => {
+    if (date != dateNow) values["nascimento"] = date.toISOString();
+  }, [date, values]);
+
   const onChange = (event: any, selectedDate?: Date) => {
     const currentDate = selectedDate || date;
-    setShow(false);
+    setShow(Platform.OS === "ios"); // Para iOS, manter o DatePicker visível até a confirmação
     setDate(currentDate);
   };
 
@@ -22,9 +28,7 @@ const NascimentoScreen: React.FC = () => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-
     return `${day}/${month}/${year}`;
-
   };
 
   return (
@@ -32,7 +36,7 @@ const NascimentoScreen: React.FC = () => {
       <Text
         fontSize={"$2"}
         color="green"
-        style={{ marginTop: 16 }}
+        style={{ marginTop: 7 }}
         mb="$1.5"
         fontFamily={"$outfitBold"}
         marginLeft="2%"
@@ -42,7 +46,11 @@ const NascimentoScreen: React.FC = () => {
       <View style={styles.pickerWrapper}>
         <Text style={styles.dateText}>{formatDate(date)}</Text>
         <View style={styles.buttonContainer}>
-          <Button title="Selecionar Data" onPress={showDatePicker} color="#4caf50" />
+          <Button
+            title="Selecionar Data"
+            onPress={showDatePicker}
+            color="#4caf50"
+          />
         </View>
       </View>
       {show && (
@@ -64,19 +72,19 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   pickerWrapper: {
-    flexDirection: 'row',
-    backgroundColor: '#e8f5e9',
+    flexDirection: "row",
+    backgroundColor: "#e8f5e9",
     borderWidth: 1.7,
-    borderColor: '#43a047',
+    borderColor: "#43a047",
     borderRadius: 10,
     padding: 10,
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   dateText: {
     fontSize: 16,
     color: "#333",
-    textAlign: 'center',
+    textAlign: "center",
   },
   buttonContainer: {
     marginLeft: 10,

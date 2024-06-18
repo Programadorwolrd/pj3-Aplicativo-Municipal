@@ -35,6 +35,11 @@ export const validsPaia = {
       "Apenas letras, números e espaços",
     ],
   ],
+  nome: [
+    [(t) => t.length < 1, "Insira um nome"],
+    [(t) => t.length < 3 || t.length > 40, "Entre 3 e 40 caracteres"],
+    [(t) => !/^[a-zA-Z\s\dÀ-ú]{3,40}$/.test(t), "Apenas letras e espaços"],
+  ],
   senha: [
     [(t) => t.length < 1, "Insira uma senha"],
     [(t) => t.length < 4 || t.length > 40, "Entre 4 e 40 caracteres"],

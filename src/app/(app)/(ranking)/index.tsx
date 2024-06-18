@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import MedalIcon from "@/assets/medal-1.svg";
 import { useGetUserRank } from "@/lib/querys";
-import { Avatar, Spinner, Text, View } from "tamagui";
+import { Avatar, Button, Spinner, Text, View } from "tamagui";
 
 interface ItemProps {
   item: Rank;
@@ -79,57 +79,20 @@ export default function Lista() {
         }}
       >
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "rgba(0,0,0,0.5)",
-            }}
-          >
+          <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback>
-              <View
-                style={{
-                  backgroundColor: "white",
-                  padding: 20,
-                  margin: 20,
-                  borderRadius: 10,
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 18,
-                    fontWeight: "bold",
-                    marginBottom: 10,
-                  }}
-                >
-                  Como funciona o ranking?
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>Como funciona o ranking?</Text>
+                <Text style={styles.modalText}>
+                  A posição no ranking é definida pela quantidade de QrCodes
+                  escaneados. Escaneie o maior número possível para alcançar uma
+                  boa colocação!
                 </Text>
-                <Text
-                  style={{ color: "black", fontSize: 16, marginBottom: 10 }}
-                >
-                  A posição no ranking é definida pela velocidade levada para
-                  ler todos os QrCodes espalhados pelo parque
-                </Text>
-
                 <TouchableHighlight
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
-                  style={{
-                    backgroundColor: "#329F60",
-                    padding: 10,
-                    marginTop: 30,
-                    borderRadius: 10,
-                    position: "absolute",
-                    bottom: -20,
-                    width: "30%",
-                    alignItems: "center",
-                  }}
+                  onPress={() => setModalVisible(!modalVisible)}
+                  style={styles.modalCloseButton}
                 >
-                  <Text style={{ color: "white", fontSize: 18 }}>Fechar</Text>
+                  <Text style={styles.modalCloseButtonText}>Fechar</Text>
                 </TouchableHighlight>
               </View>
             </TouchableWithoutFeedback>
@@ -166,6 +129,16 @@ export default function Lista() {
             {data.data.rank[2]?.apelido}
           </Text>
         </View>
+        <Button
+          circular
+          onPress={() => setModalVisible(true)}
+          position="absolute"
+          backgroundColor={"green"}
+          end={0}
+          size={"$3"}
+        >
+          <Text style={styles.infoButtonText}>?</Text>
+        </Button>
       </View>
 
       <FlatList
@@ -210,7 +183,6 @@ const styles = StyleSheet.create({
   medalContainer: {
     alignItems: "center",
   },
-
   rankText: {
     fontWeight: "bold",
     fontSize: 20,
@@ -219,6 +191,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     marginBottom: 10,
+    position: "relative",
   },
   hr: {
     borderBottomColor: "#D9D9D9",
@@ -238,5 +211,54 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingBottom: 20, // Adiciona um espaço no final da lista
+  },
+  infoButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    backgroundColor: "#329F60",
+    padding: 10,
+    borderRadius: 20,
+  },
+  infoButtonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    margin: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    color: "black",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalText: {
+    color: "black",
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  modalCloseButton: {
+    backgroundColor: "#329F60",
+    padding: 10,
+    marginTop: 30,
+    borderRadius: 10,
+    width: "30%",
+    alignItems: "center",
+  },
+  modalCloseButtonText: {
+    color: "white",
+    fontSize: 18,
   },
 });

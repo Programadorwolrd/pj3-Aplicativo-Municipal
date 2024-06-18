@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Button } from "react-native";
 import { Text } from "tamagui";
 
-const NomeCompletoScreen: React.FC = () => {
+const NomeCompletoScreen: React.FC<{values: Record<string, string> }> = (values) = () => {
   const [nome, setNome] = useState<string>("");
+
+  values.values.nome = nome;
 
   const handleNomeChange = (text: string) => {
     setNome(text);
