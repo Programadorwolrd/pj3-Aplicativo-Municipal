@@ -3,15 +3,13 @@ import {
   FlatList,
   Image,
   StyleSheet,
-  View,
-  Text,
   Modal,
   TouchableHighlight,
   TouchableWithoutFeedback,
 } from "react-native";
 import MedalIcon from "@/assets/medal-1.svg";
 import { useGetUserRank } from "@/lib/querys";
-import { Spinner } from "tamagui";
+import { Avatar, Spinner, Text, View } from "tamagui";
 
 interface ItemProps {
   item: Rank;
@@ -23,20 +21,29 @@ function Itens({ item, index }: ItemProps) {
       <View style={styles.hr} />
       <View style={styles.itemContainer}>
         <View style={styles.userInfoContainer}>
-          <Image source={{ uri: item.foto }} style={styles.userImage} />
+          <Avatar circular size={"$4.5"}>
+            <Avatar.Image
+              accessibilityLabel="avatar"
+              src={item.foto || require("@/assets/fotoPadrao.jpg")}
+            />
+            <Avatar.Fallback backgroundColor="$blue10" />
+          </Avatar>
           <View style={styles.textContainer}>
             <Text style={styles.userName}>{item.apelido}</Text>
-            <Text>{`Ranking: ${item.qrCodeUnicosLidos}`}</Text>
+            <Text
+              fontSize={"$2"}
+              mt={"$1.5"}
+              fontWeight={"$4"}
+            >{`LIDOS: ${item.qrCodeUnicosLidos}`}</Text>
           </View>
         </View>
         <View style={styles.rankContainer}>
+          <Text fontFamily={"$outfitBold"} fontSize={20} marginEnd={10}>
+            {index + 1}
+          </Text>
           {index < 3 && (
-            <View style={styles.medalContainer}>
-              <Text style={styles.rankTextAbove}>{index + 1}</Text>
-              <MedalIcon width={30} height={30} />
-            </View>
+            <MedalIcon width={30} height={30} style={{ alignSelf: "center" }} />
           )}
-          {index >= 3 && <Text style={styles.rankText}>{index + 1}</Text>}
         </View>
       </View>
     </View>
@@ -131,18 +138,34 @@ export default function Lista() {
       </Modal>
 
       <View style={styles.header}>
-        <Image
-          source={require("../../../assets/medalha-prata.png")}
-          style={styles.medalhas}
-        />
-        <Image
-          source={require("../../../assets/medalha-ouro.png")}
-          style={styles.medalha}
-        />
-        <Image
-          source={require("../../../assets/medalha-bronze.png")}
-          style={styles.medalhas}
-        />
+        <View>
+          <Image
+            source={require("../../../assets/medalha-prata.png")}
+            style={styles.medalhas}
+          />
+          <Text style={{ textAlign: "center" }}>
+            {data.data.rank[1]?.apelido}
+          </Text>
+        </View>
+
+        <View>
+          <Image
+            source={require("../../../assets/medalha-ouro.png")}
+            style={styles.medalha}
+          />
+          <Text style={{ textAlign: "center" }}>
+            {data.data.rank[0]?.apelido}
+          </Text>
+        </View>
+        <View>
+          <Image
+            source={require("../../../assets/medalha-bronze.png")}
+            style={styles.medalhas}
+          />
+          <Text style={{ textAlign: "center" }}>
+            {data.data.rank[2]?.apelido}
+          </Text>
+        </View>
       </View>
 
       <FlatList
@@ -187,13 +210,7 @@ const styles = StyleSheet.create({
   medalContainer: {
     alignItems: "center",
   },
-  rankTextAbove: {
-    position: "absolute",
-    top: -17,
-    fontWeight: "bold",
-    fontSize: 16,
-    color: "#000",
-  },
+
   rankText: {
     fontWeight: "bold",
     fontSize: 20,
@@ -206,19 +223,18 @@ const styles = StyleSheet.create({
   hr: {
     borderBottomColor: "#D9D9D9",
     borderBottomWidth: 1,
-    width: 310,
+    width: "100%",
     alignSelf: "center",
   },
   medalha: {
-    marginTop: -20,
-    width: 130,
-    height: 160,
+    marginTop: -30,
+    width: 120,
+    height: 150,
   },
   medalhas: {
-    marginTop: 25,
-    marginBottom: 30,
-    width: 120,
-    height: 120,
+    marginTop: 40,
+    width: 100,
+    height: 100,
   },
   list: {
     paddingBottom: 20, // Adiciona um espaço no final da lista
