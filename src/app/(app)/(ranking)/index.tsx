@@ -113,7 +113,6 @@ export default function Lista() {
                   A posição no ranking é definida pela velocidade levada para
                   ler todos os QrCodes espalhados pelo parque
                 </Text>
-
                 <TouchableHighlight
                   onPress={() => {
                     setModalVisible(!modalVisible);
