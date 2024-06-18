@@ -8,15 +8,12 @@ import {
   useWindowDimensions,
   TouchableOpacity,
 } from "react-native";
-import { Circle } from "tamagui";
-import { router, useNavigation } from "expo-router";
+import { router, } from "expo-router";
 import type { CardProps } from "tamagui";
 import React, { useEffect, useState } from "react";
-import useApi from "@/lib/useApi";
 import { getFiles } from "@/lib/useAxios";
 import { useGetUser } from "@/lib/querys";
 import Loading from "@/components/loading";
-import { ScanLine } from "@tamagui/lucide-icons";
 // Interfaces
 interface Catalogo {
   uuid: string;

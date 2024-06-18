@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import type { CardProps } from "tamagui";
-import useApi from "@/lib/useApi";
 import { getFiles } from "@/lib/useAxios";
 import { useGetUser } from "@/lib/querys";
 import Loading from "@/components/loading";
