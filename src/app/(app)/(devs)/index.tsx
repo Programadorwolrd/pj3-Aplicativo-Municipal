@@ -53,6 +53,16 @@ const usuarios: User[] = [
     descricao:
       'É um desenvolvedor talentoso que contribuiu significativamente para o desenvolvimento das funcionalidades do aplicativo. Suas habilidades foram fundamentais para o sucesso do projeto.',
   },
+      {
+    nome: 'Gustavo',
+    funcao: 'Dev FullStack',
+    linkImagem:
+      "https://avatars.githubusercontent.com/u/133153521?v=4",
+    linkGithub: 'https://github.com/Guxtavo9',
+    linkLinkedin: '',
+    descricao:
+      'É um desenvolvedor talentoso que contribuiu significativamente para o desenvolvimento das funcionalidades do aplicativo. Suas habilidades foram fundamentais para o sucesso do projeto.',
+  },
   {
   nome: 'Philype Jorge',
   funcao: 'Dev FrontEnd',
