@@ -60,6 +60,7 @@ export default function Editar() {
           fontSize={"$2"}
           color="green"
           mb="$1.5"
+          marginLeft="2%"
           fontFamily={"$outfitBold"}
         >
           ESCOLHA O SEU SEXO

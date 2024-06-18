@@ -46,7 +46,7 @@ const EstadoScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text fontSize={"$2"} color="green" style={{marginTop:16}} mb="$1.5" fontFamily={"$outfitBold"}>
+      <Text fontSize={"$2"} color="green" style={{marginTop:16}} mb="$1.5" marginLeft="2%" fontFamily={"$outfitBold"}>
         ESCOLHA O SEU ESTADO
       </Text>
       <View style={styles.pickerWrapper}>
@@ -65,7 +65,7 @@ const EstadoScreen: React.FC = () => {
           ))}
         </Picker>
       </View>
-      <Text fontSize={"$2"} color="green" mb="$1.5" fontFamily={"$outfitBold"}>
+      <Text fontSize={"$2"} marginLeft="2%" color="green" mb="$1.5" fontFamily={"$outfitBold"}>
         ESCOLHA A SUA CIDADE
       </Text>
       
