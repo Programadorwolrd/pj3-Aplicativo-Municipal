@@ -114,6 +114,7 @@ export const stylesPicker = StyleSheet.create({
     borderRadius: 10,
     padding: 1,
     alignItems: "center",
+    overflow: "hidden",
   },
   picker: {
     width: "100%",
