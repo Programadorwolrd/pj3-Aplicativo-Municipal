@@ -32,33 +32,32 @@ export default function InfoUrl() {
 
   const { infoUrl } = useLocalSearchParams();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (activeIndex === carouselData.length - 1) {
-        flatlistRef.current?.scrollToIndex({
-          index: 0,
-          animated: true,
-        });
-      } else {
-        flatlistRef.current?.scrollToIndex({
-          index: activeIndex + 1,
-          animated: true,
-        });
-      }
-    }, 10000);
-
-    return () => clearInterval(interval);
-  });
-
-  // API
   const uri = Array.isArray(infoUrl) ? infoUrl[0] : infoUrl;
 
   const { data, isLoading, isSuccess } = useGetQrcode(uri);
+  const carouselData = data?.data.catalogo.catalogoGaleria;
+  const content = data?.data.catalogo;
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && carouselData) {
       clientQuery.invalidateQueries({ queryKey: ["currentUser"] });
       clientQuery.invalidateQueries({ queryKey: ["rank"] });
+
+      const interval = setInterval(() => {
+        if (activeIndex === carouselData.length - 1) {
+          flatlistRef.current?.scrollToIndex({
+            index: 0,
+            animated: true,
+          });
+        } else {
+          flatlistRef.current?.scrollToIndex({
+            index: activeIndex + 1,
+            animated: true,
+          });
+        }
+      }, 10000);
+
+      return () => clearInterval(interval);
     }
   }, [isSuccess]);
 
@@ -71,11 +70,6 @@ export default function InfoUrl() {
         text="Escaneie um QrCode valido"
       />
     );
-
-  // API
-
-  const carouselData = data.data.catalogo.catalogoGaleria;
-  const content = data.data.catalogo;
 
   const getItemLayout = (data: unknown, index: number) => ({
     length: screenWidth,
