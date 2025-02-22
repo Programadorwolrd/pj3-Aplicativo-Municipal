@@ -163,6 +163,12 @@ Para mais detalhes, veja a **[notícia sobre a apresentação do projeto para o 
 
 ![Registro de visita no totem pelo QR Code](https://gist.githubusercontent.com/6aleatorio6/b7667f910d555388c0ef02588b38ec65/raw/b7c0e2854dcd4a82637949a0c02ea62160d8c1af/qrcode_ambos.gif)
 
+
+## Mentor 
+
+| [<img src="https://avatars.githubusercontent.com/u/27034304?v=4" width=115><br><sub>Anderson Deizepe</sub>](https://deizepe.com.br/) |
+|-|
+
 ## Desenvolvedores :octocat:
 
 | [<img src="https://avatars.githubusercontent.com/u/132392161?v=4" width=115><br><sub>Leonardo L. Felix</sub>](https://github.com/6aleatorio6) | [<img src="https://avatars.githubusercontent.com/u/133153521?v=4" width=115><br><sub>Gustavo</sub>](https://github.com/Guxtavo9) | [<img src="https://avatars.githubusercontent.com/u/136916226?v=4" width=115><br><sub>Lucas</sub>](https://github.com/lucas2007c) | [<img src="https://avatars.githubusercontent.com/u/133153563?v=4" width=115><br><sub>Luis Eduardo</sub>](https://github.com/Luis-eduardo-sl) | [<img src="https://avatars.githubusercontent.com/u/128484070?v=4" width=115><br><sub>Philype Jorge</sub>](https://github.com/Programadorwolrd) |
